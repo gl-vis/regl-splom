@@ -1,4 +1,4 @@
-# regl-scatter2d-matrix
+# regl-scattermatrix
 
 Matrix of scatter plots (SPLOM). A wrapper over [regl-scatter2d](https://github.com/dfcreative/regl-scatter2d) for optimized intersected data rendering.
 
@@ -8,18 +8,19 @@ Matrix of scatter plots (SPLOM). A wrapper over [regl-scatter2d](https://github.
 
 ## Usage
 
-[![npm install regl-scatter2d-matrix](https://nodei.co/npm/regl-scatter2d-matrix.png?mini=true)](https://npmjs.org/package/regl-scatter2d-matrix/)
+[![npm install regl-scattermatrix](https://nodei.co/npm/regl-scattermatrix.png?mini=true)](https://npmjs.org/package/regl-scattermatrix/)
 
 ```js
 let regl = require('regl')({extensions: 'oes_element_index_uint'})
-let createMatrix = require('regl-scatter2d-matrix')
+let createMatrix = require('regl-scattermatrix')
 
 let scatterMatrix = createMatrix(regl)
 
 // pass data and views to display
-scatterMatrix.update([
-	{ data: [[], [], ...], color, viewport, size, borderColor, borderWidth }
-])
+scatterMatrix.update(
+	{ data: [[], [], ...], ranges, domains, viewport, size, color, border },
+	{ data: [[], [], ...], ranges, domains, viewport, size, color, border }
+)
 
 // draw views by ids
 scatterMatrix.draw(0, 1, ...views)
