@@ -1,0 +1,34 @@
+{
+  "name": "regl-scattermatrix",
+  "version": "1.0.0",
+  "description": "Scatterplot matrix for 2d plots",
+  "main": "./index.js",
+  "scripts": {
+    "test": "budo test",
+    "build": "browserify test.js -g bubleify | indexhtmlify | metadataify | github-cornerify | mobilify > index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dfcreative/regl-scattermatrix.git"
+  },
+  "keywords": [
+    "regl",
+    "plotly"
+  ],
+  "browserify": {
+    "transform": [
+      "glslify",
+      "bubleify"
+    ]
+  },
+  "author": "Dmitry Yv <df.creative@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dfcreative/regl-scattermatrix/issues"
+  },
+  "homepage": "https://github.com/dfcreative/regl-scattermatrix#readme",
+  "dependencies": {
+  },
+  "devDependencies": {
+  }
+}
