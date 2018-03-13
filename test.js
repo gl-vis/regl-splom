@@ -18,9 +18,9 @@ let passes = []
 
 // create settings panel & bind
 let settings = createSettings({
-	traces: { value: 1, min: 1, max: 10, type: 'text' },
-	variables: { value: 4, min: 1, max: 100, type: 'text' },
-	points: { value: 1e3, min: 1, max: 1e6, type: 'text' },
+	traces: { value: 1, min: 1, max: 10, type: 'range' },
+	variables: { value: 4, min: 1, max: 100, type: 'range' },
+	points: { value: 1e5, min: 1, max: 2e5, type: 'range' },
 	// snap: { value: false }
 }, {
 	position: 'center bottom',
@@ -64,12 +64,7 @@ function update () {
 	}
 
 	// update splom based on traces
-	splom.regl.clear({ color: [0,0,0,0] })
-	splom.update(...passes)//.draw()
-setTimeout(() => {
-	splom.regl.clear({ color: [0,0,0,0]})
-	splom.draw()
-}, 300)
+	splom.update(...passes).draw()
 }
 
 update()

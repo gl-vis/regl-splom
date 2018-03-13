@@ -96,12 +96,12 @@ SPLOM.prototype.updateItem = function (i, options) {
 			this.passes[key] = {
 				positions: {
 					// planar
-					// x: {buffer, offset: i * n, count: n},
-					// y: {buffer, offset: j * n, count: n}
+					x: {buffer: trace.buffer, offset: i * n, count: n},
+					y: {buffer: trace.buffer, offset: j * n, count: n}
 
 					// transposed
-					x: {buffer: trace.buffer, offset: i, count: n, stride: m},
-					y: {buffer: trace.buffer, offset: j, count: n, stride: m}
+					// x: {buffer: trace.buffer, offset: i, count: n, stride: m},
+					// y: {buffer: trace.buffer, offset: j, count: n, stride: m}
 				},
 				color: 'red',
 				borderSize: 0,
@@ -129,6 +129,7 @@ SPLOM.prototype.drawItem = function (i) {
 	let { columns, id } = this.traces[i]
 
 	let idx = []
+
 	for (let i = 0; i < columns; i++) {
 		for (let j = 0; j < columns; j++) {
 			idx.push(this.passes[passId(id, i, j)].index)
