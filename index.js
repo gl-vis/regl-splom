@@ -150,5 +150,8 @@ SPLOM.prototype.destroy = function () {
 
 // return pass corresponding to trace i- j- square
 function passId (trace, i, j) {
-	return parseInt((trace.id != null ? trace.id : trace).toString(16) + i.toString(16) + j.toString(16))
+	let id = (trace.id != null ? trace.id : trace)
+	let n = i
+	let m = j
+	return parseInt(`${id.toString(16)}${n.toString(16)}0${m.toString(16)}`, 16)
 }
