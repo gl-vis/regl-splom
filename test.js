@@ -1,7 +1,7 @@
 'use strict'
 
-const regl = require('regl')({ extensions: 'oes_element_index_uint'})
-const createSettings = require('settings-panel')
+const regl = require('regl')({ extensions: 'oes_element_index_uint' })
+const createSettings = require('../settings-panel')
 const createMatrix = require('./')
 const panzoom = require('pan-zoom')
 const random = require('gauss-random')
@@ -13,17 +13,19 @@ let splom = createMatrix(regl)
 
 
 // data for the splom
-let traces = []
+let passes = []
 
 
 // create settings panel & bind
 let settings = createSettings({
-	traces: { value: 3, min: 1, max: 10, type: 'number' },
-	variables: { value: 4, min: 1, max: 100, type: 'number' },
-	points: { value: 1e4, min: 1, max: 1e7, type: 'number' },
-	snap: { value: false }
+	traces: { value: 3, min: 1, max: 10, type: 'range' },
+	variables: { value: 4, min: 1, max: 100, type: 'range' },
+	points: { value: 1e4, min: 1, max: 1e7, type: 'range' },
+	// snap: { value: false }
 }, {
-	position: 'center bottom'
+	position: 'center bottom',
+	background: 'transparent',
+	orientation: 'horizontal'
 })
 
 settings.on('change', update)
@@ -31,34 +33,41 @@ settings.on('change', update)
 
 // regenerate the data based on options
 function update () {
-	let o = settings.values
+	let {traces, variables, points} = settings.values
+	traces = parseInt(traces)
+	variables = parseInt(variables)
+	points = parseInt(points)
 
-	// set proper number of traces
-	if (o.traces < traces.length) {
-		traces.length = o.traces
-	}
-	else {
-		for (let i = traces.length; i < o.traces; i++) {
-			traces.push(generateTrace(o.variables, o.points))
-		}
+	if (traces < passes.length) {
+		passes.length = traces
 	}
 
-	function generateTrace(vars, points) {
-		let data = []
-		for (let i = 0; i < vars; i++) {
-			let row = []
-			data.push(row)
-			for (let j = 0; j < points; j++) {
-				row.push(random())
+	for (let i = passes.length; i < traces; i++) {
+		let pass = (passes[i] || (passes[i] = {}))
+
+		if (!pass.data) pass.data = []
+		if (pass.data.length > variables) pass.data.length = variables
+
+		for (let col = pass.data.length; col < variables; col++) {
+			if (!pass.data[col]) {
+				pass.data[col] = []
+				pass.data[col].mean = Math.random()
+				pass.data[col].sdev = Math.random()
+			}
+			let colData = pass.data[col]
+			let {mean, sdev} = colData
+			if (colData.length > points) colData.length = points
+			for (let i = colData.length; i < points; i++) {
+				colData[i] = random() * sdev + mean
 			}
 		}
-
-		return data
 	}
 
 	// update splom based on traces
-	splom.update(...traces)
+	splom.update(...passes).draw()
 }
+
+update()
 
 
 // redraw the frame based on data
