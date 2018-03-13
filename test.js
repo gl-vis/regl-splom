@@ -18,9 +18,9 @@ let passes = []
 
 // create settings panel & bind
 let settings = createSettings({
-	traces: { value: 1, min: 1, max: 10, type: 'range' },
-	variables: { value: 16, min: 1, max: 100, type: 'range' },
-	points: { value: 1e2, min: 1, max: 2e5, type: 'range' },
+	traces: { value: 1, min: 1, max: 10, type: 'range', hidden: true },
+	variables: { value: 8, min: 1, max: 100, type: 'range' },
+	points: { value: 1e3, min: 1, max: 1e4, type: 'range' },
 	// snap: { value: false }
 }, {
 	position: 'center bottom',
@@ -33,6 +33,7 @@ settings.on('change', update)
 
 // regenerate the data based on options
 function update () {
+	console.time('generate')
 	let {traces, variables, points} = settings.values
 	traces = parseInt(traces)
 	variables = parseInt(variables)
@@ -62,9 +63,15 @@ function update () {
 			}
 		}
 	}
+	console.timeEnd('generate')
 
-	// update splom based on traces
-	splom.update(...passes).draw()
+	console.time('update')
+	splom.update(...passes)
+	console.timeEnd('update')
+
+	console.time('draw')
+	splom.draw()
+	console.timeEnd('draw')
 }
 
 update()

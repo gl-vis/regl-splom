@@ -135,6 +135,7 @@ SPLOM.prototype.drawItem = function (i) {
 			idx.push(this.passes[passId(id, i, j)].index)
 		}
 	}
+
 	this.scatter.draw(...idx)
 
 	return this

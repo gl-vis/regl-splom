@@ -4,7 +4,7 @@
   "description": "Scatterplot matrix for 2d plots",
   "main": "./index.js",
   "scripts": {
-    "test": "budo test",
+    "test": "budo --force-default-index test",
     "build": "browserify test.js -g bubleify | indexhtmlify | metadataify | github-cornerify | mobilify > index.html"
   },
   "repository": {
