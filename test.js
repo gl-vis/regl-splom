@@ -18,9 +18,9 @@ let passes = []
 
 // create settings panel & bind
 let settings = createSettings({
-	traces: { value: 3, min: 1, max: 10, type: 'range' },
-	variables: { value: 4, min: 1, max: 100, type: 'range' },
-	points: { value: 1e4, min: 1, max: 1e7, type: 'range' },
+	traces: { value: 1, min: 1, max: 10, type: 'text' },
+	variables: { value: 4, min: 1, max: 100, type: 'text' },
+	points: { value: 1e3, min: 1, max: 1e6, type: 'text' },
 	// snap: { value: false }
 }, {
 	position: 'center bottom',
@@ -42,13 +42,13 @@ function update () {
 		passes.length = traces
 	}
 
-	for (let i = passes.length; i < traces; i++) {
+	for (let i = 0; i < traces; i++) {
 		let pass = (passes[i] || (passes[i] = {}))
 
 		if (!pass.data) pass.data = []
 		if (pass.data.length > variables) pass.data.length = variables
 
-		for (let col = pass.data.length; col < variables; col++) {
+		for (let col = 0; col < variables; col++) {
 			if (!pass.data[col]) {
 				pass.data[col] = []
 				pass.data[col].mean = Math.random()
@@ -64,13 +64,14 @@ function update () {
 	}
 
 	// update splom based on traces
-	splom.update(...passes).draw()
+	splom.regl.clear({ color: [0,0,0,0] })
+	splom.update(...passes)//.draw()
+setTimeout(() => {
+	splom.regl.clear({ color: [0,0,0,0]})
+	splom.draw()
+}, 300)
 }
 
 update()
 
 
-// redraw the frame based on data
-function draw () {
-	splom.draw()
-}
