@@ -69,9 +69,26 @@ SPLOM.prototype.updateItem = function (i, options) {
 		buffer: regl.buffer({
 			usage: 'dynamic',
 			type: 'float',
-			data: null
+			data: null,
+			color: 'black',
+			size: 12,
+			borderColor: 'transparent',
+			borderSize: 1
 		})
 	}))
+
+	if (defined(color)) {
+		trace.color = color
+	}
+	if (defined(size)) {
+		trace.size = size
+	}
+	if (defined(borderColor)) {
+		trace.borderColor = borderColor
+	}
+	if (defined(borderSize)) {
+		trace.borderSize = borderSize
+	}
 
 	// put flattened data into buffer
 	if (defined(data)) {
@@ -103,9 +120,10 @@ SPLOM.prototype.updateItem = function (i, options) {
 					// x: {buffer: trace.buffer, offset: i, count: n, stride: m},
 					// y: {buffer: trace.buffer, offset: j, count: n, stride: m}
 				},
-				color: 'red',
-				borderSize: 0,
-				size: 2,
+				color: trace.color,
+				size: trace.size,
+				borderSize: trace.borderSize,
+				borderColor: trace.borderColor,
 				bounds: [-3, -3, 3, 3],
 				viewport: [i * iw + iw * pad, j * ih + ih * pad, (i + 1) * iw - iw * pad, (j + 1) * ih - ih * pad]
 			}
