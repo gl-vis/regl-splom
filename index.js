@@ -40,11 +40,14 @@ SPLOM.prototype.render = function (...args) {
 	if (this.regl.attributes.preserveDrawingBuffer) return this.draw()
 
 	// make sure draw is not called more often than once a frame
-	if (this.dirty && this.planned == null) {
-		this.planned = raf(() => {
-			this.draw()
-			this.planned = null
-		})
+	if (this.dirty) {
+		if (this.planned == null) {
+			this.planned = raf(() => {
+				this.draw()
+				this.dirty = true
+				this.planned = null
+			})
+		}
 	}
 	else {
 		this.draw()
@@ -164,11 +167,13 @@ SPLOM.prototype.updateItem = function (i, options) {
 	let ih = h / m
 	let pad = .0
 
-	for (let i = 0, ptr = 0; i < m; i++) {
+	for (let i = 0; i < m; i++) {
 		for (let j = 0; j < m; j++) {
 			let key = passId(trace.id, i, j)
-			let bounds = [trace.bounds[i][0], trace.bounds[j][0], trace.bounds[i][1], trace.bounds[j][1]]
-			let range = multirange ? [trace.range[i][0], trace.range[j][0], trace.range[i][1], trace.range[j][1]] : trace.range || bounds
+
+			let bounds = getBox(trace.bounds, i, j)
+			let range = multirange ? getBox(trace.range, i, j) : trace.range || bounds
+
 			this.passes[key] = {
 				positions: {
 					// planar
@@ -185,7 +190,7 @@ SPLOM.prototype.updateItem = function (i, options) {
 				borderColor: trace.borderColor,
 				bounds,
 				range,
-				viewport: [i * iw + iw * pad, j * ih + ih * pad, (i + 1) * iw - iw * pad, (j + 1) * ih - ih * pad]
+				viewport: [j * iw + iw * pad, i * ih + ih * pad, (j + 1) * iw - iw * pad, (i + 1) * ih - ih * pad]
 			}
 		}
 	}
@@ -236,7 +241,38 @@ function passId (trace, i, j) {
 	let id = (trace.id != null ? trace.id : trace)
 	let n = i
 	let m = j
-	let key = parseInt(`${id.toString(16)}${lpad(n.toString(16), 2, '0')}${lpad(m.toString(16), 2, '0')}`, 16);
+	let key = id << 16 | (n & 0xff) << 8 | m & 0xff
 
 	return key
+}
+
+
+// return bounding box corresponding to a pass
+function getBox (ranges, i, j) {
+	let ilox, iloy, ihix, ihiy, jlox, jloy, jhix, jhiy
+	let irange = ranges[i], jrange = ranges[j]
+
+	if (irange.length > 2) {
+		ilox = irange[0]
+		ihix = irange[2]
+		iloy = irange[1]
+		ihiy = irange[3]
+	}
+	else {
+		ilox = iloy = irange[0]
+		ihix = ihiy = irange[1]
+	}
+
+	if (jrange.length > 2) {
+		jlox = jrange[0]
+		jhix = jrange[2]
+		jloy = jrange[1]
+		jhiy = jrange[3]
+	}
+	else {
+		jlox = jloy = jrange[0]
+		jhix = jhiy = jrange[1]
+	}
+
+	return [ jlox, iloy, jhix, ihiy ]
 }

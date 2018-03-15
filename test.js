@@ -62,13 +62,13 @@ function update () {
 				pass.data[col] = []
 				pass.data[col].mean = Math.random()
 				pass.data[col].sdev = Math.random()
-				pass.range[col] = passes[i-1] && passes[i-1].range[col] || [-5,5]
+				pass.range[col] = passes[i-1] && passes[i-1].range[col] || [-5,-5,5,5]
 			}
 			let colData = pass.data[col]
 			let {mean, sdev} = colData
 			if (colData.length > points) colData.length = points
-			for (let j = colData.length; j < points; j++) {
-				colData[j] = random() * sdev + mean
+			for (let i = colData.length; i < points; i++) {
+				colData[i] = random() * sdev + mean
 			}
 		}
 	}
@@ -103,27 +103,28 @@ panzoom(splom.canvas, e => {
 		let ranges = pass.range
 		let n = settings.values.variables
 
-		for (let i = 0; i < n; i++) {
-			for (let j = 0; j < n; j++) {
-				let xrange = ranges[i][1] - ranges[i][0],
-					yrange = ranges[j][1] - ranges[j][0]
+		// for (let i = 0; i < n; i++) {
+			let i = 1
+			let j = 1
+			// for (let j = 0; j < n; j++) {
+				let xrange = ranges[i][2] - ranges[i][0],
+					yrange = ranges[j][3] - ranges[j][1]
 
 				if (e.dz) {
 					let dz = e.dz / w
 					ranges[i][0] -= rx * xrange * dz
-					ranges[i][1] += (1 - rx) * xrange * dz
+					ranges[i][2] += (1 - rx) * xrange * dz
 
-					ranges[j][0] -= (1 - ry) * yrange * dz
-					ranges[j][1] += ry * yrange * dz
+					ranges[j][1] -= (1 - ry) * yrange * dz
+					ranges[j][3] += ry * yrange * dz
 				}
 
 				ranges[i][0] -= xrange * e.dx / w
-				ranges[i][1] -= xrange * e.dx / w
-				ranges[j][0] += yrange * e.dy / h
+				ranges[i][2] -= xrange * e.dx / w
 				ranges[j][1] += yrange * e.dy / h
-			}
-		}
-
+				ranges[j][3] += yrange * e.dy / h
+			// }
+		// }
 
 		return { ranges }
 	})
