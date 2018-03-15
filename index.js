@@ -30,30 +30,27 @@ function SPLOM (regl, options) {
 	this.canvas = this.scatter.canvas
 }
 
-// update & render passes
+// update & draw passes once per frame
 SPLOM.prototype.render = function (...args) {
 	if (args.length) {
 		this.update(...args)
 	}
 
+	if (this.regl.attributes.preserveDrawingBuffer) return this.draw()
+
 	// make sure draw is not called more often than once a frame
-	if (!this.regl.attributes.preserveDrawingBuffer) {
-		if (this.dirty && this.planned == null) {
-			this.planned = raf(() => {
-				this.draw()
-				this.planned = null
-			})
-		}
-		else {
+	if (this.dirty && this.planned == null) {
+		this.planned = raf(() => {
 			this.draw()
-			this.dirty = true
-			raf(() => {
-				this.dirty = false
-			})
-		}
+			this.planned = null
+		})
 	}
 	else {
 		this.draw()
+		this.dirty = true
+		raf(() => {
+			this.dirty = false
+		})
 	}
 
 	return this
@@ -123,6 +120,7 @@ SPLOM.prototype.updateItem = function (i, options) {
 	}))
 
 	// range/viewport
+	let multirange = range && typeof range[0] !== 'number'
 	trace.range = range
 
 	// save styles
@@ -167,6 +165,7 @@ SPLOM.prototype.updateItem = function (i, options) {
 		for (let j = 0; j < m; j++) {
 			let key = passId(trace.id, i, j)
 			let bounds = [trace.bounds[i][0], trace.bounds[j][0], trace.bounds[i][1], trace.bounds[j][1]]
+			let range = multirange ? [trace.range[i][0], trace.range[j][0], trace.range[i][1], trace.range[j][1]] : trace.range || bounds
 			this.passes[key] = {
 				positions: {
 					// planar
@@ -182,7 +181,7 @@ SPLOM.prototype.updateItem = function (i, options) {
 				borderSize: trace.borderSize,
 				borderColor: trace.borderColor,
 				bounds,
-				range: trace.range || bounds,
+				range,
 				viewport: [i * iw + iw * pad, j * ih + ih * pad, (i + 1) * iw - iw * pad, (j + 1) * ih - ih * pad]
 			}
 		}
