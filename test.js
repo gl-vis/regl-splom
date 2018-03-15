@@ -3,7 +3,7 @@
 const regl = require('regl')({ extensions: 'oes_element_index_uint' })
 const createSettings = require('../settings-panel')
 const createMatrix = require('./')
-const panzoom = require('../pan-zoom')
+const panzoom = require('pan-zoom')
 const random = require('gauss-random')
 const fps = require('fps-indicator')('bottom-right')
 const alpha = require('color-alpha')
@@ -92,39 +92,35 @@ panzoom(splom.canvas, e => {
 	let w = cnv.offsetWidth
 	let h = cnv.offsetHeight
 
-	let rx = e.x / w
-	let ry = e.y / h
+	let n = settings.values.variables
 
-	// define affected ranges
-	// recalc them
-	// for every trace update affected ranges
+	let rx = e.x0 / w
+	let ry = e.y0 / h
+
+	let i = Math.floor(rx * n)
+	let j = Math.floor((1 - ry) * n)
+
+	rx = .5, ry = .5
 
 	let rangePasses = passes.map(pass => {
 		let ranges = pass.range
-		let n = settings.values.variables
 
-		// for (let i = 0; i < n; i++) {
-			let i = 1
-			let j = 1
-			// for (let j = 0; j < n; j++) {
-				let xrange = ranges[i][2] - ranges[i][0],
-					yrange = ranges[j][3] - ranges[j][1]
+		let xrange = ranges[i][2] - ranges[i][0],
+			yrange = ranges[j][3] - ranges[j][1]
 
-				if (e.dz) {
-					let dz = e.dz / w
-					ranges[i][0] -= rx * xrange * dz
-					ranges[i][2] += (1 - rx) * xrange * dz
+		if (e.dz) {
+			let dz = e.dz / w
+			ranges[i][0] -= rx * xrange * dz
+			ranges[i][2] += (1 - rx) * xrange * dz
 
-					ranges[j][1] -= (1 - ry) * yrange * dz
-					ranges[j][3] += ry * yrange * dz
-				}
+			ranges[j][1] -= (1 - ry) * yrange * dz
+			ranges[j][3] += ry * yrange * dz
+		}
 
-				ranges[i][0] -= xrange * e.dx / w
-				ranges[i][2] -= xrange * e.dx / w
-				ranges[j][1] += yrange * e.dy / h
-				ranges[j][3] += yrange * e.dy / h
-			// }
-		// }
+		ranges[i][0] -= xrange * e.dx / w
+		ranges[i][2] -= xrange * e.dx / w
+		ranges[j][1] += yrange * e.dy / h
+		ranges[j][3] += yrange * e.dy / h
 
 		return { ranges }
 	})
