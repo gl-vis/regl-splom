@@ -29,6 +29,7 @@
   "homepage": "https://github.com/dfcreative/regl-scattermatrix#readme",
   "dependencies": {
     "array-bounds": "^1.0.1",
+    "array-range": "^1.0.1",
     "color-alpha": "^1.0.2",
     "defined": "^1.0.0",
     "flatten-vertex-data": "^1.0.0",

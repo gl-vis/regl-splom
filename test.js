@@ -5,10 +5,10 @@ const createSettings = require('../settings-panel')
 const createMatrix = require('./')
 const panzoom = require('pan-zoom')
 const random = require('gauss-random')
-const fps = require('fps-indicator')('bottom-right')
 const alpha = require('color-alpha')
 const palettes = require('nice-color-palettes')
 const palette = palettes[Math.floor(Math.random() * palettes.length)]
+const fps = require('fps-indicator')({position: 'bottom-right', color: palette[0]})
 
 
 // create splom instance
@@ -21,7 +21,7 @@ let passes = []
 // create settings panel & bind
 let settings = createSettings({
 	traces: { value: 2, min: 1, max: 10, type: 'range' },
-	variables: { value: 8, min: 1, max: 100, type: 'range' },
+	variables: { value: 20, min: 1, max: 100, type: 'range' },
 	points: { value: 1e3, min: 1, max: 1e4, type: 'range' },
 	// snap: { value: false }
 }, {
@@ -125,5 +125,11 @@ panzoom(splom.canvas, e => {
 		return { ranges }
 	})
 
-	splom.render(...rangePasses)
+	console.time('update')
+	splom.update(...rangePasses)
+	console.timeEnd('update')
+
+	console.time('draw')
+	splom.draw()
+	console.timeEnd('draw')
 })

@@ -8,6 +8,7 @@ const defined = require('defined')
 const getBounds = require('array-bounds')
 const raf = require('raf')
 const lpad = require('left-pad')
+const arrRange = require('array-range')
 
 
 module.exports = SPLOM
@@ -30,6 +31,7 @@ function SPLOM (regl, options) {
 
 	this.canvas = this.scatter.canvas
 }
+
 
 // update & draw passes once per frame
 SPLOM.prototype.render = function (...args) {
@@ -73,10 +75,18 @@ SPLOM.prototype.update = function (...args) {
 	this.traces = this.traces.filter(Boolean)
 
 	// FIXME: convert scattergl to buffer-per-pass maybe and update passes independently
-	let passes = Object.keys(this.passes).sort().map((key, i) => {
-		this.passes[key].index = i
-		return this.passes[key]
-	});
+	let passes = []
+	let offset = 0
+	for (let i = 0; i < this.traces.length; i++) {
+		let trace = this.traces[i]
+		let tracePasses = this.traces[i].passes
+		for (let j = 0; j < tracePasses.length; j++) {
+			passes.push(this.passes[tracePasses[j]])
+		}
+		// save offset of passes
+		trace.passOffset = offset
+		offset += trace.passes.length
+	}
 
 	this.scatter.update(...passes)
 
@@ -96,7 +106,7 @@ SPLOM.prototype.updateItem = function (i, options) {
 
 	if (!options) return this
 
-	let { data, snap, size, color, opacity, borderSize, borderColor, marker, range, viewport, domain, transpose } = pick(options, {
+	let o = pick(options, {
 		data: 'data items columns rows values dimensions samples',
 		snap: 'snap cluster',
 		size: 'sizes size radius',
@@ -126,34 +136,34 @@ SPLOM.prototype.updateItem = function (i, options) {
 	}))
 
 	// range/viewport
-	let multirange = range && typeof range[0] !== 'number'
-	trace.range = range
+	let multirange = o.range && typeof o.range[0] !== 'number'
+	trace.range = o.range
 
 	// save styles
-	if (defined(color)) {
-		trace.color = color
+	if (o.color != null) {
+		trace.color = o.color
 	}
-	if (defined(size)) {
-		trace.size = size
+	if (o.size != null) {
+		trace.size = o.size
 	}
-	if (defined(borderColor)) {
-		trace.borderColor = borderColor
+	if (o.borderColor != null) {
+		trace.borderColor = o.borderColor
 	}
-	if (defined(borderSize)) {
-		trace.borderSize = borderSize
+	if (o.borderSize != null) {
+		trace.borderSize = o.borderSize
 	}
 
 	// put flattened data into buffer
-	if (defined(data)) {
-		trace.buffer(flatten(data))
-		trace.columns = data.length
-		trace.count = data[0].length
+	if (o.data) {
+		trace.buffer(flatten(o.data))
+		trace.columns = o.data.length
+		trace.count = o.data[0].length
 
 		// detect bounds per-column
 		trace.bounds = []
 
-		for (let i = 0; i < data.length; i++) {
-			trace.bounds[i] = getBounds(data[i], 1)
+		for (let i = 0; i < trace.columns; i++) {
+			trace.bounds[i] = getBounds(o.data[i], 1)
 		}
 	}
 
@@ -167,15 +177,16 @@ SPLOM.prototype.updateItem = function (i, options) {
 	let ih = h / m
 	let pad = .0
 
+	trace.passes = []
+
 	for (let i = 0; i < m; i++) {
 		for (let j = 0; j < m; j++) {
 			let key = passId(trace.id, i, j)
 
-			let bounds = getBox(trace.bounds, i, j)
-			let range = multirange ? getBox(trace.range, i, j) : trace.range || bounds
+			let pass = this.passes[key] || (this.passes[key] = {})
 
-			this.passes[key] = {
-				positions: {
+			if (o.data) {
+				pass.positions = {
 					// planar
 					x: {buffer: trace.buffer, offset: i * n, count: n},
 					y: {buffer: trace.buffer, offset: j * n, count: n}
@@ -183,15 +194,21 @@ SPLOM.prototype.updateItem = function (i, options) {
 					// transposed
 					// x: {buffer: trace.buffer, offset: i, count: n, stride: m},
 					// y: {buffer: trace.buffer, offset: j, count: n, stride: m}
-				},
-				color: trace.color,
-				size: trace.size,
-				borderSize: trace.borderSize,
-				borderColor: trace.borderColor,
-				bounds,
-				range,
-				viewport: [j * iw + iw * pad, i * ih + ih * pad, (j + 1) * iw - iw * pad, (i + 1) * ih - ih * pad]
+				}
+				pass.bounds = getBox(trace.bounds, i, j)
+				pass.viewport = [j * iw + iw * pad, i * ih + ih * pad, (j + 1) * iw - iw * pad, (i + 1) * ih - ih * pad]
 			}
+
+			if (o.color) pass.color = trace.color
+			if (o.size) pass.size = trace.size
+			if (o.borderSize) pass.borderSize = trace.borderSize
+			if (o.borderColor) pass.borderColor = trace.borderColor
+
+			if (o.range) {
+				pass.range = multirange ? getBox(trace.range, i, j) : trace.range || bounds
+			}
+
+			trace.passes.push(key)
 		}
 	}
 
@@ -211,17 +228,9 @@ SPLOM.prototype.draw = function (...args) {
 
 // draw single pass
 SPLOM.prototype.drawItem = function (i) {
-	let { columns, id } = this.traces[i]
+	let { passes, passOffset } = this.traces[i]
 
-	let idx = []
-
-	for (let i = 0; i < columns; i++) {
-		for (let j = 0; j < columns; j++) {
-			idx.push(this.passes[passId(id, i, j)].index)
-		}
-	}
-
-	this.scatter.draw(...idx)
+	this.scatter.draw(...arrRange(passOffset, passOffset + passes.length))
 
 	return this
 }
