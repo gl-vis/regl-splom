@@ -51,7 +51,7 @@ function update () {
 		let pass = (passes[i] || (passes[i] = {
 			color: alpha(palette[i % palette.length], Math.random() * .5 + .25),
 			size: 3,
-			range: passes[i-1] && passes[i-1].range || [-5,-5, 5,5]
+			range: []
 		}))
 
 		if (!pass.data) pass.data = []
@@ -62,12 +62,13 @@ function update () {
 				pass.data[col] = []
 				pass.data[col].mean = Math.random()
 				pass.data[col].sdev = Math.random()
+				pass.range[col] = passes[i-1] && passes[i-1].range[col] || [-5,5]
 			}
 			let colData = pass.data[col]
 			let {mean, sdev} = colData
 			if (colData.length > points) colData.length = points
-			for (let i = colData.length; i < points; i++) {
-				colData[i] = random() * sdev + mean
+			for (let j = colData.length; j < points; j++) {
+				colData[j] = random() * sdev + mean
 			}
 		}
 	}
@@ -98,22 +99,34 @@ panzoom(splom.canvas, e => {
 	// recalc them
 	// for every trace update affected ranges
 
-	let xrange = range[2] - range[0],
-		yrange = range[3] - range[1]
+	let rangePasses = passes.map(pass => {
+		let ranges = pass.range
+		let n = settings.values.variables
 
-	if (e.dz) {
-		let dz = e.dz / w
-		range[0] -= rx * xrange * dz
-		range[2] += (1 - rx) * xrange * dz
+		for (let i = 0; i < n; i++) {
+			for (let j = 0; j < n; j++) {
+				let xrange = ranges[i][1] - ranges[i][0],
+					yrange = ranges[j][1] - ranges[j][0]
 
-		range[1] -= (1 - ry) * yrange * dz
-		range[3] += ry * yrange * dz
-	}
+				if (e.dz) {
+					let dz = e.dz / w
+					ranges[i][0] -= rx * xrange * dz
+					ranges[i][1] += (1 - rx) * xrange * dz
 
-	range[0] -= xrange * e.dx / w
-	range[2] -= xrange * e.dx / w
-	range[1] += yrange * e.dy / h
-	range[3] += yrange * e.dy / h
+					ranges[j][0] -= (1 - ry) * yrange * dz
+					ranges[j][1] += ry * yrange * dz
+				}
 
-	splom.render(...passes)
+				ranges[i][0] -= xrange * e.dx / w
+				ranges[i][1] -= xrange * e.dx / w
+				ranges[j][0] += yrange * e.dy / h
+				ranges[j][1] += yrange * e.dy / h
+			}
+		}
+
+
+		return { ranges }
+	})
+
+	splom.render(...rangePasses)
 })

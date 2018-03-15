@@ -87,8 +87,10 @@ SPLOM.prototype.updateItem = function (i, options) {
 	// remove pass if null
 	if (options === null) {
 		this.traces[i] = null
-		return
+		return this
 	}
+
+	if (!options) return this
 
 	let { data, snap, size, color, opacity, borderSize, borderColor, marker, range, viewport, domain, transpose } = pick(options, {
 		data: 'data items columns rows values dimensions samples',
