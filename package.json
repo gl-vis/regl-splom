@@ -32,6 +32,7 @@
     "color-alpha": "^1.0.2",
     "defined": "^1.0.0",
     "flatten-vertex-data": "^1.0.0",
+    "left-pad": "^1.2.0",
     "pick-by-alias": "^1.2.0",
     "raf": "^3.4.0",
     "regl-scatter2d": "^2.1.17"

@@ -7,6 +7,7 @@ const pick = require('pick-by-alias')
 const defined = require('defined')
 const getBounds = require('array-bounds')
 const raf = require('raf')
+const lpad = require('left-pad')
 
 
 module.exports = SPLOM
@@ -235,5 +236,7 @@ function passId (trace, i, j) {
 	let id = (trace.id != null ? trace.id : trace)
 	let n = i
 	let m = j
-	return parseInt(`${id.toString(16)}${n.toString(16)}0${m.toString(16)}`, 16)
+	let key = parseInt(`${id.toString(16)}${lpad(n.toString(16), 2, '0')}${lpad(m.toString(16), 2, '0')}`, 16);
+
+	return key
 }
