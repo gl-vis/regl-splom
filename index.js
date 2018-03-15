@@ -5,6 +5,8 @@ const createScatter = require('../regl-scatter2d/scatter')
 const flatten = require('flatten-vertex-data')
 const pick = require('pick-by-alias')
 const defined = require('defined')
+const getBounds = require('array-bounds')
+const raf = require('raf')
 
 
 module.exports = SPLOM
@@ -26,6 +28,35 @@ function SPLOM (regl, options) {
 	this.scatter = createScatter(regl)
 
 	this.canvas = this.scatter.canvas
+}
+
+// update & render passes
+SPLOM.prototype.render = function (...args) {
+	if (args.length) {
+		this.update(...args)
+	}
+
+	// make sure draw is not called more often than once a frame
+	if (!this.regl.attributes.preserveDrawingBuffer) {
+		if (this.dirty && this.planned == null) {
+			this.planned = raf(() => {
+				this.draw()
+				this.planned = null
+			})
+		}
+		else {
+			this.draw()
+			this.dirty = true
+			raf(() => {
+				this.dirty = false
+			})
+		}
+	}
+	else {
+		this.draw()
+	}
+
+	return this
 }
 
 
@@ -91,6 +122,9 @@ SPLOM.prototype.updateItem = function (i, options) {
 		})
 	}))
 
+	// range/viewport
+	trace.range = range
+
 	// save styles
 	if (defined(color)) {
 		trace.color = color
@@ -109,22 +143,30 @@ SPLOM.prototype.updateItem = function (i, options) {
 	if (defined(data)) {
 		trace.buffer(flatten(data))
 		trace.columns = data.length
+		trace.count = data[0].length
+
+		// detect bounds per-column
+		trace.bounds = []
+
+		for (let i = 0; i < data.length; i++) {
+			trace.bounds[i] = getBounds(data[i], 1)
+		}
 	}
 
 	// create passes
 	let m = trace.columns
-	let n = data[0].length
+	let n = trace.count
 
 	let w = regl._gl.drawingBufferWidth
 	let h = regl._gl.drawingBufferHeight
 	let iw = w / m
 	let ih = h / m
-	let pad = .001
-
+	let pad = .0
 
 	for (let i = 0, ptr = 0; i < m; i++) {
 		for (let j = 0; j < m; j++) {
 			let key = passId(trace.id, i, j)
+			let bounds = [trace.bounds[i][0], trace.bounds[j][0], trace.bounds[i][1], trace.bounds[j][1]]
 			this.passes[key] = {
 				positions: {
 					// planar
@@ -139,7 +181,8 @@ SPLOM.prototype.updateItem = function (i, options) {
 				size: trace.size,
 				borderSize: trace.borderSize,
 				borderColor: trace.borderColor,
-				bounds: [-3, -3, 3, 3],
+				bounds,
+				range: trace.range || bounds,
 				viewport: [i * iw + iw * pad, j * ih + ih * pad, (i + 1) * iw - iw * pad, (j + 1) * ih - ih * pad]
 			}
 		}

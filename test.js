@@ -17,7 +17,7 @@ let splom = createMatrix(regl)
 
 // data for the splom
 let passes = []
-
+let range = [-5, -5, 5, 5]
 
 // create settings panel & bind
 let settings = createSettings({
@@ -51,7 +51,8 @@ function update () {
 	for (let i = 0; i < traces; i++) {
 		let pass = (passes[i] || (passes[i] = {
 			color: alpha(palette[i % palette.length], Math.random() * .5 + .25),
-			size: 3
+			size: 3,
+			range
 		}))
 
 		if (!pass.data) pass.data = []
@@ -85,6 +86,34 @@ function update () {
 
 update()
 
+
 panzoom(splom.canvas, e => {
-	console.log(e)
+	let cnv = e.target
+
+	let w = cnv.offsetWidth
+	let h = cnv.offsetHeight
+
+	let rx = e.x / w
+	let ry = e.y / h
+
+	let xrange = range[2] - range[0],
+		yrange = range[3] - range[1]
+
+	if (e.dz) {
+		let dz = e.dz / w
+		range[0] -= rx * xrange * dz
+		range[2] += (1 - rx) * xrange * dz
+
+		range[1] -= (1 - ry) * yrange * dz
+		range[3] += ry * yrange * dz
+	}
+
+	range[0] -= xrange * e.dx / w
+	range[2] -= xrange * e.dx / w
+	range[1] += yrange * e.dy / h
+	range[3] += yrange * e.dy / h
+
+	let passes = Array(settings.values.traces).fill({ range })
+
+	splom.render(...passes)
 })
