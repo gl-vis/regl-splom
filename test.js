@@ -3,7 +3,7 @@
 const regl = require('regl')({ extensions: 'oes_element_index_uint' })
 const createSettings = require('../settings-panel')
 const createMatrix = require('./')
-const panzoom = require('pan-zoom')
+const panzoom = require('../pan-zoom')
 const random = require('gauss-random')
 const fps = require('fps-indicator')('bottom-right')
 const alpha = require('color-alpha')
@@ -21,7 +21,7 @@ let passes = []
 
 // create settings panel & bind
 let settings = createSettings({
-	traces: { value: 1, min: 1, max: 10, type: 'range' },
+	traces: { value: 2, min: 1, max: 10, type: 'range' },
 	variables: { value: 8, min: 1, max: 100, type: 'range' },
 	points: { value: 1e3, min: 1, max: 1e4, type: 'range' },
 	// snap: { value: false }
@@ -43,12 +43,14 @@ function update () {
 	points = parseInt(points)
 
 	if (traces < passes.length) {
-		passes.length = traces
+		for (let i = traces; i < passes.length; i++) {
+			passes[i] = null
+		}
 	}
 
 	for (let i = 0; i < traces; i++) {
 		let pass = (passes[i] || (passes[i] = {
-			color: alpha(palette[i % palette.length], Math.random() * .75),
+			color: alpha(palette[i % palette.length], Math.random() * .5 + .25),
 			size: 3
 		}))
 
@@ -72,6 +74,7 @@ function update () {
 	console.timeEnd('generate')
 
 	console.time('update')
+
 	splom.update(...passes)
 	console.timeEnd('update')
 
@@ -82,4 +85,6 @@ function update () {
 
 update()
 
-
+panzoom(splom.canvas, e => {
+	console.log(e)
+})

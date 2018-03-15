@@ -10,6 +10,7 @@ const defined = require('defined')
 module.exports = SPLOM
 
 
+// @constructor
 function SPLOM (regl, options) {
 	if (!(this instanceof SPLOM)) return new SPLOM(regl, options)
 
@@ -23,17 +24,23 @@ function SPLOM (regl, options) {
 
 	// main scatter drawing instance
 	this.scatter = createScatter(regl)
+
+	this.canvas = this.scatter.canvas
 }
 
 
-SPLOM.prototype.update = function (options) {
-	if (!arguments.length) return
+// update passes
+SPLOM.prototype.update = function (...args) {
+	if (!args.length) return
 
-	for (let i = 0; i < arguments.length; i++) {
-		this.updateItem(i, arguments[i])
+	for (let i = 0; i < args.length; i++) {
+		this.updateItem(i, args[i])
 	}
 
-	// FIXME: convert scattergl to multibuffer and update passes independently
+	// remove nulled passes
+	this.traces = this.traces.filter(Boolean)
+
+	// FIXME: convert scattergl to buffer-per-pass maybe and update passes independently
 	let passes = Object.keys(this.passes).sort().map((key, i) => {
 		this.passes[key].index = i
 		return this.passes[key]
@@ -45,8 +52,15 @@ SPLOM.prototype.update = function (options) {
 }
 
 
+// update trace by index, not supposed to be called directly
 SPLOM.prototype.updateItem = function (i, options) {
 	let { regl } = this
+
+	// remove pass if null
+	if (options === null) {
+		this.traces[i] = null
+		return
+	}
 
 	let { data, snap, size, color, opacity, borderSize, borderColor, marker, range, viewport, domain, transpose } = pick(options, {
 		data: 'data items columns rows values dimensions samples',
@@ -77,6 +91,7 @@ SPLOM.prototype.updateItem = function (i, options) {
 		})
 	}))
 
+	// save styles
 	if (defined(color)) {
 		trace.color = color
 	}
@@ -134,13 +149,15 @@ SPLOM.prototype.updateItem = function (i, options) {
 }
 
 
-SPLOM.prototype.draw = function () {
+// draw all or passed passes
+SPLOM.prototype.draw = function (...args) {
 	for (let i = 0; i < this.traces.length; i++) {
 		this.drawItem(i)
 	}
 
 	return this
 }
+
 
 // draw single pass
 SPLOM.prototype.drawItem = function (i) {
@@ -159,6 +176,7 @@ SPLOM.prototype.drawItem = function (i) {
 	return this
 }
 
+
 //
 SPLOM.prototype.destroy = function () {
 	this.buffer.dispose()
@@ -166,6 +184,7 @@ SPLOM.prototype.destroy = function () {
 
 	return this
 }
+
 
 // return pass corresponding to trace i- j- square
 function passId (trace, i, j) {
