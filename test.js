@@ -8,7 +8,7 @@ const random = require('gauss-random')
 const alpha = require('color-alpha')
 const palettes = require('nice-color-palettes')
 const palette = palettes[Math.floor(Math.random() * palettes.length)]
-const fps = require('fps-indicator')({position: 'bottom-right', color: palette[0]})
+const fps = require('fps-indicator')({position: 'bottom-right', color: 'black'})
 
 
 // create splom instance
@@ -51,7 +51,8 @@ function update () {
 		let pass = (passes[i] || (passes[i] = {
 			color: alpha(palette[i % palette.length], Math.random() * .5 + .25),
 			size: 3,
-			range: []
+			range: [],
+			viewport: [0,0, regl._gl.drawingBufferWidth, regl._gl.drawingBufferHeight]
 		}))
 
 		if (!pass.data) pass.data = []
@@ -117,10 +118,10 @@ panzoom(splom.canvas, e => {
 			ranges[j][3] += ry * yrange * dz
 		}
 
-		ranges[i][0] -= xrange * e.dx / w
-		ranges[i][2] -= xrange * e.dx / w
-		ranges[j][1] += yrange * e.dy / h
-		ranges[j][3] += yrange * e.dy / h
+		ranges[i][0] -= xrange * n * .5 * e.dx / w
+		ranges[i][2] -= xrange * n * .5 * e.dx / w
+		ranges[j][1] += yrange * n * .5 * e.dy / h
+		ranges[j][3] += yrange * n * .5 * e.dy / h
 
 		return { ranges }
 	})

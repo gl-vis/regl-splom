@@ -9,6 +9,7 @@ const getBounds = require('array-bounds')
 const raf = require('raf')
 const lpad = require('left-pad')
 const arrRange = require('array-range')
+const rect = require('parse-rect')
 
 
 module.exports = SPLOM
@@ -132,12 +133,10 @@ SPLOM.prototype.updateItem = function (i, options) {
 			size: 12,
 			borderColor: 'transparent',
 			borderSize: 1
-		})
+		}),
+		viewport:  rect([regl._gl.drawingBufferWidth, regl._gl.drawingBufferHeight])
 	}))
 
-	// range/viewport
-	let multirange = o.range && typeof o.range[0] !== 'number'
-	trace.range = o.range
 
 	// save styles
 	if (o.color != null) {
@@ -152,6 +151,9 @@ SPLOM.prototype.updateItem = function (i, options) {
 	if (o.borderSize != null) {
 		trace.borderSize = o.borderSize
 	}
+	if (o.viewport) {
+		trace.viewport = rect(o.viewport)
+	}
 
 	// put flattened data into buffer
 	if (o.data) {
@@ -165,14 +167,21 @@ SPLOM.prototype.updateItem = function (i, options) {
 		for (let i = 0; i < trace.columns; i++) {
 			trace.bounds[i] = getBounds(o.data[i], 1)
 		}
+
 	}
+
+	if (o.range) {
+		trace.range = o.range
+	}
+	let multirange = trace.range && typeof trace.range[0] !== 'number'
+
 
 	// create passes
 	let m = trace.columns
 	let n = trace.count
 
-	let w = regl._gl.drawingBufferWidth
-	let h = regl._gl.drawingBufferHeight
+	let w = trace.viewport.width
+	let h = trace.viewport.height
 	let iw = w / m
 	let ih = h / m
 	let pad = .0
