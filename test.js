@@ -65,7 +65,7 @@ function update () {
 				pass.data[col].mean = Math.random()
 				pass.data[col].sdev = Math.random()
 				pass.range[col] = passes[i-1] && passes[i-1].range[col] || [-5,-5,5,5]
-				pass.domain[col] = passes[i-1] && passes[i-1].domain[col] || [-5,-5,5,5]
+				pass.domain[col] = passes[i-1] && passes[i-1].domain[col] || [col/variables,col/variables,(col+1)/variables,(col+1)/variables]
 			}
 			let colData = pass.data[col]
 			let {mean, sdev} = colData
@@ -136,3 +136,10 @@ panzoom(splom.canvas, e => {
 	splom.draw()
 	console.timeEnd('draw')
 })
+
+
+normalizeDomains() {
+	passes.forEach(pass => {
+
+	})
+}

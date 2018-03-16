@@ -201,29 +201,31 @@ SPLOM.prototype.updateItem = function (i, options) {
 			let pass = this.passes[key] || (this.passes[key] = {})
 
 			if (o.data) {
-				pass.positions = {
-					// planar
-					x: {buffer: trace.buffer, offset: i * n, count: n},
-					y: {buffer: trace.buffer, offset: j * n, count: n}
-
-					// transposed
-					// x: {buffer: trace.buffer, offset: i, count: n, stride: m},
-					// y: {buffer: trace.buffer, offset: j, count: n, stride: m}
+				if (o.transpose) {
+					pass.positions = {
+						x: {buffer: trace.buffer, offset: i, count: n, stride: m},
+						y: {buffer: trace.buffer, offset: j, count: n, stride: m}
+					}
 				}
-				pass.bounds = getBox(trace.bounds, i, j)
+				else {
+					pass.positions = {
+						x: {buffer: trace.buffer, offset: i * n, count: n},
+						y: {buffer: trace.buffer, offset: j * n, count: n}
+					}
+				}
 
+				pass.bounds = getBox(trace.bounds, i, j)
 			}
 
-			// TODO
 			if (o.domain || o.viewport || o.data) {
-				// if (trace.domain) {
-				// 	let domain = getBox(trace.domain)
-				// 	pass.viewport = []
-				// }
-				// // consider auto-domain equipartial
-				// else {
+				if (trace.domain) {
+					let [lox, loy, hix, hiy] = getBox(trace.domain, i, j)
+					pass.viewport = [lox * w, loy * h, hix * w, hiy * h]
+				}
+				// consider auto-domain equipartial
+				else {
 					pass.viewport = [j * iw + iw * pad, i * ih + ih * pad, (j + 1) * iw - iw * pad, (i + 1) * ih - ih * pad]
-				// }
+				}
 			}
 
 			if (o.color) pass.color = trace.color

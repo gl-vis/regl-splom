@@ -30,21 +30,28 @@ scatterMatrix.draw(0, 1, ...views)
 
 ### `splom = createSplom(regl)`
 
-### `splom.update(optionsA, optionsB, ...passes)`
+Creates scatter matrix instance.
 
-Define passes for `draw` method. Every options can include
+### `splom.update(trace1, trace2, ...traces)`
+
+Define passes for `draw` method. Every trace can include the following options:
 
 Option | Description
 ---|---
 `data` | An array with arrays for the columns.
-`ranges` | Array with data ranges corresponding to `data`. Detected automatically.
-`domains` | Array with domain ranges `[from, to]` from the `0..1` interval, defining what area of the viewport a dimension holds.
-`color`, `size`, `borderColor`, `borderSize` | Points style
-`viewport` | Area that the plot holds within the canvas
+`range` | Array with data ranges corresponding to `data`. Every range can be an array `[min, max]` or `[minX, minY, maxX, maxY]`. If undefined - detected automatically.
+`domain` | Array with domains for the data, ie. the area data dimension holds  within the `viewport`. Each domain can be an array `[min, max]` for symmetric placement or `[minX, minY, maxX, maxY]` for precise position. Domain values are from `0..1` interval, defining what area of the `viewport` a dimension holds.
+`color`, `size`, `borderColor`, `borderSize` | Points style.
+`viewport` | Area that the plot holds within the canvas. Can take any [rectangle](https://github.com/dfcreative/parse-rect) format.
+<!--
+`transpose` | Use transposed view of data, ie. swap columns and rows.
+`normalizeDomain` | Normalize domains to fit the viewport.
+`snap` | Enable snapping for the points, ie. hide invisible points
+-->
 
 ### `splom.draw(...ids?)`
 
-Draw all defined passes, or only selected ones provided by ids.
+Draw all defined passes, or only selected ones provided by `ids`.
 
 ### `splom.destroy()`
 
