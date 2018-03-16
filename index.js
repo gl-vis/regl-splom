@@ -1,7 +1,7 @@
 'use strict'
 
 
-const createScatter = require('../regl-scatter2d/scatter')
+const createScatter = require('regl-scatter2d/scatter')
 const flatten = require('flatten-vertex-data')
 const pick = require('pick-by-alias')
 const defined = require('defined')

@@ -20,7 +20,7 @@ let passes = []
 
 // create settings panel & bind
 let settings = createSettings({
-	traces: { value: 2, min: 1, max: 10, type: 'range' },
+	traces: { value: 1, min: 1, max: 10, type: 'range' },
 	variables: { value: 20, min: 1, max: 100, type: 'range' },
 	points: { value: 1e3, min: 1, max: 1e4, type: 'range' },
 	// snap: { value: false }
