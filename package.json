@@ -29,6 +29,7 @@
   "dependencies": {
     "array-bounds": "^1.0.1",
     "array-range": "^1.0.1",
+    "bubleify": "^1.1.0",
     "color-alpha": "^1.0.2",
     "defined": "^1.0.0",
     "flatten-vertex-data": "^1.0.0",
@@ -40,7 +41,6 @@
     "regl-scatter2d": "github:dfcreative/regl-scatter2d"
   },
   "devDependencies": {
-    "bubleify": "^1.1.0",
     "fps-indicator": "^1.2.1",
     "gauss-random": "^1.0.1",
     "glslify": "^6.1.1",
