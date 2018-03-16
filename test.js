@@ -137,9 +137,3 @@ panzoom(splom.canvas, e => {
 	console.timeEnd('draw')
 })
 
-
-normalizeDomains() {
-	passes.forEach(pass => {
-
-	})
-}

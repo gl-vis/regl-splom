@@ -128,12 +128,12 @@ SPLOM.prototype.updateItem = function (i, options) {
 		buffer: regl.buffer({
 			usage: 'dynamic',
 			type: 'float',
-			data: null,
-			color: 'black',
-			size: 12,
-			borderColor: 'transparent',
-			borderSize: 1
+			data: null
 		}),
+		color: 'black',
+		size: 12,
+		borderColor: 'transparent',
+		borderSize: 1,
 		viewport:  rect([regl._gl.drawingBufferWidth, regl._gl.drawingBufferHeight])
 	}))
 
