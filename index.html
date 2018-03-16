@@ -1645,897 +1645,6 @@ function hasOwnProperty(obj, prop) {
 
 }).call(this,require('_process'),typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{"./support/isBuffer":6,"_process":4,"inherits":5}],8:[function(require,module,exports){
-/**
- * @module  pan-zoom
- *
- * Events for pan and zoom
- */
-'use strict';
-
-
-var Impetus = require('impetus');
-var wheel = require('mouse-wheel');
-var touchPinch = require('touch-pinch');
-var position = require('touch-position');
-
-
-module.exports = panzoom;
-
-
-function panzoom (target, cb) {
-	if (target instanceof Function) {
-		cb = target
-		target = document.body || document.documentElement
-	}
-
-	//enable panning
-	var pos = position({
-		element: target
-	});
-
-	var impetus;
-
-	var lastY = 0, lastX = 0;
-	impetus = new Impetus({
-		source: target,
-		update: function (x, y) {
-			if (impetusStoppedAt) { return }
-
-			var e = {
-				target: target,
-				type: 'mouse',
-				dx: x-lastX, dy: y-lastY, dz: 0,
-				x: pos[0], y: pos[1]
-			};
-
-			lastX = x;
-			lastY = y;
-			cb(e);
-		},
-		multiplier: 1,
-		friction: .75
-	});
-
-
-	//enable zooming
-	wheel(target, function (dx, dy, dz, e) {
-		e.preventDefault();
-		cb({
-			target: target,
-			type: 'mouse',
-			dx: 0, dy: 0, dz: dy,
-			x: pos[0], y: pos[1]
-		});
-	});
-
-	//mobile pinch zoom
-	var pinch = touchPinch(target);
-	var mult = 2;
-	var initialCoords;
-	var impetusStoppedAt;
-
-	pinch.on('start', function (curr) {
-		var ref = pinch.fingers;
-		var f1 = ref[0];
-		var f2 = ref[1];
-
-		initialCoords = [f2.position[0]*.5 + f1.position[0]*.5, f2.position[1]*.5 + f1.position[1]*.5];
-
-		impetus && impetus.pause()
-	});
-	pinch.on('end', function () {
-		if (!initialCoords) { return; }
-
-		initialCoords = null;
-		impetusStoppedAt = null;
-
-		impetus && impetus.resume()
-	});
-	pinch.on('change', function (curr, prev) {
-		if (!pinch.pinching || !initialCoords) { return; }
-
-		cb({
-			target: target,
-			type: 'touch',
-			dx: 0, dy: 0, dz: -(curr - prev)*mult,
-			x: initialCoords[0], y: initialCoords[1]
-		});
-	});
-}
-},{"impetus":11,"mouse-wheel":13,"touch-pinch":16,"touch-position":17}],9:[function(require,module,exports){
-module.exports = defaultProperty
-
-function defaultProperty (get, set) {
-  return {
-    configurable: true,
-    enumerable: true,
-    get: get,
-    set: set
-  }
-}
-
-},{}],10:[function(require,module,exports){
-module.exports = distance
-
-/**
- * Calculates the euclidian distance between two vec2's
- *
- * @param {vec2} a the first operand
- * @param {vec2} b the second operand
- * @returns {Number} distance between a and b
- */
-function distance(a, b) {
-    var x = b[0] - a[0],
-        y = b[1] - a[1]
-    return Math.sqrt(x*x + y*y)
-}
-},{}],11:[function(require,module,exports){
-(function (global, factory) {
-	if (typeof define === 'function' && define.amd) {
-		define(['exports', 'module'], factory);
-	} else if (typeof exports !== 'undefined' && typeof module !== 'undefined') {
-		factory(exports, module);
-	} else {
-		var mod = {
-			exports: {}
-		};
-		factory(mod.exports, mod);
-		global.Impetus = mod.exports;
-	}
-})(this, function (exports, module) {
-	'use strict';
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
-
-	var stopThresholdDefault = 0.3;
-	var bounceDeceleration = 0.04;
-	var bounceAcceleration = 0.11;
-
-	var Impetus = function Impetus(_ref) {
-		var _ref$source = _ref.source;
-		var sourceEl = _ref$source === undefined ? document : _ref$source;
-		var updateCallback = _ref.update;
-		var _ref$multiplier = _ref.multiplier;
-		var multiplier = _ref$multiplier === undefined ? 1 : _ref$multiplier;
-		var _ref$friction = _ref.friction;
-		var friction = _ref$friction === undefined ? 0.92 : _ref$friction;
-		var initialValues = _ref.initialValues;
-		var boundX = _ref.boundX;
-		var boundY = _ref.boundY;
-		var _ref$bounce = _ref.bounce;
-		var bounce = _ref$bounce === undefined ? true : _ref$bounce;
-
-		_classCallCheck(this, Impetus);
-
-		var boundXmin, boundXmax, boundYmin, boundYmax, pointerLastX, pointerLastY, pointerCurrentX, pointerCurrentY, pointerId, decVelX, decVelY;
-		var targetX = 0;
-		var targetY = 0;
-		var stopThreshold = stopThresholdDefault * multiplier;
-		var ticking = false;
-		var pointerActive = false;
-		var paused = false;
-		var decelerating = false;
-		var trackingPoints = [];
-
-		/**
-   * Initialize instance
-   */
-		(function init() {
-			sourceEl = typeof sourceEl === 'string' ? document.querySelector(sourceEl) : sourceEl;
-			if (!sourceEl) {
-				throw new Error('IMPETUS: source not found.');
-			}
-
-			if (!updateCallback) {
-				throw new Error('IMPETUS: update function not defined.');
-			}
-
-			if (initialValues) {
-				if (initialValues[0]) {
-					targetX = initialValues[0];
-				}
-				if (initialValues[1]) {
-					targetY = initialValues[1];
-				}
-				callUpdateCallback();
-			}
-
-			// Initialize bound values
-			if (boundX) {
-				boundXmin = boundX[0];
-				boundXmax = boundX[1];
-			}
-			if (boundY) {
-				boundYmin = boundY[0];
-				boundYmax = boundY[1];
-			}
-
-			sourceEl.addEventListener('touchstart', onDown);
-			sourceEl.addEventListener('mousedown', onDown);
-		})();
-
-		/**
-   * Disable movement processing
-   * @public
-   */
-		this.pause = function () {
-			pointerActive = false;
-			paused = true;
-		};
-
-		/**
-   * Enable movement processing
-   * @public
-   */
-		this.resume = function () {
-			paused = false;
-		};
-
-		/**
-   * Update the current x and y values
-   * @public
-   * @param {Number} x
-   * @param {Number} y
-   */
-		this.setValues = function (x, y) {
-			if (typeof x === 'number') {
-				targetX = x;
-			}
-			if (typeof y === 'number') {
-				targetY = y;
-			}
-		};
-
-		/**
-   * Update the multiplier value
-   * @public
-   * @param {Number} val
-   */
-		this.setMultiplier = function (val) {
-			multiplier = val;
-			stopThreshold = stopThresholdDefault * multiplier;
-		};
-
-		/**
-   * Executes the update function
-   */
-		function callUpdateCallback() {
-			updateCallback.call(sourceEl, targetX, targetY);
-		}
-
-		/**
-   * Creates a custom normalized event object from touch and mouse events
-   * @param  {Event} ev
-   * @returns {Object} with x, y, and id properties
-   */
-		function normalizeEvent(ev) {
-			if (ev.type === 'touchmove' || ev.type === 'touchstart' || ev.type === 'touchend') {
-				var touch = ev.targetTouches[0] || ev.changedTouches[0];
-				return {
-					x: touch.clientX,
-					y: touch.clientY,
-					id: touch.identifier
-				};
-			} else {
-				// mouse events
-				return {
-					x: ev.clientX,
-					y: ev.clientY,
-					id: null
-				};
-			}
-		}
-
-		/**
-   * Initializes movement tracking
-   * @param  {Object} ev Normalized event
-   */
-		function onDown(ev) {
-			var event = normalizeEvent(ev);
-			if (!pointerActive && !paused) {
-				pointerActive = true;
-				decelerating = false;
-				pointerId = event.id;
-
-				pointerLastX = pointerCurrentX = event.x;
-				pointerLastY = pointerCurrentY = event.y;
-				trackingPoints = [];
-				addTrackingPoint(pointerLastX, pointerLastY);
-
-				document.addEventListener('touchmove', onMove);
-				document.addEventListener('touchend', onUp);
-				document.addEventListener('touchcancel', stopTracking);
-				document.addEventListener('mousemove', onMove);
-				document.addEventListener('mouseup', onUp);
-			}
-		}
-
-		/**
-   * Handles move events
-   * @param  {Object} ev Normalized event
-   */
-		function onMove(ev) {
-			ev.preventDefault();
-			var event = normalizeEvent(ev);
-
-			if (pointerActive && event.id === pointerId) {
-				pointerCurrentX = event.x;
-				pointerCurrentY = event.y;
-				addTrackingPoint(pointerLastX, pointerLastY);
-				requestTick();
-			}
-		}
-
-		/**
-   * Handles up/end events
-   * @param {Object} ev Normalized event
-   */
-		function onUp(ev) {
-			var event = normalizeEvent(ev);
-
-			if (pointerActive && event.id === pointerId) {
-				stopTracking();
-			}
-		}
-
-		/**
-   * Stops movement tracking, starts animation
-   */
-		function stopTracking() {
-			pointerActive = false;
-			addTrackingPoint(pointerLastX, pointerLastY);
-			startDecelAnim();
-
-			document.removeEventListener('touchmove', onMove);
-			document.removeEventListener('touchend', onUp);
-			document.removeEventListener('touchcancel', stopTracking);
-			document.removeEventListener('mouseup', onUp);
-			document.removeEventListener('mousemove', onMove);
-		}
-
-		/**
-   * Records movement for the last 100ms
-   * @param {number} x
-   * @param {number} y [description]
-   */
-		function addTrackingPoint(x, y) {
-			var time = Date.now();
-			while (trackingPoints.length > 0) {
-				if (time - trackingPoints[0].time <= 100) {
-					break;
-				}
-				trackingPoints.shift();
-			}
-
-			trackingPoints.push({ x: x, y: y, time: time });
-		}
-
-		/**
-   * Calculate new values, call update function
-   */
-		function updateAndRender() {
-			var pointerChangeX = pointerCurrentX - pointerLastX;
-			var pointerChangeY = pointerCurrentY - pointerLastY;
-
-			targetX += pointerChangeX * multiplier;
-			targetY += pointerChangeY * multiplier;
-
-			if (bounce) {
-				var diff = checkBounds();
-				if (diff.x !== 0) {
-					targetX -= pointerChangeX * dragOutOfBoundsMultiplier(diff.x) * multiplier;
-				}
-				if (diff.y !== 0) {
-					targetY -= pointerChangeY * dragOutOfBoundsMultiplier(diff.y) * multiplier;
-				}
-			} else {
-				checkBounds(true);
-			}
-
-			callUpdateCallback();
-
-			pointerLastX = pointerCurrentX;
-			pointerLastY = pointerCurrentY;
-			ticking = false;
-		}
-
-		/**
-   * Returns a value from around 0.5 to 1, based on distance
-   * @param {Number} val
-   */
-		function dragOutOfBoundsMultiplier(val) {
-			return 0.000005 * Math.pow(val, 2) + 0.0001 * val + 0.55;
-		}
-
-		/**
-   * prevents animating faster than current framerate
-   */
-		function requestTick() {
-			if (!ticking) {
-				requestAnimFrame(updateAndRender);
-			}
-			ticking = true;
-		}
-
-		/**
-   * Determine position relative to bounds
-   * @param {Boolean} restrict Whether to restrict target to bounds
-   */
-		function checkBounds(restrict) {
-			var xDiff = 0;
-			var yDiff = 0;
-
-			if (boundXmin !== undefined && targetX < boundXmin) {
-				xDiff = boundXmin - targetX;
-			} else if (boundXmax !== undefined && targetX > boundXmax) {
-				xDiff = boundXmax - targetX;
-			}
-
-			if (boundYmin !== undefined && targetY < boundYmin) {
-				yDiff = boundYmin - targetY;
-			} else if (boundYmax !== undefined && targetY > boundYmax) {
-				yDiff = boundYmax - targetY;
-			}
-
-			if (restrict) {
-				if (xDiff !== 0) {
-					targetX = xDiff > 0 ? boundXmin : boundXmax;
-				}
-				if (yDiff !== 0) {
-					targetY = yDiff > 0 ? boundYmin : boundYmax;
-				}
-			}
-
-			return {
-				x: xDiff,
-				y: yDiff,
-				inBounds: xDiff === 0 && yDiff === 0
-			};
-		}
-
-		/**
-   * Initialize animation of values coming to a stop
-   */
-		function startDecelAnim() {
-			var firstPoint = trackingPoints[0];
-			var lastPoint = trackingPoints[trackingPoints.length - 1];
-
-			var xOffset = lastPoint.x - firstPoint.x;
-			var yOffset = lastPoint.y - firstPoint.y;
-			var timeOffset = lastPoint.time - firstPoint.time;
-
-			var D = timeOffset / 15 / multiplier;
-
-			decVelX = xOffset / D || 0; // prevent NaN
-			decVelY = yOffset / D || 0;
-
-			var diff = checkBounds();
-
-			if (Math.abs(decVelX) > 1 || Math.abs(decVelY) > 1 || !diff.inBounds) {
-				decelerating = true;
-				requestAnimFrame(stepDecelAnim);
-			}
-		}
-
-		/**
-   * Animates values slowing down
-   */
-		function stepDecelAnim() {
-			if (!decelerating) {
-				return;
-			}
-
-			decVelX *= friction;
-			decVelY *= friction;
-
-			targetX += decVelX;
-			targetY += decVelY;
-
-			var diff = checkBounds();
-
-			if (Math.abs(decVelX) > stopThreshold || Math.abs(decVelY) > stopThreshold || !diff.inBounds) {
-
-				if (bounce) {
-					var reboundAdjust = 2.5;
-
-					if (diff.x !== 0) {
-						if (diff.x * decVelX <= 0) {
-							decVelX += diff.x * bounceDeceleration;
-						} else {
-							var adjust = diff.x > 0 ? reboundAdjust : -reboundAdjust;
-							decVelX = (diff.x + adjust) * bounceAcceleration;
-						}
-					}
-					if (diff.y !== 0) {
-						if (diff.y * decVelY <= 0) {
-							decVelY += diff.y * bounceDeceleration;
-						} else {
-							var adjust = diff.y > 0 ? reboundAdjust : -reboundAdjust;
-							decVelY = (diff.y + adjust) * bounceAcceleration;
-						}
-					}
-				} else {
-					if (diff.x !== 0) {
-						if (diff.x > 0) {
-							targetX = boundXmin;
-						} else {
-							targetX = boundXmax;
-						}
-						decVelX = 0;
-					}
-					if (diff.y !== 0) {
-						if (diff.y > 0) {
-							targetY = boundYmin;
-						} else {
-							targetY = boundYmax;
-						}
-						decVelY = 0;
-					}
-				}
-
-				callUpdateCallback();
-
-				requestAnimFrame(stepDecelAnim);
-			} else {
-				decelerating = false;
-			}
-		}
-	}
-
-	/**
-  * @see http://www.paulirish.com/2011/requestanimationframe-for-smart-animating/
-  */
-	;
-
-	module.exports = Impetus;
-	var requestAnimFrame = (function () {
-		return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || function (callback) {
-			window.setTimeout(callback, 1000 / 60);
-		};
-	})();
-});
-
-},{}],12:[function(require,module,exports){
-var rootPosition = { left: 0, top: 0 }
-
-module.exports = mouseEventOffset
-function mouseEventOffset (ev, target, out) {
-  target = target || ev.currentTarget || ev.srcElement
-  if (!Array.isArray(out)) {
-    out = [ 0, 0 ]
-  }
-  var cx = ev.clientX || 0
-  var cy = ev.clientY || 0
-  var rect = getBoundingClientOffset(target)
-  out[0] = cx - rect.left
-  out[1] = cy - rect.top
-  return out
-}
-
-function getBoundingClientOffset (element) {
-  if (element === window ||
-      element === document ||
-      element === document.body) {
-    return rootPosition
-  } else {
-    return element.getBoundingClientRect()
-  }
-}
-
-},{}],13:[function(require,module,exports){
-'use strict'
-
-var toPX = require('to-px')
-
-module.exports = mouseWheelListen
-
-function mouseWheelListen(element, callback, noScroll) {
-  if(typeof element === 'function') {
-    noScroll = !!callback
-    callback = element
-    element = window
-  }
-  var lineHeight = toPX('ex', element)
-  var listener = function(ev) {
-    if(noScroll) {
-      ev.preventDefault()
-    }
-    var dx = ev.deltaX || 0
-    var dy = ev.deltaY || 0
-    var dz = ev.deltaZ || 0
-    var mode = ev.deltaMode
-    var scale = 1
-    switch(mode) {
-      case 1:
-        scale = lineHeight
-      break
-      case 2:
-        scale = window.innerHeight
-      break
-    }
-    dx *= scale
-    dy *= scale
-    dz *= scale
-    if(dx || dy || dz) {
-      return callback(dx, dy, dz, ev)
-    }
-  }
-  element.addEventListener('wheel', listener)
-  return listener
-}
-
-},{"to-px":15}],14:[function(require,module,exports){
-module.exports = function parseUnit(str, out) {
-    if (!out)
-        { out = [ 0, '' ] }
-
-    str = String(str)
-    var num = parseFloat(str, 10)
-    out[0] = num
-    out[1] = str.match(/[\d.\-\+]*\s*(.*)/)[1] || ''
-    return out
-}
-},{}],15:[function(require,module,exports){
-'use strict'
-
-var parseUnit = require('parse-unit')
-
-module.exports = toPX
-
-var PIXELS_PER_INCH = 96
-
-function getPropertyInPX(element, prop) {
-  var parts = parseUnit(getComputedStyle(element).getPropertyValue(prop))
-  return parts[0] * toPX(parts[1], element)
-}
-
-//This brutal hack is needed
-function getSizeBrutal(unit, element) {
-  var testDIV = document.createElement('div')
-  testDIV.style['font-size'] = '128' + unit
-  element.appendChild(testDIV)
-  var size = getPropertyInPX(testDIV, 'font-size') / 128
-  element.removeChild(testDIV)
-  return size
-}
-
-function toPX(str, element) {
-  element = element || document.body
-  str = (str || 'px').trim().toLowerCase()
-  if(element === window || element === document) {
-    element = document.body 
-  }
-  switch(str) {
-    case '%':  //Ambiguous, not sure if we should use width or height
-      return element.clientHeight / 100.0
-    case 'ch':
-    case 'ex':
-      return getSizeBrutal(str, element)
-    case 'em':
-      return getPropertyInPX(element, 'font-size')
-    case 'rem':
-      return getPropertyInPX(document.body, 'font-size')
-    case 'vw':
-      return window.innerWidth/100
-    case 'vh':
-      return window.innerHeight/100
-    case 'vmin':
-      return Math.min(window.innerWidth, window.innerHeight) / 100
-    case 'vmax':
-      return Math.max(window.innerWidth, window.innerHeight) / 100
-    case 'in':
-      return PIXELS_PER_INCH
-    case 'cm':
-      return PIXELS_PER_INCH / 2.54
-    case 'mm':
-      return PIXELS_PER_INCH / 25.4
-    case 'pt':
-      return PIXELS_PER_INCH / 72
-    case 'pc':
-      return PIXELS_PER_INCH / 6
-  }
-  return 1
-}
-},{"parse-unit":14}],16:[function(require,module,exports){
-var getDistance = require('gl-vec2/distance')
-var EventEmitter = require('events').EventEmitter
-var dprop = require('dprop')
-var eventOffset = require('mouse-event-offset')
-
-module.exports = touchPinch
-function touchPinch (target) {
-  target = target || window
-
-  var emitter = new EventEmitter()
-  var fingers = [ null, null ]
-  var activeCount = 0
-
-  var lastDistance = 0
-  var ended = false
-  var enabled = false
-
-  // some read-only values
-  Object.defineProperties(emitter, {
-    pinching: dprop(function () {
-      return activeCount === 2
-    }),
-
-    fingers: dprop(function () {
-      return fingers
-    })
-  })
-
-  enable()
-  emitter.enable = enable
-  emitter.disable = disable
-  emitter.indexOfTouch = indexOfTouch
-  return emitter
-
-  function indexOfTouch (touch) {
-    var id = touch.identifier
-    for (var i = 0; i < fingers.length; i++) {
-      if (fingers[i] &&
-        fingers[i].touch &&
-        fingers[i].touch.identifier === id) {
-        return i
-      }
-    }
-    return -1
-  }
-
-  function enable () {
-    if (enabled) { return }
-    enabled = true
-    target.addEventListener('touchstart', onTouchStart, false)
-    target.addEventListener('touchmove', onTouchMove, false)
-    target.addEventListener('touchend', onTouchRemoved, false)
-    target.addEventListener('touchcancel', onTouchRemoved, false)
-  }
-
-  function disable () {
-    if (!enabled) { return }
-    enabled = false
-    target.removeEventListener('touchstart', onTouchStart, false)
-    target.removeEventListener('touchmove', onTouchMove, false)
-    target.removeEventListener('touchend', onTouchRemoved, false)
-    target.removeEventListener('touchcancel', onTouchRemoved, false)
-  }
-
-  function onTouchStart (ev) {
-    for (var i = 0; i < ev.changedTouches.length; i++) {
-      var newTouch = ev.changedTouches[i]
-      var id = newTouch.identifier
-      var idx = indexOfTouch(id)
-
-      if (idx === -1 && activeCount < 2) {
-        var first = activeCount === 0
-
-        // newest and previous finger (previous may be undefined)
-        var newIndex = fingers[0] ? 1 : 0
-        var oldIndex = fingers[0] ? 0 : 1
-        var newFinger = new Finger()
-
-        // add to stack
-        fingers[newIndex] = newFinger
-        activeCount++
-
-        // update touch event & position
-        newFinger.touch = newTouch
-        eventOffset(newTouch, target, newFinger.position)
-
-        var oldTouch = fingers[oldIndex] ? fingers[oldIndex].touch : undefined
-        emitter.emit('place', newTouch, oldTouch)
-
-        if (!first) {
-          var initialDistance = computeDistance()
-          ended = false
-          emitter.emit('start', initialDistance)
-          lastDistance = initialDistance
-        }
-      }
-    }
-  }
-
-  function onTouchMove (ev) {
-    var changed = false
-    for (var i = 0; i < ev.changedTouches.length; i++) {
-      var movedTouch = ev.changedTouches[i]
-      var idx = indexOfTouch(movedTouch)
-      if (idx !== -1) {
-        changed = true
-        fingers[idx].touch = movedTouch // avoid caching touches
-        eventOffset(movedTouch, target, fingers[idx].position)
-      }
-    }
-
-    if (activeCount === 2 && changed) {
-      var currentDistance = computeDistance()
-      emitter.emit('change', currentDistance, lastDistance)
-      lastDistance = currentDistance
-    }
-  }
-
-  function onTouchRemoved (ev) {
-    for (var i = 0; i < ev.changedTouches.length; i++) {
-      var removed = ev.changedTouches[i]
-      var idx = indexOfTouch(removed)
-
-      if (idx !== -1) {
-        fingers[idx] = null
-        activeCount--
-        var otherIdx = idx === 0 ? 1 : 0
-        var otherTouch = fingers[otherIdx] ? fingers[otherIdx].touch : undefined
-        emitter.emit('lift', removed, otherTouch)
-      }
-    }
-
-    if (!ended && activeCount !== 2) {
-      ended = true
-      emitter.emit('end')
-    }
-  }
-
-  function computeDistance () {
-    if (activeCount < 2) { return 0 }
-    return getDistance(fingers[0].position, fingers[1].position)
-  }
-}
-
-function Finger () {
-  this.position = [0, 0]
-  this.touch = null
-}
-
-},{"dprop":9,"events":3,"gl-vec2/distance":10,"mouse-event-offset":12}],17:[function(require,module,exports){
-var offset = require('mouse-event-offset');
-var EventEmitter = require('events').EventEmitter;
-
-function attach (opt) {
-  opt = opt || {};
-  var element = opt.element || window;
-
-  var emitter = new EventEmitter();
-
-  var position = opt.position || [0, 0];
-  if (opt.touchstart !== false) {
-    element.addEventListener('mousedown', update, false);
-    element.addEventListener('touchstart', updateTouch, false);
-  }
-
-  element.addEventListener('mousemove', update, false);
-  element.addEventListener('touchmove', updateTouch, false);
-
-  emitter.position = position;
-  emitter.dispose = dispose;
-  return emitter;
-
-  function updateTouch (ev) {
-    var touch = ev.targetTouches[0];
-    update(touch);
-  }
-
-  function update (ev) {
-    offset(ev, element, position);
-    emitter.emit('move', ev);
-  }
-
-  function dispose () {
-    element.removeEventListener('mousemove', update, false);
-    element.removeEventListener('mousedown', update, false);
-    element.removeEventListener('touchmove', updateTouch, false);
-    element.removeEventListener('touchstart', updateTouch, false);
-  }
-}
-
-module.exports = function (opt) {
-  return attach(opt).position;
-};
-
-module.exports.emitter = function (opt) {
-  return attach(opt);
-};
-
-},{"events":3,"mouse-event-offset":12}],18:[function(require,module,exports){
 'use strict'
 
 
@@ -2678,7 +1787,7 @@ PointCluster.prototype.normalize = function(srcPoints, bounds) {
 
   return result
 }
-},{"array-bounds":19,"defined":22,"pick-by-alias":23}],19:[function(require,module,exports){
+},{"array-bounds":9,"defined":12,"pick-by-alias":13}],9:[function(require,module,exports){
 'use strict'
 
 module.exports = normalize;
@@ -2705,7 +1814,7 @@ function normalize (arr, dim) {
 
 	return bounds;
 }
-},{}],20:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 "use strict"
 
 function compileSearch(funcName, predicate, reversed, extraArgs, earlyOut) {
@@ -2758,7 +1867,7 @@ module.exports = {
   eq: compileBoundsSearch("-",  true,   "EQ", true)
 }
 
-},{}],21:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 module.exports = clamp
 
 function clamp(value, min, max) {
@@ -2767,7 +1876,7 @@ function clamp(value, min, max) {
     : (value < max ? max : value > min ? min : value)
 }
 
-},{}],22:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 module.exports = function () {
     var arguments$1 = arguments;
 
@@ -2776,7 +1885,7 @@ module.exports = function () {
     }
 };
 
-},{}],23:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 'use strict'
 
 
@@ -2854,7 +1963,7 @@ function toList(arg) {
 	}
 	return arg
 }
-},{}],24:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 /**
  * @module  point-cluster/quad-bucket
  *
@@ -3004,7 +2113,7 @@ QuadCluster.prototype.offsets = function (pxSize, lox, loy, hix, hiy) {
 
 	return offsets
 }
-},{"./cluster":18,"binary-search-bounds":20,"clamp":21}],25:[function(require,module,exports){
+},{"./cluster":8,"binary-search-bounds":10,"clamp":11}],15:[function(require,module,exports){
 'use strict'
 
 module.exports = normalize;
@@ -3031,7 +2140,7 @@ function normalize (arr, dim) {
 
 	return bounds;
 }
-},{}],26:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 
 module.exports = function newArray(start, end) {
     var n0 = typeof start === 'number',
@@ -3056,7 +2165,7 @@ module.exports = function newArray(start, end) {
         { a[i] = c }
     return a
 }
-},{}],27:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 module.exports = clamp
 
 function clamp(value, min, max) {
@@ -3065,7 +2174,7 @@ function clamp(value, min, max) {
     : (value < max ? max : value > min ? min : value)
 }
 
-},{}],28:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 /** @module  color-id */
 
 'use strict'
@@ -3113,7 +2222,7 @@ function fromNumber (n, normalized) {
 
 	return [r/255, g/255, b/255, a/255]
 }
-},{"clamp":27}],29:[function(require,module,exports){
+},{"clamp":17}],19:[function(require,module,exports){
 module.exports = {
 	"aliceblue": [240, 248, 255],
 	"antiquewhite": [250, 235, 215],
@@ -3264,7 +2373,7 @@ module.exports = {
 	"yellow": [255, 255, 0],
 	"yellowgreen": [154, 205, 50]
 };
-},{}],30:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 /** @module  color-rgba */
 
 'use strict'
@@ -3332,7 +2441,7 @@ module.exports = function normalize (color, type) {
 
 	return output
 }
-},{"clamp":27,"color-rgba":32,"dtype":36}],31:[function(require,module,exports){
+},{"clamp":17,"color-rgba":22,"dtype":26}],21:[function(require,module,exports){
 (function (global){
 /**
  * @module color-parse
@@ -3509,7 +2618,7 @@ function parse (cstr) {
 	}
 }
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"color-name":29,"defined":35,"is-plain-obj":40}],32:[function(require,module,exports){
+},{"color-name":19,"defined":25,"is-plain-obj":30}],22:[function(require,module,exports){
 /** @module  color-rgba */
 
 'use strict'
@@ -3541,7 +2650,7 @@ module.exports = function rgba (color) {
 
 	return values
 }
-},{"clamp":27,"color-parse":31,"color-space/hsl":33}],33:[function(require,module,exports){
+},{"clamp":17,"color-parse":21,"color-space/hsl":23}],23:[function(require,module,exports){
 /**
  * @module color-space/hsl
  */
@@ -3650,7 +2759,7 @@ rgb.hsl = function(rgb) {
 	return [h, s * 100, l * 100];
 };
 
-},{"./rgb":34}],34:[function(require,module,exports){
+},{"./rgb":24}],24:[function(require,module,exports){
 /**
  * RGB space.
  *
@@ -3666,7 +2775,7 @@ module.exports = {
 	alias: ['RGB']
 };
 
-},{}],35:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 module.exports = function () {
     var arguments$1 = arguments;
 
@@ -3675,7 +2784,7 @@ module.exports = function () {
     }
 };
 
-},{}],36:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 module.exports = function(dtype) {
   switch (dtype) {
     case 'int8':
@@ -3701,7 +2810,7 @@ module.exports = function(dtype) {
   }
 }
 
-},{}],37:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 /*eslint new-cap:0*/
 var dtype = require('dtype')
 module.exports = flattenVertexData
@@ -3748,7 +2857,7 @@ function flattenVertexData (data, output, offset) {
   return output
 }
 
-},{"dtype":36}],38:[function(require,module,exports){
+},{"dtype":26}],28:[function(require,module,exports){
 module.exports = function(strings) {
   if (typeof strings === 'string') { strings = [strings] }
   var exprs = [].slice.call(arguments,1)
@@ -3760,12 +2869,12 @@ module.exports = function(strings) {
   return parts.join('')
 }
 
-},{}],39:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 'use strict';
 module.exports = typeof navigator !== 'undefined' &&
 	(/MSIE/.test(navigator.userAgent) || /Trident\//.test(navigator.appVersion));
 
-},{}],40:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 'use strict';
 var toString = Object.prototype.toString;
 
@@ -3774,7 +2883,7 @@ module.exports = function (x) {
 	return toString.call(x) === '[object Object]' && (prototype = Object.getPrototypeOf(x), prototype === null || prototype === Object.getPrototypeOf({}));
 };
 
-},{}],41:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 /*
 object-assign
 (c) Sindre Sorhus
@@ -3868,7 +2977,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 	return to;
 };
 
-},{}],42:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 'use strict'
 
 var pick = require('pick-by-alias')
@@ -3941,7 +3050,7 @@ function parseRect (arg) {
 
   return rect
 }
-},{"pick-by-alias":43}],43:[function(require,module,exports){
+},{"pick-by-alias":33}],33:[function(require,module,exports){
 'use strict'
 
 
@@ -4019,7 +3128,7 @@ function toList(arg) {
 	}
 	return arg
 }
-},{}],44:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 'use strict'
 
 var CACHE = {}
@@ -4052,7 +3161,7 @@ module.exports = function pick (src, props) {
 
 	return result
 }
-},{}],45:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 /* @module to-float32 */
 
 'use strict'
@@ -4087,7 +3196,7 @@ function float32 (arr) {
 	float.set(arr)
 	return float
 }
-},{}],46:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 /**
  * @module update-diff
  */
@@ -4119,7 +3228,7 @@ module.exports = function updateDiff (obj, diff, mappers) {
 
 	return obj
 }
-},{}],47:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 'use strict'
 
 var rgba = require('color-normalize')
@@ -5129,7 +4238,7 @@ Scatter.prototype.destroy = function () {
 	colorBuffer.destroy()
 	paletteTexture.destroy()
 }
-},{"../point-cluster":24,"array-bounds":25,"array-range":26,"color-id":28,"color-normalize":30,"defined":35,"flatten-vertex-data":37,"glslify":38,"is-iexplorer":39,"object-assign":41,"parse-rect":42,"pick-by-alias":44,"to-float32":45,"update-diff":46}],48:[function(require,module,exports){
+},{"../point-cluster":14,"array-bounds":15,"array-range":16,"color-id":18,"color-normalize":20,"defined":25,"flatten-vertex-data":27,"glslify":28,"is-iexplorer":29,"object-assign":31,"parse-rect":32,"pick-by-alias":34,"to-float32":35,"update-diff":36}],38:[function(require,module,exports){
 'use strict'
 
 
@@ -5139,6 +4248,9 @@ var pick = require('pick-by-alias')
 var defined = require('defined')
 var getBounds = require('array-bounds')
 var raf = require('raf')
+var lpad = require('left-pad')
+var arrRange = require('array-range')
+var rect = require('parse-rect')
 
 
 module.exports = SPLOM
@@ -5162,6 +4274,7 @@ function SPLOM (regl, options) {
 	this.canvas = this.scatter.canvas
 }
 
+
 // update & draw passes once per frame
 SPLOM.prototype.render = function () {
 	var arguments$1 = arguments;
@@ -5177,11 +4290,14 @@ SPLOM.prototype.render = function () {
 	if (this.regl.attributes.preserveDrawingBuffer) { return this.draw() }
 
 	// make sure draw is not called more often than once a frame
-	if (this.dirty && this.planned == null) {
-		this.planned = raf(function () {
-			this$1.draw()
-			this$1.planned = null
-		})
+	if (this.dirty) {
+		if (this.planned == null) {
+			this.planned = raf(function () {
+				this$1.draw()
+				this$1.dirty = true
+				this$1.planned = null
+			})
+		}
 	}
 	else {
 		this.draw()
@@ -5214,10 +4330,18 @@ SPLOM.prototype.update = function () {
 	this.traces = this.traces.filter(Boolean)
 
 	// FIXME: convert scattergl to buffer-per-pass maybe and update passes independently
-	var passes = Object.keys(this.passes).sort().map(function (key, i) {
-		this$1.passes[key].index = i
-		return this$1.passes[key]
-	});
+	var passes = []
+	var offset = 0
+	for (var i$1 = 0; i$1 < this.traces.length; i$1++) {
+		var trace = this$1.traces[i$1]
+		var tracePasses = this$1.traces[i$1].passes
+		for (var j = 0; j < tracePasses.length; j++) {
+			passes.push(this$1.passes[tracePasses[j]])
+		}
+		// save offset of passes
+		trace.passOffset = offset
+		offset += trace.passes.length
+	}
 
 	(ref = this.scatter).update.apply(ref, passes)
 
@@ -5241,7 +4365,7 @@ SPLOM.prototype.updateItem = function (i, options) {
 
 	if (!options) { return this }
 
-	var ref$1 = pick(options, {
+	var o = pick(options, {
 		data: 'data items columns rows values dimensions samples',
 		snap: 'snap cluster',
 		size: 'sizes size radius',
@@ -5254,19 +4378,7 @@ SPLOM.prototype.updateItem = function (i, options) {
 		viewport: 'viewport viewBox viewbox',
 		domain: 'domain domains areas',
 		transpose: 'transpose transposed'
-	});
-	var data = ref$1.data;
-	var snap = ref$1.snap;
-	var size = ref$1.size;
-	var color = ref$1.color;
-	var opacity = ref$1.opacity;
-	var borderSize = ref$1.borderSize;
-	var borderColor = ref$1.borderColor;
-	var marker = ref$1.marker;
-	var range = ref$1.range;
-	var viewport = ref$1.viewport;
-	var domain = ref$1.domain;
-	var transpose = ref$1.transpose;
+	})
 
 	// we provide regl buffer per-trace, since trace data can be changed
 	var trace = (this.traces[i] || (this.traces[i] = {
@@ -5279,58 +4391,75 @@ SPLOM.prototype.updateItem = function (i, options) {
 			size: 12,
 			borderColor: 'transparent',
 			borderSize: 1
-		})
+		}),
+		viewport:  rect([regl._gl.drawingBufferWidth, regl._gl.drawingBufferHeight])
 	}))
 
-	// range/viewport
-	var multirange = range && typeof range[0] !== 'number'
-	trace.range = range
 
 	// save styles
-	if (defined(color)) {
-		trace.color = color
+	if (o.color != null) {
+		trace.color = o.color
 	}
-	if (defined(size)) {
-		trace.size = size
+	if (o.size != null) {
+		trace.size = o.size
 	}
-	if (defined(borderColor)) {
-		trace.borderColor = borderColor
+	if (o.borderColor != null) {
+		trace.borderColor = o.borderColor
 	}
-	if (defined(borderSize)) {
-		trace.borderSize = borderSize
+	if (o.borderSize != null) {
+		trace.borderSize = o.borderSize
+	}
+	if (o.viewport) {
+		trace.viewport = rect(o.viewport)
 	}
 
 	// put flattened data into buffer
-	if (defined(data)) {
-		trace.buffer(flatten(data))
-		trace.columns = data.length
-		trace.count = data[0].length
+	if (o.data) {
+		trace.buffer(flatten(o.data))
+		trace.columns = o.data.length
+		trace.count = o.data[0].length
 
 		// detect bounds per-column
 		trace.bounds = []
 
-		for (var i$1 = 0; i$1 < data.length; i$1++) {
-			trace.bounds[i$1] = getBounds(data[i$1], 1)
+		for (var i$1 = 0; i$1 < trace.columns; i$1++) {
+			trace.bounds[i$1] = getBounds(o.data[i$1], 1)
 		}
+
 	}
+
+	// add proper range updating markers
+	var multirange
+	if (o.range) {
+		trace.range = o.range
+		multirange = trace.range && typeof trace.range[0] !== 'number'
+	}
+
+	if (o.domain) {
+		trace.domain = o.domain
+	}
+
 
 	// create passes
 	var m = trace.columns
 	var n = trace.count
 
-	var w = regl._gl.drawingBufferWidth
-	var h = regl._gl.drawingBufferHeight
+	var w = trace.viewport.width
+	var h = trace.viewport.height
 	var iw = w / m
 	var ih = h / m
 	var pad = .0
 
-	for (var i$2 = 0, ptr = 0; i$2 < m; i$2++) {
+	trace.passes = []
+
+	for (var i$2 = 0; i$2 < m; i$2++) {
 		for (var j = 0; j < m; j++) {
 			var key = passId(trace.id, i$2, j)
-			var bounds = [trace.bounds[i$2][0], trace.bounds[j][0], trace.bounds[i$2][1], trace.bounds[j][1]]
-			var range$1 = multirange ? [trace.range[i$2][0], trace.range[j][0], trace.range[i$2][1], trace.range[j][1]] : trace.range || bounds
-			this$1.passes[key] = {
-				positions: {
+
+			var pass = this$1.passes[key] || (this$1.passes[key] = {})
+
+			if (o.data) {
+				pass.positions = {
 					// planar
 					x: {buffer: trace.buffer, offset: i$2 * n, count: n},
 					y: {buffer: trace.buffer, offset: j * n, count: n}
@@ -5338,15 +4467,33 @@ SPLOM.prototype.updateItem = function (i, options) {
 					// transposed
 					// x: {buffer: trace.buffer, offset: i, count: n, stride: m},
 					// y: {buffer: trace.buffer, offset: j, count: n, stride: m}
-				},
-				color: trace.color,
-				size: trace.size,
-				borderSize: trace.borderSize,
-				borderColor: trace.borderColor,
-				bounds: bounds,
-				range: range$1,
-				viewport: [i$2 * iw + iw * pad, j * ih + ih * pad, (i$2 + 1) * iw - iw * pad, (j + 1) * ih - ih * pad]
+				}
+				pass.bounds = getBox(trace.bounds, i$2, j)
+
 			}
+
+			// TODO
+			if (o.domain || o.viewport || o.data) {
+				// if (trace.domain) {
+				// 	let domain = getBox(trace.domain)
+				// 	pass.viewport = []
+				// }
+				// // consider auto-domain equipartial
+				// else {
+					pass.viewport = [j * iw + iw * pad, i$2 * ih + ih * pad, (j + 1) * iw - iw * pad, (i$2 + 1) * ih - ih * pad]
+				// }
+			}
+
+			if (o.color) { pass.color = trace.color }
+			if (o.size) { pass.size = trace.size }
+			if (o.borderSize) { pass.borderSize = trace.borderSize }
+			if (o.borderColor) { pass.borderColor = trace.borderColor }
+
+			if (o.range) {
+				pass.range = multirange ? getBox(trace.range, i$2, j) : trace.range || pass.bounds
+			}
+
+			trace.passes.push(key)
 		}
 	}
 
@@ -5362,31 +4509,19 @@ SPLOM.prototype.draw = function () {
 	var args = [], len = arguments.length;
 	while ( len-- ) { args[ len ] = arguments$1[ len ]; }
 
-	for (var i = 0; i < this.traces.length; i++) {
-		this$1.drawItem(i)
+	if (!args.length) {
+		this.scatter.draw()
 	}
-
-	return this
-}
-
-
-// draw single pass
-SPLOM.prototype.drawItem = function (i) {
-	var this$1 = this;
-
-	var ref = this.traces[i];
-	var columns = ref.columns;
-	var id = ref.id;
-
-	var idx = []
-
-	for (var i$1 = 0; i$1 < columns; i$1++) {
-		for (var j = 0; j < columns; j++) {
-			idx.push(this$1.passes[passId(id, i$1, j)].index)
+	else {
+		var idx = []
+		for (var i = 0; i < args.length; i++) {
+			var ref = this$1.traces[args[i]];
+			var passes = ref.passes;
+			var passOffset = ref.passOffset;
+			idx.push.apply(idx, arrRange(passOffset, passOffset + passes.length))
 		}
+		(ref$1 = this.scatter).draw.apply(ref$1, idx)
 	}
-
-	(ref$1 = this.scatter).draw.apply(ref$1, idx)
 
 	return this
 	var ref$1;
@@ -5407,9 +4542,42 @@ function passId (trace, i, j) {
 	var id = (trace.id != null ? trace.id : trace)
 	var n = i
 	var m = j
-	return parseInt(("" + (id.toString(16)) + (n.toString(16)) + "0" + (m.toString(16))), 16)
+	var key = id << 16 | (n & 0xff) << 8 | m & 0xff
+
+	return key
+}
+
+
+// return bounding box corresponding to a pass
+function getBox (ranges, i, j) {
+	var ilox, iloy, ihix, ihiy, jlox, jloy, jhix, jhiy
+	var irange = ranges[i], jrange = ranges[j]
+
+	if (irange.length > 2) {
+		ilox = irange[0]
+		ihix = irange[2]
+		iloy = irange[1]
+		ihiy = irange[3]
+	}
+	else {
+		ilox = iloy = irange[0]
+		ihix = ihiy = irange[1]
+	}
+
+	if (jrange.length > 2) {
+		jlox = jrange[0]
+		jhix = jrange[2]
+		jloy = jrange[1]
+		jhiy = jrange[3]
+	}
+	else {
+		jlox = jloy = jrange[0]
+		jhix = jhiy = jrange[1]
+	}
+
+	return [ jlox, iloy, jhix, ihiy ]
 }
-},{"../regl-scatter2d/scatter":47,"array-bounds":49,"defined":54,"flatten-vertex-data":56,"pick-by-alias":63,"raf":64}],49:[function(require,module,exports){
+},{"../regl-scatter2d/scatter":37,"array-bounds":39,"array-range":40,"defined":45,"flatten-vertex-data":48,"left-pad":54,"parse-rect":60,"pick-by-alias":63,"raf":64}],39:[function(require,module,exports){
 'use strict'
 
 module.exports = normalize;
@@ -5436,7 +4604,32 @@ function normalize (arr, dim) {
 
 	return bounds;
 }
-},{}],50:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
+
+module.exports = function newArray(start, end) {
+    var n0 = typeof start === 'number',
+        n1 = typeof end === 'number'
+
+    if (n0 && !n1) {
+        end = start
+        start = 0
+    } else if (!n0 && !n1) {
+        start = 0
+        end = 0
+    }
+
+    start = start|0
+    end = end|0
+    var len = end-start
+    if (len<0)
+        { throw new Error('array length must be positive') }
+    
+    var a = new Array(len)
+    for (var i=0, c=start; i<len; i++, c++)
+        { a[i] = c }
+    return a
+}
+},{}],41:[function(require,module,exports){
 'use strict';
 module.exports = function (val) {
 	if (val === null || val === undefined) {
@@ -5446,7 +4639,7 @@ module.exports = function (val) {
 	return Array.isArray(val) ? val : [val];
 };
 
-},{}],51:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 /**
  * @module  color-alpha
  */
@@ -5466,7 +4659,7 @@ function alpha (color, value) {
 
 	return obj.space + "a(" + (obj.values) + "," + value + ")";
 }
-},{"color-parse":53}],52:[function(require,module,exports){
+},{"color-parse":44}],43:[function(require,module,exports){
 'use strict'
 
 module.exports = {
@@ -5619,7 +4812,7 @@ module.exports = {
 	"yellow": [255, 255, 0],
 	"yellowgreen": [154, 205, 50]
 };
-},{}],53:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 (function (global){
 /**
  * @module color-parse
@@ -5796,7 +4989,7 @@ function parse (cstr) {
 	}
 }
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"color-name":52,"defined":54,"is-plain-obj":59}],54:[function(require,module,exports){
+},{"color-name":43,"defined":45,"is-plain-obj":53}],45:[function(require,module,exports){
 module.exports = function () {
     var arguments$1 = arguments;
 
@@ -5805,7 +4998,19 @@ module.exports = function () {
     }
 };
 
-},{}],55:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
+module.exports = defaultProperty
+
+function defaultProperty (get, set) {
+  return {
+    configurable: true,
+    enumerable: true,
+    get: get,
+    set: set
+  }
+}
+
+},{}],47:[function(require,module,exports){
 module.exports = function(dtype) {
   switch (dtype) {
     case 'int8':
@@ -5831,7 +5036,7 @@ module.exports = function(dtype) {
   }
 }
 
-},{}],56:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
 /*eslint new-cap:0*/
 var dtype = require('dtype')
 module.exports = flattenVertexData
@@ -5878,7 +5083,7 @@ function flattenVertexData (data, output, offset) {
   return output
 }
 
-},{"dtype":55}],57:[function(require,module,exports){
+},{"dtype":47}],49:[function(require,module,exports){
 /**
  * @module fps-indicator
  */
@@ -6017,7 +5222,7 @@ function fps (opts) {
 		raf(measure)
 	})
 }
-},{"raf":64,"right-now":67,"to-css":68}],58:[function(require,module,exports){
+},{"raf":64,"right-now":67,"to-css":68}],50:[function(require,module,exports){
 'use strict'
 
 module.exports = gaussRandom
@@ -6025,7 +5230,507 @@ module.exports = gaussRandom
 function gaussRandom() {
   return Math.sqrt(-2.0 * Math.log(Math.random())) * Math.cos(2.0 * Math.PI * Math.random())
 }
-},{}],59:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
+module.exports = distance
+
+/**
+ * Calculates the euclidian distance between two vec2's
+ *
+ * @param {vec2} a the first operand
+ * @param {vec2} b the second operand
+ * @returns {Number} distance between a and b
+ */
+function distance(a, b) {
+    var x = b[0] - a[0],
+        y = b[1] - a[1]
+    return Math.sqrt(x*x + y*y)
+}
+},{}],52:[function(require,module,exports){
+(function (global, factory) {
+    if (typeof define === 'function' && define.amd) {
+        define(['exports', 'module'], factory);
+    } else if (typeof exports !== 'undefined' && typeof module !== 'undefined') {
+        factory(exports, module);
+    } else {
+        var mod = {
+            exports: {}
+        };
+        factory(mod.exports, mod);
+        global.Impetus = mod.exports;
+    }
+})(this, function (exports, module) {
+    'use strict';
+
+    function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
+
+    var stopThresholdDefault = 0.3;
+    var bounceDeceleration = 0.04;
+    var bounceAcceleration = 0.11;
+
+    // fixes weird safari 10 bug where preventDefault is prevented
+    // @see https://github.com/metafizzy/flickity/issues/457#issuecomment-254501356
+    window.addEventListener('touchmove', function () {});
+
+    var Impetus = function Impetus(_ref) {
+        var _ref$source = _ref.source;
+        var sourceEl = _ref$source === undefined ? document : _ref$source;
+        var updateCallback = _ref.update;
+        var _ref$multiplier = _ref.multiplier;
+        var multiplier = _ref$multiplier === undefined ? 1 : _ref$multiplier;
+        var _ref$friction = _ref.friction;
+        var friction = _ref$friction === undefined ? 0.92 : _ref$friction;
+        var initialValues = _ref.initialValues;
+        var boundX = _ref.boundX;
+        var boundY = _ref.boundY;
+        var _ref$bounce = _ref.bounce;
+        var bounce = _ref$bounce === undefined ? true : _ref$bounce;
+
+        _classCallCheck(this, Impetus);
+
+        var boundXmin, boundXmax, boundYmin, boundYmax, pointerLastX, pointerLastY, pointerCurrentX, pointerCurrentY, pointerId, decVelX, decVelY;
+        var targetX = 0;
+        var targetY = 0;
+        var stopThreshold = stopThresholdDefault * multiplier;
+        var ticking = false;
+        var pointerActive = false;
+        var paused = false;
+        var decelerating = false;
+        var trackingPoints = [];
+
+        /**
+         * Initialize instance
+         */
+        (function init() {
+            sourceEl = typeof sourceEl === 'string' ? document.querySelector(sourceEl) : sourceEl;
+            if (!sourceEl) {
+                throw new Error('IMPETUS: source not found.');
+            }
+
+            if (!updateCallback) {
+                throw new Error('IMPETUS: update function not defined.');
+            }
+
+            if (initialValues) {
+                if (initialValues[0]) {
+                    targetX = initialValues[0];
+                }
+                if (initialValues[1]) {
+                    targetY = initialValues[1];
+                }
+                callUpdateCallback();
+            }
+
+            // Initialize bound values
+            if (boundX) {
+                boundXmin = boundX[0];
+                boundXmax = boundX[1];
+            }
+            if (boundY) {
+                boundYmin = boundY[0];
+                boundYmax = boundY[1];
+            }
+
+            sourceEl.addEventListener('touchstart', onDown);
+            sourceEl.addEventListener('mousedown', onDown);
+        })();
+
+        /**
+         * In edge cases where you may need to
+         * reinstanciate Impetus on the same sourceEl
+         * this will remove the previous event listeners
+         */
+        this.destroy = function () {
+            sourceEl.removeEventListener('touchstart', onDown);
+            sourceEl.removeEventListener('mousedown', onDown);
+            // however it won't "destroy" a reference
+            // to instance if you'd like to do that
+            // it returns null as a convinience.
+            // ex: `instance = instance.destroy();`
+            return null;
+        };
+
+        /**
+         * Disable movement processing
+         * @public
+         */
+        this.pause = function () {
+            pointerActive = false;
+            paused = true;
+        };
+
+        /**
+         * Enable movement processing
+         * @public
+         */
+        this.resume = function () {
+            paused = false;
+        };
+
+        /**
+         * Update the current x and y values
+         * @public
+         * @param {Number} x
+         * @param {Number} y
+         */
+        this.setValues = function (x, y) {
+            if (typeof x === 'number') {
+                targetX = x;
+            }
+            if (typeof y === 'number') {
+                targetY = y;
+            }
+        };
+
+        /**
+         * Update the multiplier value
+         * @public
+         * @param {Number} val
+         */
+        this.setMultiplier = function (val) {
+            multiplier = val;
+            stopThreshold = stopThresholdDefault * multiplier;
+        };
+
+        /**
+         * Update boundX value
+         * @public
+         * @param {Number[]} boundX
+         */
+        this.setBoundX = function (boundX) {
+            boundXmin = boundX[0];
+            boundXmax = boundX[1];
+        };
+
+        /**
+         * Update boundY value
+         * @public
+         * @param {Number[]} boundY
+         */
+        this.setBoundY = function (boundY) {
+            boundYmin = boundY[0];
+            boundYmax = boundY[1];
+        };
+
+        /**
+         * Executes the update function
+         */
+        function callUpdateCallback() {
+            updateCallback.call(sourceEl, targetX, targetY);
+        }
+
+        /**
+         * Creates a custom normalized event object from touch and mouse events
+         * @param  {Event} ev
+         * @returns {Object} with x, y, and id properties
+         */
+        function normalizeEvent(ev) {
+            if (ev.type === 'touchmove' || ev.type === 'touchstart' || ev.type === 'touchend') {
+                var touch = ev.targetTouches[0] || ev.changedTouches[0];
+                return {
+                    x: touch.clientX,
+                    y: touch.clientY,
+                    id: touch.identifier
+                };
+            } else {
+                // mouse events
+                return {
+                    x: ev.clientX,
+                    y: ev.clientY,
+                    id: null
+                };
+            }
+        }
+
+        /**
+         * Initializes movement tracking
+         * @param  {Object} ev Normalized event
+         */
+        function onDown(ev) {
+            var event = normalizeEvent(ev);
+            if (!pointerActive && !paused) {
+                pointerActive = true;
+                decelerating = false;
+                pointerId = event.id;
+
+                pointerLastX = pointerCurrentX = event.x;
+                pointerLastY = pointerCurrentY = event.y;
+                trackingPoints = [];
+                addTrackingPoint(pointerLastX, pointerLastY);
+
+                // @see https://developers.google.com/web/updates/2017/01/scrolling-intervention
+                document.addEventListener('touchmove', onMove, getPassiveSupported() ? { passive: false } : false);
+                document.addEventListener('touchend', onUp);
+                document.addEventListener('touchcancel', stopTracking);
+                document.addEventListener('mousemove', onMove, getPassiveSupported() ? { passive: false } : false);
+                document.addEventListener('mouseup', onUp);
+            }
+        }
+
+        /**
+         * Handles move events
+         * @param  {Object} ev Normalized event
+         */
+        function onMove(ev) {
+            ev.preventDefault();
+            var event = normalizeEvent(ev);
+
+            if (pointerActive && event.id === pointerId) {
+                pointerCurrentX = event.x;
+                pointerCurrentY = event.y;
+                addTrackingPoint(pointerLastX, pointerLastY);
+                requestTick();
+            }
+        }
+
+        /**
+         * Handles up/end events
+         * @param {Object} ev Normalized event
+         */
+        function onUp(ev) {
+            var event = normalizeEvent(ev);
+
+            if (pointerActive && event.id === pointerId) {
+                stopTracking();
+            }
+        }
+
+        /**
+         * Stops movement tracking, starts animation
+         */
+        function stopTracking() {
+            pointerActive = false;
+            addTrackingPoint(pointerLastX, pointerLastY);
+            startDecelAnim();
+
+            document.removeEventListener('touchmove', onMove);
+            document.removeEventListener('touchend', onUp);
+            document.removeEventListener('touchcancel', stopTracking);
+            document.removeEventListener('mouseup', onUp);
+            document.removeEventListener('mousemove', onMove);
+        }
+
+        /**
+         * Records movement for the last 100ms
+         * @param {number} x
+         * @param {number} y [description]
+         */
+        function addTrackingPoint(x, y) {
+            var time = Date.now();
+            while (trackingPoints.length > 0) {
+                if (time - trackingPoints[0].time <= 100) {
+                    break;
+                }
+                trackingPoints.shift();
+            }
+
+            trackingPoints.push({ x: x, y: y, time: time });
+        }
+
+        /**
+         * Calculate new values, call update function
+         */
+        function updateAndRender() {
+            var pointerChangeX = pointerCurrentX - pointerLastX;
+            var pointerChangeY = pointerCurrentY - pointerLastY;
+
+            targetX += pointerChangeX * multiplier;
+            targetY += pointerChangeY * multiplier;
+
+            if (bounce) {
+                var diff = checkBounds();
+                if (diff.x !== 0) {
+                    targetX -= pointerChangeX * dragOutOfBoundsMultiplier(diff.x) * multiplier;
+                }
+                if (diff.y !== 0) {
+                    targetY -= pointerChangeY * dragOutOfBoundsMultiplier(diff.y) * multiplier;
+                }
+            } else {
+                checkBounds(true);
+            }
+
+            callUpdateCallback();
+
+            pointerLastX = pointerCurrentX;
+            pointerLastY = pointerCurrentY;
+            ticking = false;
+        }
+
+        /**
+         * Returns a value from around 0.5 to 1, based on distance
+         * @param {Number} val
+         */
+        function dragOutOfBoundsMultiplier(val) {
+            return 0.000005 * Math.pow(val, 2) + 0.0001 * val + 0.55;
+        }
+
+        /**
+         * prevents animating faster than current framerate
+         */
+        function requestTick() {
+            if (!ticking) {
+                requestAnimFrame(updateAndRender);
+            }
+            ticking = true;
+        }
+
+        /**
+         * Determine position relative to bounds
+         * @param {Boolean} restrict Whether to restrict target to bounds
+         */
+        function checkBounds(restrict) {
+            var xDiff = 0;
+            var yDiff = 0;
+
+            if (boundXmin !== undefined && targetX < boundXmin) {
+                xDiff = boundXmin - targetX;
+            } else if (boundXmax !== undefined && targetX > boundXmax) {
+                xDiff = boundXmax - targetX;
+            }
+
+            if (boundYmin !== undefined && targetY < boundYmin) {
+                yDiff = boundYmin - targetY;
+            } else if (boundYmax !== undefined && targetY > boundYmax) {
+                yDiff = boundYmax - targetY;
+            }
+
+            if (restrict) {
+                if (xDiff !== 0) {
+                    targetX = xDiff > 0 ? boundXmin : boundXmax;
+                }
+                if (yDiff !== 0) {
+                    targetY = yDiff > 0 ? boundYmin : boundYmax;
+                }
+            }
+
+            return {
+                x: xDiff,
+                y: yDiff,
+                inBounds: xDiff === 0 && yDiff === 0
+            };
+        }
+
+        /**
+         * Initialize animation of values coming to a stop
+         */
+        function startDecelAnim() {
+            var firstPoint = trackingPoints[0];
+            var lastPoint = trackingPoints[trackingPoints.length - 1];
+
+            var xOffset = lastPoint.x - firstPoint.x;
+            var yOffset = lastPoint.y - firstPoint.y;
+            var timeOffset = lastPoint.time - firstPoint.time;
+
+            var D = timeOffset / 15 / multiplier;
+
+            decVelX = xOffset / D || 0; // prevent NaN
+            decVelY = yOffset / D || 0;
+
+            var diff = checkBounds();
+
+            if (Math.abs(decVelX) > 1 || Math.abs(decVelY) > 1 || !diff.inBounds) {
+                decelerating = true;
+                requestAnimFrame(stepDecelAnim);
+            }
+        }
+
+        /**
+         * Animates values slowing down
+         */
+        function stepDecelAnim() {
+            if (!decelerating) {
+                return;
+            }
+
+            decVelX *= friction;
+            decVelY *= friction;
+
+            targetX += decVelX;
+            targetY += decVelY;
+
+            var diff = checkBounds();
+
+            if (Math.abs(decVelX) > stopThreshold || Math.abs(decVelY) > stopThreshold || !diff.inBounds) {
+
+                if (bounce) {
+                    var reboundAdjust = 2.5;
+
+                    if (diff.x !== 0) {
+                        if (diff.x * decVelX <= 0) {
+                            decVelX += diff.x * bounceDeceleration;
+                        } else {
+                            var adjust = diff.x > 0 ? reboundAdjust : -reboundAdjust;
+                            decVelX = (diff.x + adjust) * bounceAcceleration;
+                        }
+                    }
+                    if (diff.y !== 0) {
+                        if (diff.y * decVelY <= 0) {
+                            decVelY += diff.y * bounceDeceleration;
+                        } else {
+                            var adjust = diff.y > 0 ? reboundAdjust : -reboundAdjust;
+                            decVelY = (diff.y + adjust) * bounceAcceleration;
+                        }
+                    }
+                } else {
+                    if (diff.x !== 0) {
+                        if (diff.x > 0) {
+                            targetX = boundXmin;
+                        } else {
+                            targetX = boundXmax;
+                        }
+                        decVelX = 0;
+                    }
+                    if (diff.y !== 0) {
+                        if (diff.y > 0) {
+                            targetY = boundYmin;
+                        } else {
+                            targetY = boundYmax;
+                        }
+                        decVelY = 0;
+                    }
+                }
+
+                callUpdateCallback();
+
+                requestAnimFrame(stepDecelAnim);
+            } else {
+                decelerating = false;
+            }
+        }
+    }
+
+    /**
+     * @see http://www.paulirish.com/2011/requestanimationframe-for-smart-animating/
+     */
+    ;
+
+    module.exports = Impetus;
+    var requestAnimFrame = (function () {
+        return window.requestAnimationFrame || window.webkitRequestAnimationFrame || window.mozRequestAnimationFrame || function (callback) {
+            window.setTimeout(callback, 1000 / 60);
+        };
+    })();
+
+    function getPassiveSupported() {
+        var passiveSupported = false;
+
+        try {
+            var options = Object.defineProperty({}, "passive", {
+                get: function get() {
+                    passiveSupported = true;
+                }
+            });
+
+            window.addEventListener("test", null, options);
+        } catch (err) {}
+
+        getPassiveSupported = function () {
+            return passiveSupported;
+        };
+        return passiveSupported;
+    }
+});
+
+},{}],53:[function(require,module,exports){
 'use strict';
 var toString = Object.prototype.toString;
 
@@ -6034,9 +5739,132 @@ module.exports = function (x) {
 	return toString.call(x) === '[object Object]' && (prototype = Object.getPrototypeOf(x), prototype === null || prototype === Object.getPrototypeOf({}));
 };
 
-},{}],60:[function(require,module,exports){
+},{}],54:[function(require,module,exports){
+/* This program is free software. It comes without any warranty, to
+     * the extent permitted by applicable law. You can redistribute it
+     * and/or modify it under the terms of the Do What The Fuck You Want
+     * To Public License, Version 2, as published by Sam Hocevar. See
+     * http://www.wtfpl.net/ for more details. */
+'use strict';
+module.exports = leftPad;
+
+var cache = [
+  '',
+  ' ',
+  '  ',
+  '   ',
+  '    ',
+  '     ',
+  '      ',
+  '       ',
+  '        ',
+  '         '
+];
+
+function leftPad (str, len, ch) {
+  // convert `str` to a `string`
+  str = str + '';
+  // `len` is the `pad`'s length now
+  len = len - str.length;
+  // doesn't need to pad
+  if (len <= 0) { return str; }
+  // `ch` defaults to `' '`
+  if (!ch && ch !== 0) { ch = ' '; }
+  // convert `ch` to a `string` cuz it could be a number
+  ch = ch + '';
+  // cache common use cases
+  if (ch === ' ' && len < 10) { return cache[len] + str; }
+  // `pad` starts with an empty string
+  var pad = '';
+  // loop
+  while (true) {
+    // add `ch` to `pad` if `len` is odd
+    if (len & 1) { pad += ch; }
+    // divide `len` by 2, ditch the remainder
+    len >>= 1;
+    // "double" the `ch` so this operation count grows logarithmically on `len`
+    // each time `ch` is "doubled", the `len` would need to be "doubled" too
+    // similar to finding a value in binary search tree, hence O(log(n))
+    if (len) { ch += ch; }
+    // `len` is 0, exit the loop
+    else { break; }
+  }
+  // pad `str`!
+  return pad + str;
+}
+
+},{}],55:[function(require,module,exports){
+var rootPosition = { left: 0, top: 0 }
+
+module.exports = mouseEventOffset
+function mouseEventOffset (ev, target, out) {
+  target = target || ev.currentTarget || ev.srcElement
+  if (!Array.isArray(out)) {
+    out = [ 0, 0 ]
+  }
+  var cx = ev.clientX || 0
+  var cy = ev.clientY || 0
+  var rect = getBoundingClientOffset(target)
+  out[0] = cx - rect.left
+  out[1] = cy - rect.top
+  return out
+}
+
+function getBoundingClientOffset (element) {
+  if (element === window ||
+      element === document ||
+      element === document.body) {
+    return rootPosition
+  } else {
+    return element.getBoundingClientRect()
+  }
+}
+
+},{}],56:[function(require,module,exports){
+'use strict'
+
+var toPX = require('to-px')
+
+module.exports = mouseWheelListen
+
+function mouseWheelListen(element, callback, noScroll) {
+  if(typeof element === 'function') {
+    noScroll = !!callback
+    callback = element
+    element = window
+  }
+  var lineHeight = toPX('ex', element)
+  var listener = function(ev) {
+    if(noScroll) {
+      ev.preventDefault()
+    }
+    var dx = ev.deltaX || 0
+    var dy = ev.deltaY || 0
+    var dz = ev.deltaZ || 0
+    var mode = ev.deltaMode
+    var scale = 1
+    switch(mode) {
+      case 1:
+        scale = lineHeight
+      break
+      case 2:
+        scale = window.innerHeight
+      break
+    }
+    dx *= scale
+    dy *= scale
+    dz *= scale
+    if(dx || dy || dz) {
+      return callback(dx, dy, dz, ev)
+    }
+  }
+  element.addEventListener('wheel', listener)
+  return listener
+}
+
+},{"to-px":69}],57:[function(require,module,exports){
 module.exports=[["#69d2e7","#a7dbd8","#e0e4cc","#f38630","#fa6900"],["#fe4365","#fc9d9a","#f9cdad","#c8c8a9","#83af9b"],["#ecd078","#d95b43","#c02942","#542437","#53777a"],["#556270","#4ecdc4","#c7f464","#ff6b6b","#c44d58"],["#774f38","#e08e79","#f1d4af","#ece5ce","#c5e0dc"],["#e8ddcb","#cdb380","#036564","#033649","#031634"],["#490a3d","#bd1550","#e97f02","#f8ca00","#8a9b0f"],["#594f4f","#547980","#45ada8","#9de0ad","#e5fcc2"],["#00a0b0","#6a4a3c","#cc333f","#eb6841","#edc951"],["#e94e77","#d68189","#c6a49a","#c6e5d9","#f4ead5"],["#3fb8af","#7fc7af","#dad8a7","#ff9e9d","#ff3d7f"],["#d9ceb2","#948c75","#d5ded9","#7a6a53","#99b2b7"],["#ffffff","#cbe86b","#f2e9e1","#1c140d","#cbe86b"],["#efffcd","#dce9be","#555152","#2e2633","#99173c"],["#343838","#005f6b","#008c9e","#00b4cc","#00dffc"],["#413e4a","#73626e","#b38184","#f0b49e","#f7e4be"],["#ff4e50","#fc913a","#f9d423","#ede574","#e1f5c4"],["#99b898","#fecea8","#ff847c","#e84a5f","#2a363b"],["#655643","#80bca3","#f6f7bd","#e6ac27","#bf4d28"],["#00a8c6","#40c0cb","#f9f2e7","#aee239","#8fbe00"],["#351330","#424254","#64908a","#e8caa4","#cc2a41"],["#554236","#f77825","#d3ce3d","#f1efa5","#60b99a"],["#ff9900","#424242","#e9e9e9","#bcbcbc","#3299bb"],["#5d4157","#838689","#a8caba","#cad7b2","#ebe3aa"],["#8c2318","#5e8c6a","#88a65e","#bfb35a","#f2c45a"],["#fad089","#ff9c5b","#f5634a","#ed303c","#3b8183"],["#ff4242","#f4fad2","#d4ee5e","#e1edb9","#f0f2eb"],["#d1e751","#ffffff","#000000","#4dbce9","#26ade4"],["#f8b195","#f67280","#c06c84","#6c5b7b","#355c7d"],["#1b676b","#519548","#88c425","#bef202","#eafde6"],["#bcbdac","#cfbe27","#f27435","#f02475","#3b2d38"],["#5e412f","#fcebb6","#78c0a8","#f07818","#f0a830"],["#452632","#91204d","#e4844a","#e8bf56","#e2f7ce"],["#eee6ab","#c5bc8e","#696758","#45484b","#36393b"],["#f0d8a8","#3d1c00","#86b8b1","#f2d694","#fa2a00"],["#f04155","#ff823a","#f2f26f","#fff7bd","#95cfb7"],["#2a044a","#0b2e59","#0d6759","#7ab317","#a0c55f"],["#bbbb88","#ccc68d","#eedd99","#eec290","#eeaa88"],["#b9d7d9","#668284","#2a2829","#493736","#7b3b3b"],["#b3cc57","#ecf081","#ffbe40","#ef746f","#ab3e5b"],["#a3a948","#edb92e","#f85931","#ce1836","#009989"],["#67917a","#170409","#b8af03","#ccbf82","#e33258"],["#e8d5b7","#0e2430","#fc3a51","#f5b349","#e8d5b9"],["#aab3ab","#c4cbb7","#ebefc9","#eee0b7","#e8caaf"],["#300030","#480048","#601848","#c04848","#f07241"],["#ab526b","#bca297","#c5ceae","#f0e2a4","#f4ebc3"],["#607848","#789048","#c0d860","#f0f0d8","#604848"],["#a8e6ce","#dcedc2","#ffd3b5","#ffaaa6","#ff8c94"],["#3e4147","#fffedf","#dfba69","#5a2e2e","#2a2c31"],["#b6d8c0","#c8d9bf","#dadabd","#ecdbbc","#fedcba"],["#fc354c","#29221f","#13747d","#0abfbc","#fcf7c5"],["#1c2130","#028f76","#b3e099","#ffeaad","#d14334"],["#edebe6","#d6e1c7","#94c7b6","#403b33","#d3643b"],["#cc0c39","#e6781e","#c8cf02","#f8fcc1","#1693a7"],["#dad6ca","#1bb0ce","#4f8699","#6a5e72","#563444"],["#a7c5bd","#e5ddcb","#eb7b59","#cf4647","#524656"],["#fdf1cc","#c6d6b8","#987f69","#e3ad40","#fcd036"],["#5c323e","#a82743","#e15e32","#c0d23e","#e5f04c"],["#230f2b","#f21d41","#ebebbc","#bce3c5","#82b3ae"],["#b9d3b0","#81bda4","#b28774","#f88f79","#f6aa93"],["#3a111c","#574951","#83988e","#bcdea5","#e6f9bc"],["#5e3929","#cd8c52","#b7d1a3","#dee8be","#fcf7d3"],["#1c0113","#6b0103","#a30006","#c21a01","#f03c02"],["#382f32","#ffeaf2","#fcd9e5","#fbc5d8","#f1396d"],["#e3dfba","#c8d6bf","#93ccc6","#6cbdb5","#1a1f1e"],["#000000","#9f111b","#b11623","#292c37","#cccccc"],["#c1b398","#605951","#fbeec2","#61a6ab","#accec0"],["#8dccad","#988864","#fea6a2","#f9d6ac","#ffe9af"],["#f6f6f6","#e8e8e8","#333333","#990100","#b90504"],["#1b325f","#9cc4e4","#e9f2f9","#3a89c9","#f26c4f"],["#5e9fa3","#dcd1b4","#fab87f","#f87e7b","#b05574"],["#951f2b","#f5f4d7","#e0dfb1","#a5a36c","#535233"],["#413d3d","#040004","#c8ff00","#fa023c","#4b000f"],["#eff3cd","#b2d5ba","#61ada0","#248f8d","#605063"],["#2d2d29","#215a6d","#3ca2a2","#92c7a3","#dfece6"],["#cfffdd","#b4dec1","#5c5863","#a85163","#ff1f4c"],["#4e395d","#827085","#8ebe94","#ccfc8e","#dc5b3e"],["#9dc9ac","#fffec7","#f56218","#ff9d2e","#919167"],["#a1dbb2","#fee5ad","#faca66","#f7a541","#f45d4c"],["#ffefd3","#fffee4","#d0ecea","#9fd6d2","#8b7a5e"],["#a8a7a7","#cc527a","#e8175d","#474747","#363636"],["#ffedbf","#f7803c","#f54828","#2e0d23","#f8e4c1"],["#f8edd1","#d88a8a","#474843","#9d9d93","#c5cfc6"],["#f38a8a","#55443d","#a0cab5","#cde9ca","#f1edd0"],["#4e4d4a","#353432","#94ba65","#2790b0","#2b4e72"],["#0ca5b0","#4e3f30","#fefeeb","#f8f4e4","#a5b3aa"],["#a70267","#f10c49","#fb6b41","#f6d86b","#339194"],["#9d7e79","#ccac95","#9a947c","#748b83","#5b756c"],["#edf6ee","#d1c089","#b3204d","#412e28","#151101"],["#046d8b","#309292","#2fb8ac","#93a42a","#ecbe13"],["#4d3b3b","#de6262","#ffb88c","#ffd0b3","#f5e0d3"],["#fffbb7","#a6f6af","#66b6ab","#5b7c8d","#4f2958"],["#ff003c","#ff8a00","#fabe28","#88c100","#00c176"],["#fcfef5","#e9ffe1","#cdcfb7","#d6e6c3","#fafbe3"],["#9cddc8","#bfd8ad","#ddd9ab","#f7af63","#633d2e"],["#30261c","#403831","#36544f","#1f5f61","#0b8185"],["#d1313d","#e5625c","#f9bf76","#8eb2c5","#615375"],["#ffe181","#eee9e5","#fad3b2","#ffba7f","#ff9c97"],["#aaff00","#ffaa00","#ff00aa","#aa00ff","#00aaff"],["#c2412d","#d1aa34","#a7a844","#a46583","#5a1e4a"]]
-},{}],61:[function(require,module,exports){
+},{}],58:[function(require,module,exports){
 /*
 object-assign
 (c) Sindre Sorhus
@@ -6130,6 +5958,197 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 	return to;
 };
 
+},{}],59:[function(require,module,exports){
+/**
+ * @module  pan-zoom
+ *
+ * Events for pan and zoom
+ */
+'use strict'
+
+
+var Impetus = require('impetus')
+var wheel = require('mouse-wheel')
+var touchPinch = require('touch-pinch')
+var position = require('touch-position')
+
+
+module.exports = panzoom
+
+
+function panzoom (target, cb) {
+	if (target instanceof Function) {
+		cb = target
+		target = document.documentElement || document.body
+	}
+
+	//enable panning
+	var pos = position({
+		element: target
+	})
+
+	var impetus
+
+	var initX = 0, initY = 0, init = true
+	target.addEventListener('mousedown', function (e) { return init = true; })
+	target.addEventListener('touchstart', function (e) { return init = true; })
+
+	var lastY = 0, lastX = 0
+	impetus = new Impetus({
+		source: target,
+		update: function (x, y) {
+			if (init) {
+				init = false
+				initX = pos[0]
+				initY = pos[1]
+			}
+
+			var e = {
+				target: target,
+				type: 'mouse',
+				dx: x-lastX, dy: y-lastY, dz: 0,
+				x: pos[0], y: pos[1],
+				x0: initX, y0: initY
+			}
+
+			lastX = x
+			lastY = y
+			cb(e)
+		},
+		multiplier: 1,
+		friction: .75
+	})
+
+
+	//enable zooming
+	wheel(target, function (dx, dy, dz, e) {
+		e.preventDefault()
+		cb({
+			target: target,
+			type: 'mouse',
+			dx: 0, dy: 0, dz: dy,
+			x: pos[0], y: pos[1],
+			x0: pos[0], y0: pos[1]
+		})
+	})
+
+	//mobile pinch zoom
+	var pinch = touchPinch(target)
+	var mult = 2
+	var initialCoords
+
+	pinch.on('start', function (curr) {
+		var ref = pinch.fingers;
+		var f1 = ref[0];
+		var f2 = ref[1];
+
+		initialCoords = [f2.position[0]*.5 + f1.position[0]*.5, f2.position[1]*.5 + f1.position[1]*.5]
+
+		impetus && impetus.pause()
+	})
+	pinch.on('end', function () {
+		if (!initialCoords) { return }
+
+		initialCoords = null
+
+		impetus && impetus.resume()
+	})
+	pinch.on('change', function (curr, prev) {
+		if (!pinch.pinching || !initialCoords) { return }
+
+		cb({
+			target: target,
+			type: 'touch',
+			dx: 0, dy: 0, dz: -(curr - prev)*mult,
+			x: initialCoords[0], y: initialCoords[1],
+			x0: initialCoords[0], y0: initialCoords[0]
+		})
+	})
+}
+},{"impetus":52,"mouse-wheel":56,"touch-pinch":70,"touch-position":71}],60:[function(require,module,exports){
+'use strict'
+
+var pick = require('pick-by-alias')
+
+module.exports = parseRect
+
+function parseRect (arg) {
+  var rect
+
+  // direct arguments sequence
+  if (arguments.length > 1) {
+    arg = arguments
+  }
+
+  // svg viewbox
+  if (typeof arg === 'string') {
+    arg = arg.split(/\s/).map(parseFloat)
+  }
+
+  // 0, 0, 100, 100 - array-like
+  if (arg.length && typeof arg[0] === 'number') {
+    if (arg.length === 2) {
+      rect = {
+        width: arg[0],
+        height: arg[1],
+        x: 0,
+        y: 0
+      }
+    }
+    else {
+      rect = {
+        x: arg[0],
+        y: arg[1],
+        width: (arg[2] - arg[0]) || 0,
+        height: (arg[3] - arg[1]) || 0
+      }
+    }
+  }
+  else if (arg) {
+    arg = pick(arg, {
+      left: 'x l left Left',
+      top: 'y t top Top',
+      width: 'w width',
+      height: 'h height',
+      bottom: 'b bottom',
+      right: 'r right'
+    })
+
+    rect = {
+      x: arg.left || 0,
+      y: arg.top || 0
+    }
+
+    if (arg.width == null) {
+      if (arg.right) { rect.width = arg.right - rect.x }
+      else { rect.width = 0 }
+    }
+    else {
+      rect.width = arg.width
+    }
+
+    if (arg.height == null) {
+      if (arg.bottom) { rect.height = arg.bottom - rect.y }
+      else { rect.height = 0 }
+    }
+    else {
+      rect.height = arg.height
+    }
+  }
+
+  return rect
+}
+},{"pick-by-alias":63}],61:[function(require,module,exports){
+module.exports = function parseUnit(str, out) {
+    if (!out)
+        { out = [ 0, '' ] }
+
+    str = String(str)
+    var num = parseFloat(str, 10)
+    out[0] = num
+    out[1] = str.match(/[\d.\-\+]*\s*(.*)/)[1] || ''
+    return out
+}
 },{}],62:[function(require,module,exports){
 (function (process){
 // Generated by CoffeeScript 1.12.2
@@ -6693,18 +6712,283 @@ function isAtRule(prop) {
 	return prop.indexOf('@') === 0;
 }
 
-},{"arrify":50,"object-assign":61,"repeat-string":66}],69:[function(require,module,exports){
+},{"arrify":41,"object-assign":58,"repeat-string":66}],69:[function(require,module,exports){
+'use strict'
+
+var parseUnit = require('parse-unit')
+
+module.exports = toPX
+
+var PIXELS_PER_INCH = 96
+
+function getPropertyInPX(element, prop) {
+  var parts = parseUnit(getComputedStyle(element).getPropertyValue(prop))
+  return parts[0] * toPX(parts[1], element)
+}
+
+//This brutal hack is needed
+function getSizeBrutal(unit, element) {
+  var testDIV = document.createElement('div')
+  testDIV.style['font-size'] = '128' + unit
+  element.appendChild(testDIV)
+  var size = getPropertyInPX(testDIV, 'font-size') / 128
+  element.removeChild(testDIV)
+  return size
+}
+
+function toPX(str, element) {
+  element = element || document.body
+  str = (str || 'px').trim().toLowerCase()
+  if(element === window || element === document) {
+    element = document.body 
+  }
+  switch(str) {
+    case '%':  //Ambiguous, not sure if we should use width or height
+      return element.clientHeight / 100.0
+    case 'ch':
+    case 'ex':
+      return getSizeBrutal(str, element)
+    case 'em':
+      return getPropertyInPX(element, 'font-size')
+    case 'rem':
+      return getPropertyInPX(document.body, 'font-size')
+    case 'vw':
+      return window.innerWidth/100
+    case 'vh':
+      return window.innerHeight/100
+    case 'vmin':
+      return Math.min(window.innerWidth, window.innerHeight) / 100
+    case 'vmax':
+      return Math.max(window.innerWidth, window.innerHeight) / 100
+    case 'in':
+      return PIXELS_PER_INCH
+    case 'cm':
+      return PIXELS_PER_INCH / 2.54
+    case 'mm':
+      return PIXELS_PER_INCH / 25.4
+    case 'pt':
+      return PIXELS_PER_INCH / 72
+    case 'pc':
+      return PIXELS_PER_INCH / 6
+  }
+  return 1
+}
+},{"parse-unit":61}],70:[function(require,module,exports){
+var getDistance = require('gl-vec2/distance')
+var EventEmitter = require('events').EventEmitter
+var dprop = require('dprop')
+var eventOffset = require('mouse-event-offset')
+
+module.exports = touchPinch
+function touchPinch (target) {
+  target = target || window
+
+  var emitter = new EventEmitter()
+  var fingers = [ null, null ]
+  var activeCount = 0
+
+  var lastDistance = 0
+  var ended = false
+  var enabled = false
+
+  // some read-only values
+  Object.defineProperties(emitter, {
+    pinching: dprop(function () {
+      return activeCount === 2
+    }),
+
+    fingers: dprop(function () {
+      return fingers
+    })
+  })
+
+  enable()
+  emitter.enable = enable
+  emitter.disable = disable
+  emitter.indexOfTouch = indexOfTouch
+  return emitter
+
+  function indexOfTouch (touch) {
+    var id = touch.identifier
+    for (var i = 0; i < fingers.length; i++) {
+      if (fingers[i] &&
+        fingers[i].touch &&
+        fingers[i].touch.identifier === id) {
+        return i
+      }
+    }
+    return -1
+  }
+
+  function enable () {
+    if (enabled) { return }
+    enabled = true
+    target.addEventListener('touchstart', onTouchStart, false)
+    target.addEventListener('touchmove', onTouchMove, false)
+    target.addEventListener('touchend', onTouchRemoved, false)
+    target.addEventListener('touchcancel', onTouchRemoved, false)
+  }
+
+  function disable () {
+    if (!enabled) { return }
+    enabled = false
+    activeCount = 0
+    fingers[0] = null
+    fingers[1] = null
+    lastDistance = 0
+    ended = false
+    target.removeEventListener('touchstart', onTouchStart, false)
+    target.removeEventListener('touchmove', onTouchMove, false)
+    target.removeEventListener('touchend', onTouchRemoved, false)
+    target.removeEventListener('touchcancel', onTouchRemoved, false)
+  }
+
+  function onTouchStart (ev) {
+    for (var i = 0; i < ev.changedTouches.length; i++) {
+      var newTouch = ev.changedTouches[i]
+      var id = newTouch.identifier
+      var idx = indexOfTouch(id)
+
+      if (idx === -1 && activeCount < 2) {
+        var first = activeCount === 0
+
+        // newest and previous finger (previous may be undefined)
+        var newIndex = fingers[0] ? 1 : 0
+        var oldIndex = fingers[0] ? 0 : 1
+        var newFinger = new Finger()
+
+        // add to stack
+        fingers[newIndex] = newFinger
+        activeCount++
+
+        // update touch event & position
+        newFinger.touch = newTouch
+        eventOffset(newTouch, target, newFinger.position)
+
+        var oldTouch = fingers[oldIndex] ? fingers[oldIndex].touch : undefined
+        emitter.emit('place', newTouch, oldTouch)
+
+        if (!first) {
+          var initialDistance = computeDistance()
+          ended = false
+          emitter.emit('start', initialDistance)
+          lastDistance = initialDistance
+        }
+      }
+    }
+  }
+
+  function onTouchMove (ev) {
+    var changed = false
+    for (var i = 0; i < ev.changedTouches.length; i++) {
+      var movedTouch = ev.changedTouches[i]
+      var idx = indexOfTouch(movedTouch)
+      if (idx !== -1) {
+        changed = true
+        fingers[idx].touch = movedTouch // avoid caching touches
+        eventOffset(movedTouch, target, fingers[idx].position)
+      }
+    }
+
+    if (activeCount === 2 && changed) {
+      var currentDistance = computeDistance()
+      emitter.emit('change', currentDistance, lastDistance)
+      lastDistance = currentDistance
+    }
+  }
+
+  function onTouchRemoved (ev) {
+    for (var i = 0; i < ev.changedTouches.length; i++) {
+      var removed = ev.changedTouches[i]
+      var idx = indexOfTouch(removed)
+
+      if (idx !== -1) {
+        fingers[idx] = null
+        activeCount--
+        var otherIdx = idx === 0 ? 1 : 0
+        var otherTouch = fingers[otherIdx] ? fingers[otherIdx].touch : undefined
+        emitter.emit('lift', removed, otherTouch)
+      }
+    }
+
+    if (!ended && activeCount !== 2) {
+      ended = true
+      emitter.emit('end')
+    }
+  }
+
+  function computeDistance () {
+    if (activeCount < 2) { return 0 }
+    return getDistance(fingers[0].position, fingers[1].position)
+  }
+}
+
+function Finger () {
+  this.position = [0, 0]
+  this.touch = null
+}
+
+},{"dprop":46,"events":3,"gl-vec2/distance":51,"mouse-event-offset":55}],71:[function(require,module,exports){
+var offset = require('mouse-event-offset');
+var EventEmitter = require('events').EventEmitter;
+
+function attach (opt) {
+  opt = opt || {};
+  var element = opt.element || window;
+
+  var emitter = new EventEmitter();
+
+  var position = opt.position || [0, 0];
+  if (opt.touchstart !== false) {
+    element.addEventListener('mousedown', update, false);
+    element.addEventListener('touchstart', updateTouch, false);
+  }
+
+  element.addEventListener('mousemove', update, false);
+  element.addEventListener('touchmove', updateTouch, false);
+
+  emitter.position = position;
+  emitter.dispose = dispose;
+  return emitter;
+
+  function updateTouch (ev) {
+    var touch = ev.targetTouches[0];
+    update(touch);
+  }
+
+  function update (ev) {
+    offset(ev, element, position);
+    emitter.emit('move', ev);
+  }
+
+  function dispose () {
+    element.removeEventListener('mousemove', update, false);
+    element.removeEventListener('mousedown', update, false);
+    element.removeEventListener('touchmove', updateTouch, false);
+    element.removeEventListener('touchstart', updateTouch, false);
+  }
+}
+
+module.exports = function (opt) {
+  return attach(opt).position;
+};
+
+module.exports.emitter = function (opt) {
+  return attach(opt);
+};
+
+},{"events":3,"mouse-event-offset":55}],72:[function(require,module,exports){
 'use strict'
 
 var regl = require('regl')({ extensions: 'oes_element_index_uint' })
 var createSettings = require('../settings-panel')
 var createMatrix = require('./')
-var panzoom = require('../pan-zoom')
+var panzoom = require('pan-zoom')
 var random = require('gauss-random')
-var fps = require('fps-indicator')('bottom-right')
 var alpha = require('color-alpha')
 var palettes = require('nice-color-palettes')
 var palette = palettes[Math.floor(Math.random() * palettes.length)]
+var fps = require('fps-indicator')({position: 'bottom-right', color: 'black'})
 
 
 // create splom instance
@@ -6717,7 +7001,7 @@ var passes = []
 // create settings panel & bind
 var settings = createSettings({
 	traces: { value: 2, min: 1, max: 10, type: 'range' },
-	variables: { value: 8, min: 1, max: 100, type: 'range' },
+	variables: { value: 20, min: 1, max: 100, type: 'range' },
 	points: { value: 1e3, min: 1, max: 1e4, type: 'range' },
 	// snap: { value: false }
 }, {
@@ -6750,7 +7034,9 @@ function update () {
 		var pass = (passes[i$1] || (passes[i$1] = {
 			color: alpha(palette[i$1 % palette.length], Math.random() * .5 + .25),
 			size: 3,
-			range: []
+			range: [],
+			domain: [],
+			viewport: [0,0, regl._gl.drawingBufferWidth, regl._gl.drawingBufferHeight]
 		}))
 
 		if (!pass.data) { pass.data = [] }
@@ -6761,7 +7047,8 @@ function update () {
 				pass.data[col] = []
 				pass.data[col].mean = Math.random()
 				pass.data[col].sdev = Math.random()
-				pass.range[col] = pass[i$1-1] && pass[i$1-1].range[col] || [-5,5]
+				pass.range[col] = passes[i$1-1] && passes[i$1-1].range[col] || [-5,-5,5,5]
+				pass.domain[col] = passes[i$1-1] && passes[i$1-1].domain[col] || [-5,-5,5,5]
 			}
 			var colData = pass.data[col]
 			var mean = colData.mean;
@@ -6792,45 +7079,48 @@ panzoom(splom.canvas, function (e) {
 	var w = cnv.offsetWidth
 	var h = cnv.offsetHeight
 
-	var rx = e.x / w
-	var ry = e.y / h
+	var n = settings.values.variables
 
-	// define affected ranges
-	// recalc them
-	// for every trace update affected ranges
+	var rx = e.x0 / w
+	var ry = e.y0 / h
+
+	var i = Math.floor(rx * n)
+	var j = Math.floor((1 - ry) * n)
+
+	rx = .5, ry = .5
 
 	var rangePasses = passes.map(function (pass) {
 		var ranges = pass.range
-		var n = settings.values.variables
 
-		for (var i = 0; i < n; i++) {
-			for (var j = 0; j < n; j++) {
-				var xrange = ranges[i][1] - ranges[i][0],
-					yrange = ranges[j][1] - ranges[j][0]
+		var xrange = ranges[i][2] - ranges[i][0],
+			yrange = ranges[j][3] - ranges[j][1]
 
-				if (e.dz) {
-					var dz = e.dz / w
-					ranges[i][0] -= rx * xrange * dz
-					ranges[i][1] += (1 - rx) * xrange * dz
+		if (e.dz) {
+			var dz = e.dz / w
+			ranges[i][0] -= rx * xrange * dz
+			ranges[i][2] += (1 - rx) * xrange * dz
 
-					ranges[j][0] -= (1 - ry) * yrange * dz
-					ranges[j][1] += ry * yrange * dz
-				}
-
-				ranges[i][0] -= xrange * e.dx / w
-				ranges[i][1] -= xrange * e.dx / w
-				ranges[j][0] += yrange * e.dy / h
-				ranges[j][1] += yrange * e.dy / h
-			}
+			ranges[j][1] -= (1 - ry) * yrange * dz
+			ranges[j][3] += ry * yrange * dz
 		}
 
+		ranges[i][0] -= xrange * n * .5 * e.dx / w
+		ranges[i][2] -= xrange * n * .5 * e.dx / w
+		ranges[j][1] += yrange * n * .5 * e.dy / h
+		ranges[j][3] += yrange * n * .5 * e.dy / h
 
 		return { ranges: ranges }
 	})
 
-	splom.render.apply(splom, rangePasses)
+	console.time('update')
+	splom.update.apply(splom, rangePasses)
+	console.timeEnd('update')
+
+	console.time('draw')
+	splom.draw()
+	console.timeEnd('draw')
 })
-},{"../pan-zoom":8,"../settings-panel":74,"./":48,"color-alpha":51,"fps-indicator":57,"gauss-random":58,"nice-color-palettes":60,"regl":65}],70:[function(require,module,exports){
+},{"../settings-panel":77,"./":38,"color-alpha":42,"fps-indicator":49,"gauss-random":50,"nice-color-palettes":57,"pan-zoom":59,"regl":65}],73:[function(require,module,exports){
 'use strict'
 
 var h = require('virtual-dom/h')
@@ -6859,7 +7149,7 @@ module.exports = function (ref) {
 		return field.value
 	}
 }
-},{"virtual-dom/h":140}],71:[function(require,module,exports){
+},{"virtual-dom/h":143}],74:[function(require,module,exports){
 'use strict'
 
 // exports
@@ -6896,7 +7186,7 @@ module.exports = {
 	// font:
 	// ratio:
 }
-},{"./button":70,"./text":72,"./textarea":73}],72:[function(require,module,exports){
+},{"./button":73,"./text":75,"./textarea":76}],75:[function(require,module,exports){
 'use strict';
 
 var num = require('input-number')
@@ -6930,7 +7220,7 @@ module.exports = function (field) {
 		])
 	)
 }
-},{"defined":85,"input-number":97,"virtual-dom/h":140}],73:[function(require,module,exports){
+},{"defined":88,"input-number":100,"virtual-dom/h":143}],76:[function(require,module,exports){
 'use strict';
 
 var autosize = require('autosize')
@@ -6984,7 +7274,7 @@ module.exports = function (ref) {
 		return field.value
 	}
 }
-},{"autosize":76,"defined":85,"virtual-dom/h":140}],74:[function(require,module,exports){
+},{"autosize":79,"defined":88,"virtual-dom/h":143}],77:[function(require,module,exports){
 /** @module  settings-panel */
 'use strict'
 
@@ -7353,7 +7643,7 @@ Panel.detectType = function (field) {
 	// cast by default to text
 	return 'text'
 }
-},{"./component":71,"camelcase":78,"decamelize":84,"defined":85,"dom-css":86,"get-uid":89,"inherits":96,"insert-styles":98,"is-color":99,"is-plain-obj":110,"main-loop":111,"nanobus":117,"object-assign":120,"parse-fraction":122,"pick-by-alias":126,"scope-css":132,"update-diff":137,"virtual-dom/create-element":138,"virtual-dom/diff":139,"virtual-dom/h":140,"virtual-dom/patch":141}],75:[function(require,module,exports){
+},{"./component":74,"camelcase":81,"decamelize":87,"defined":88,"dom-css":89,"get-uid":92,"inherits":99,"insert-styles":101,"is-color":102,"is-plain-obj":113,"main-loop":114,"nanobus":120,"object-assign":123,"parse-fraction":125,"pick-by-alias":129,"scope-css":135,"update-diff":140,"virtual-dom/create-element":141,"virtual-dom/diff":142,"virtual-dom/h":143,"virtual-dom/patch":144}],78:[function(require,module,exports){
 /* The following list is defined in React's core */
 var IS_UNITLESS = {
   animationIterationCount: true,
@@ -7395,7 +7685,7 @@ module.exports = function(name, value) {
     return value;
   }
 };
-},{}],76:[function(require,module,exports){
+},{}],79:[function(require,module,exports){
 /*!
 	Autosize 4.0.0
 	license: MIT
@@ -7688,7 +7978,7 @@ module.exports = function(name, value) {
 
 	module.exports = autosize;
 });
-},{}],77:[function(require,module,exports){
+},{}],80:[function(require,module,exports){
 /*!
  * Cross-Browser Split 1.1.1
  * Copyright 2007-2012 Steven Levithan <stevenlevithan.com>
@@ -7798,7 +8088,7 @@ module.exports = (function split(undef) {
   return self;
 })();
 
-},{}],78:[function(require,module,exports){
+},{}],81:[function(require,module,exports){
 'use strict';
 
 function preserveCamelCase(str) {
@@ -7864,7 +8154,7 @@ module.exports = function (str) {
 		.replace(/[_.\- ]+(\w|$)/g, function (m, p1) { return p1.toUpperCase(); });
 };
 
-},{}],79:[function(require,module,exports){
+},{}],82:[function(require,module,exports){
 module.exports = function(obj) {
     if (typeof obj === 'string') { return camelCase(obj); }
     return walk(obj);
@@ -7925,7 +8215,7 @@ function reduce (xs, f, acc) {
     return acc;
 }
 
-},{}],80:[function(require,module,exports){
+},{}],83:[function(require,module,exports){
 /**
  * @module  caret-position/get
  *
@@ -7978,7 +8268,7 @@ module.exports = function (input) {
 	}
 	return result;
 };
-},{}],81:[function(require,module,exports){
+},{}],84:[function(require,module,exports){
 /**
  * @module  caret-position
  */
@@ -7992,7 +8282,7 @@ function caret(a,b,c){
 
 caret.get = require('./get');
 caret.set = require('./set');
-},{"./get":80,"./set":82}],82:[function(require,module,exports){
+},{"./get":83,"./set":85}],85:[function(require,module,exports){
 /**
  * @module  caret-position/set
  *
@@ -8020,7 +8310,7 @@ module.exports = function(input, start, end) {
 	}
 	if (isNumber) { input.type = 'number' }
 };
-},{}],83:[function(require,module,exports){
+},{}],86:[function(require,module,exports){
 module.exports={
   "aqua": "#00ffff",
   "aliceblue": "#f0f8ff",
@@ -8172,7 +8462,7 @@ module.exports={
   "rebeccapurple": "#663399"
 }
 
-},{}],84:[function(require,module,exports){
+},{}],87:[function(require,module,exports){
 'use strict';
 module.exports = function (str, sep) {
 	if (typeof str !== 'string') {
@@ -8187,7 +8477,7 @@ module.exports = function (str, sep) {
 		.toLowerCase();
 };
 
-},{}],85:[function(require,module,exports){
+},{}],88:[function(require,module,exports){
 module.exports = function () {
     var arguments$1 = arguments;
 
@@ -8196,7 +8486,7 @@ module.exports = function () {
     }
 };
 
-},{}],86:[function(require,module,exports){
+},{}],89:[function(require,module,exports){
 var prefix = require('prefix-style')
 var toCamelCase = require('to-camel-case')
 var cache = { 'float': 'cssFloat' }
@@ -8259,7 +8549,7 @@ module.exports.get = function (element, properties) {
   }
 }
 
-},{"add-px-to-style":75,"prefix-style":127,"to-camel-case":134}],87:[function(require,module,exports){
+},{"add-px-to-style":78,"prefix-style":130,"to-camel-case":137}],90:[function(require,module,exports){
 var camelize = require("camelize")
 var template = require("string-template")
 var extend = require("xtend/mutable")
@@ -8308,7 +8598,7 @@ function TypedError(args) {
     }
 }
 
-},{"camelize":79,"string-template":133,"xtend/mutable":165}],88:[function(require,module,exports){
+},{"camelize":82,"string-template":136,"xtend/mutable":168}],91:[function(require,module,exports){
 'use strict';
 
 var OneVersionConstraint = require('individual/one-version');
@@ -8330,14 +8620,14 @@ function EvStore(elem) {
     return hash;
 }
 
-},{"individual/one-version":95}],89:[function(require,module,exports){
+},{"individual/one-version":98}],92:[function(require,module,exports){
 /** generate unique id for selector */
 var counter = Date.now() % 1e9;
 
 module.exports = function getUid(){
 	return (Math.random() * 1e9 >>> 0) + (counter++);
 };
-},{}],90:[function(require,module,exports){
+},{}],93:[function(require,module,exports){
 (function (global){
 var topLevel = typeof global !== 'undefined' ? global :
     typeof window !== 'undefined' ? window : {}
@@ -8358,7 +8648,7 @@ if (typeof document !== 'undefined') {
 module.exports = doccy;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"min-document":2}],91:[function(require,module,exports){
+},{"min-document":2}],94:[function(require,module,exports){
 /*!
  * hex-color-regex <https://github.com/regexps/hex-color-regex>
  *
@@ -8376,7 +8666,7 @@ module.exports = function hexColorRegex(opts) {
     : /#([a-f0-9]{3}|[a-f0-9]{4}(?:[a-f0-9]{2}){0,2})\b/gi
 }
 
-},{}],92:[function(require,module,exports){
+},{}],95:[function(require,module,exports){
 'use strict';
 
 module.exports = function hslRegex(options) {
@@ -8387,7 +8677,7 @@ module.exports = function hslRegex(options) {
     /hsl\(\s*(\d+)\s*,\s*(\d*(?:\.\d+)?%)\s*,\s*(\d*(?:\.\d+)?%)\)/ig;
 }
 
-},{}],93:[function(require,module,exports){
+},{}],96:[function(require,module,exports){
 'use strict';
 
 module.exports = function hslaRegex(options) {
@@ -8398,7 +8688,7 @@ module.exports = function hslaRegex(options) {
     /hsla\((\d+),\s*([\d.]+)%,\s*([\d.]+)%,\s*(\d*(?:\.\d+)?)\)/ig;
 }
 
-},{}],94:[function(require,module,exports){
+},{}],97:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -8421,7 +8711,7 @@ function Individual(key, value) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],95:[function(require,module,exports){
+},{}],98:[function(require,module,exports){
 'use strict';
 
 var Individual = require('./index.js');
@@ -8445,7 +8735,7 @@ function OneVersion(moduleName, version, defaultValue) {
     return Individual(key, defaultValue);
 }
 
-},{"./index.js":94}],96:[function(require,module,exports){
+},{"./index.js":97}],99:[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -8470,7 +8760,7 @@ if (typeof Object.create === 'function') {
   }
 }
 
-},{}],97:[function(require,module,exports){
+},{}],100:[function(require,module,exports){
 /**
  * @module  input-number
  */
@@ -8582,7 +8872,7 @@ function inputNumber (input, opts) {
 
 	return input;
 }
-},{"caret-position2":81,"mumath/clamp":112,"mumath/round":114}],98:[function(require,module,exports){
+},{"caret-position2":84,"mumath/clamp":115,"mumath/round":117}],101:[function(require,module,exports){
 (function (global){
 'use strict'
 
@@ -8618,7 +8908,7 @@ function createStyle (id) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],99:[function(require,module,exports){
+},{}],102:[function(require,module,exports){
 var isRgb = require('./lib/isRgb')
 var isRgba = require('./lib/isRgba')
 var isHsl = require('./lib/isHsl')
@@ -8644,14 +8934,14 @@ module.exports.isInherit = isInherit
 module.exports.isCurrentColor = isCurrentColor
 module.exports.isTransparent = isTransparent
 
-},{"./lib/isCurrentColor":100,"./lib/isHex":101,"./lib/isHsl":102,"./lib/isHsla":103,"./lib/isInherit":104,"./lib/isKeyword":105,"./lib/isRgb":106,"./lib/isRgba":107,"./lib/isTransparent":108}],100:[function(require,module,exports){
+},{"./lib/isCurrentColor":103,"./lib/isHex":104,"./lib/isHsl":105,"./lib/isHsla":106,"./lib/isInherit":107,"./lib/isKeyword":108,"./lib/isRgb":109,"./lib/isRgba":110,"./lib/isTransparent":111}],103:[function(require,module,exports){
 function isCurrentColor (str) {
   return str === 'currentColor'
 }
 
 module.exports = isCurrentColor
 
-},{}],101:[function(require,module,exports){
+},{}],104:[function(require,module,exports){
 var hexRegex = require('hex-color-regex')
 
 function isHex (str) {
@@ -8660,7 +8950,7 @@ function isHex (str) {
 
 module.exports = isHex
 
-},{"hex-color-regex":91}],102:[function(require,module,exports){
+},{"hex-color-regex":94}],105:[function(require,module,exports){
 var hslRegex = require('hsl-regex')
 
 function isHsl (str) {
@@ -8669,7 +8959,7 @@ function isHsl (str) {
 
 module.exports = isHsl
 
-},{"hsl-regex":92}],103:[function(require,module,exports){
+},{"hsl-regex":95}],106:[function(require,module,exports){
 var hslaRegex = require('hsla-regex')
 
 function isHsla (str) {
@@ -8678,14 +8968,14 @@ function isHsla (str) {
 
 module.exports = isHsla
 
-},{"hsla-regex":93}],104:[function(require,module,exports){
+},{"hsla-regex":96}],107:[function(require,module,exports){
 function isInherit (str) {
   return str === 'inherit'
 }
 
 module.exports = isInherit
 
-},{}],105:[function(require,module,exports){
+},{}],108:[function(require,module,exports){
 var keywords = require('css-color-names')
 
 function isKeyword (str) {
@@ -8694,14 +8984,14 @@ function isKeyword (str) {
 
 module.exports = isKeyword
 
-},{"css-color-names":83}],106:[function(require,module,exports){
+},{"css-color-names":86}],109:[function(require,module,exports){
 var rgbRegex = require('rgb-regex')
 
 module.exports = function (str) {
   return rgbRegex({exact: true}).test(str)
 }
 
-},{"rgb-regex":130}],107:[function(require,module,exports){
+},{"rgb-regex":133}],110:[function(require,module,exports){
 var rgbaRegex = require('rgba-regex')
 
 function isRgba (str) {
@@ -8710,21 +9000,21 @@ function isRgba (str) {
 
 module.exports = isRgba
 
-},{"rgba-regex":131}],108:[function(require,module,exports){
+},{"rgba-regex":134}],111:[function(require,module,exports){
 function isTransparent (str) {
   return str === 'transparent'
 }
 
 module.exports = isTransparent
 
-},{}],109:[function(require,module,exports){
+},{}],112:[function(require,module,exports){
 "use strict";
 
 module.exports = function isObject(x) {
 	return typeof x === "object" && x !== null;
 };
 
-},{}],110:[function(require,module,exports){
+},{}],113:[function(require,module,exports){
 'use strict';
 var toString = Object.prototype.toString;
 
@@ -8733,7 +9023,7 @@ module.exports = function (x) {
 	return toString.call(x) === '[object Object]' && (prototype = Object.getPrototypeOf(x), prototype === null || prototype === Object.getPrototypeOf({}));
 };
 
-},{}],111:[function(require,module,exports){
+},{}],114:[function(require,module,exports){
 var raf = require("raf")
 var TypedError = require("error/typed")
 
@@ -8815,7 +9105,7 @@ function main(initialState, view, opts) {
     }
 }
 
-},{"error/typed":87,"raf":128}],112:[function(require,module,exports){
+},{"error/typed":90,"raf":131}],115:[function(require,module,exports){
 /**
  * Clamp value.
  * Detects proper clamp min/max.
@@ -8830,7 +9120,7 @@ function main(initialState, view, opts) {
 module.exports = require('./wrap')(function(a, min, max){
 	return max > min ? Math.max(Math.min(a,max),min) : Math.max(Math.min(a,min),max);
 });
-},{"./wrap":115}],113:[function(require,module,exports){
+},{"./wrap":118}],116:[function(require,module,exports){
 /**
  * @module  mumath/precision
  *
@@ -8850,7 +9140,7 @@ module.exports = require('./wrap')(function(n){
 
 	return !d ? 0 : s.length - d;
 });
-},{"./wrap":115}],114:[function(require,module,exports){
+},{"./wrap":118}],117:[function(require,module,exports){
 /**
  * Precision round
  *
@@ -8873,7 +9163,7 @@ module.exports = require('./wrap')(function(value, step) {
 	value = Math.round(value / step) * step;
 	return parseFloat(value.toFixed(precision(step)));
 });
-},{"./precision":113,"./wrap":115}],115:[function(require,module,exports){
+},{"./precision":116,"./wrap":118}],118:[function(require,module,exports){
 /**
  * Get fn wrapped with array/object attrs recognition
  *
@@ -8915,7 +9205,7 @@ module.exports = function(fn){
 		}
 	};
 };
-},{}],116:[function(require,module,exports){
+},{}],119:[function(require,module,exports){
 assert.notEqual = notEqual
 assert.notOk = notOk
 assert.equal = equal
@@ -8939,7 +9229,7 @@ function assert (t, m) {
   if (!t) { throw new Error(m || 'AssertionError') }
 }
 
-},{}],117:[function(require,module,exports){
+},{}],120:[function(require,module,exports){
 var splice = require('remove-array-items')
 var nanotiming = require('nanotiming')
 var assert = require('assert')
@@ -9105,7 +9395,7 @@ Nanobus.prototype._emit = function (arr, eventName, data, uuid) {
   }
 }
 
-},{"assert":1,"nanotiming":118,"remove-array-items":129}],118:[function(require,module,exports){
+},{"assert":1,"nanotiming":121,"remove-array-items":132}],121:[function(require,module,exports){
 var scheduler = require('nanoscheduler')()
 var assert = require('assert')
 
@@ -9155,7 +9445,7 @@ function noop (cb) {
   }
 }
 
-},{"assert":1,"nanoscheduler":119}],119:[function(require,module,exports){
+},{"assert":1,"nanoscheduler":122}],122:[function(require,module,exports){
 var assert = require('assert')
 
 var hasWindow = typeof window !== 'undefined'
@@ -9213,7 +9503,7 @@ NanoScheduler.prototype.setTimeout = function (cb) {
 
 module.exports = createScheduler
 
-},{"assert":116}],120:[function(require,module,exports){
+},{"assert":119}],123:[function(require,module,exports){
 /*
 object-assign
 (c) Sindre Sorhus
@@ -9307,7 +9597,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 	return to;
 };
 
-},{}],121:[function(require,module,exports){
+},{}],124:[function(require,module,exports){
 'use strict'
 
 var extend = require('object-assign')
@@ -9800,7 +10090,7 @@ extend(t.pattern, {
 
 
 module.exports = t
-},{"object-assign":123}],122:[function(require,module,exports){
+},{"object-assign":126}],125:[function(require,module,exports){
 'use strict'
 
 var en = require('./en')
@@ -10102,7 +10392,7 @@ function detectType(str, t) {
 
   throw Error('Unknown part `' + str + '`')
 }
-},{"./en":121,"./unicode":124}],123:[function(require,module,exports){
+},{"./en":124,"./unicode":127}],126:[function(require,module,exports){
 /*
 object-assign
 (c) Sindre Sorhus
@@ -10196,7 +10486,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 	return to;
 };
 
-},{}],124:[function(require,module,exports){
+},{}],127:[function(require,module,exports){
 'use strict'
 
 module.exports = {
@@ -10219,7 +10509,7 @@ module.exports = {
 	'⅑': [1, 9],
 	'⅒': [1, 10]
 }
-},{}],125:[function(require,module,exports){
+},{}],128:[function(require,module,exports){
 (function (process){
 // Generated by CoffeeScript 1.6.3
 (function() {
@@ -10259,7 +10549,7 @@ module.exports = {
 */
 
 }).call(this,require('_process'))
-},{"_process":4}],126:[function(require,module,exports){
+},{"_process":4}],129:[function(require,module,exports){
 'use strict'
 
 
@@ -10307,7 +10597,7 @@ function toList(arg) {
 	}
 	return arg
 }
-},{}],127:[function(require,module,exports){
+},{}],130:[function(require,module,exports){
 var div = null
 var prefixes = [ 'Webkit', 'Moz', 'O', 'ms' ]
 
@@ -10339,7 +10629,7 @@ module.exports = function prefixStyle (prop) {
   return false
 }
 
-},{}],128:[function(require,module,exports){
+},{}],131:[function(require,module,exports){
 var now = require('performance-now')
   , global = typeof window === 'undefined' ? {} : window
   , vendors = ['moz', 'webkit']
@@ -10421,7 +10711,7 @@ module.exports.cancel = function() {
   caf.apply(global, arguments)
 }
 
-},{"performance-now":125}],129:[function(require,module,exports){
+},{"performance-now":128}],132:[function(require,module,exports){
 'use strict'
 
 /**
@@ -10451,7 +10741,7 @@ module.exports = function removeItems(arr, startIdx, removeCount)
   arr.length = len
 }
 
-},{}],130:[function(require,module,exports){
+},{}],133:[function(require,module,exports){
 'use strict';
 
 module.exports = function rgbRegex(options) {
@@ -10462,7 +10752,7 @@ module.exports = function rgbRegex(options) {
     /rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)/ig;
 }
 
-},{}],131:[function(require,module,exports){
+},{}],134:[function(require,module,exports){
 'use strict';
 
 module.exports = function rgbaRegex(options) {
@@ -10473,7 +10763,7 @@ module.exports = function rgbaRegex(options) {
     /rgba\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3}),\s*(\d*(?:\.\d+)?)\)/ig;
 }
 
-},{}],132:[function(require,module,exports){
+},{}],135:[function(require,module,exports){
 module.exports = scope;
 scope.replace = replace;
 
@@ -10505,7 +10795,7 @@ function replace (css, replacer) {
 
 	return css.replace(/([^\r\n,{}]+)(,(?=[^}]*{)|\s*{)/g, replacer);
 }
-},{}],133:[function(require,module,exports){
+},{}],136:[function(require,module,exports){
 var nargs = /\{([0-9a-zA-Z]+)\}/g
 var slice = Array.prototype.slice
 
@@ -10541,7 +10831,7 @@ function template(string) {
     })
 }
 
-},{}],134:[function(require,module,exports){
+},{}],137:[function(require,module,exports){
 
 var space = require('to-space-case')
 
@@ -10564,7 +10854,7 @@ function toCamelCase(string) {
   })
 }
 
-},{"to-space-case":136}],135:[function(require,module,exports){
+},{"to-space-case":139}],138:[function(require,module,exports){
 
 /**
  * Export.
@@ -10633,7 +10923,7 @@ function uncamelize(string) {
   })
 }
 
-},{}],136:[function(require,module,exports){
+},{}],139:[function(require,module,exports){
 
 var clean = require('to-no-case')
 
@@ -10656,7 +10946,7 @@ function toSpaceCase(string) {
   }).trim()
 }
 
-},{"to-no-case":135}],137:[function(require,module,exports){
+},{"to-no-case":138}],140:[function(require,module,exports){
 /**
  * @module update-diff
  */
@@ -10688,27 +10978,27 @@ module.exports = function updateDiff (obj, diff, mappers) {
 
 	return obj
 }
-},{}],138:[function(require,module,exports){
+},{}],141:[function(require,module,exports){
 var createElement = require("./vdom/create-element.js")
 
 module.exports = createElement
 
-},{"./vdom/create-element.js":143}],139:[function(require,module,exports){
+},{"./vdom/create-element.js":146}],142:[function(require,module,exports){
 var diff = require("./vtree/diff.js")
 
 module.exports = diff
 
-},{"./vtree/diff.js":163}],140:[function(require,module,exports){
+},{"./vtree/diff.js":166}],143:[function(require,module,exports){
 var h = require("./virtual-hyperscript/index.js")
 
 module.exports = h
 
-},{"./virtual-hyperscript/index.js":150}],141:[function(require,module,exports){
+},{"./virtual-hyperscript/index.js":153}],144:[function(require,module,exports){
 var patch = require("./vdom/patch.js")
 
 module.exports = patch
 
-},{"./vdom/patch.js":146}],142:[function(require,module,exports){
+},{"./vdom/patch.js":149}],145:[function(require,module,exports){
 var isObject = require("is-object")
 var isHook = require("../vnode/is-vhook.js")
 
@@ -10807,7 +11097,7 @@ function getPrototype(value) {
     }
 }
 
-},{"../vnode/is-vhook.js":154,"is-object":109}],143:[function(require,module,exports){
+},{"../vnode/is-vhook.js":157,"is-object":112}],146:[function(require,module,exports){
 var document = require("global/document")
 
 var applyProperties = require("./apply-properties")
@@ -10855,7 +11145,7 @@ function createElement(vnode, opts) {
     return node
 }
 
-},{"../vnode/handle-thunk.js":152,"../vnode/is-vnode.js":155,"../vnode/is-vtext.js":156,"../vnode/is-widget.js":157,"./apply-properties":142,"global/document":90}],144:[function(require,module,exports){
+},{"../vnode/handle-thunk.js":155,"../vnode/is-vnode.js":158,"../vnode/is-vtext.js":159,"../vnode/is-widget.js":160,"./apply-properties":145,"global/document":93}],147:[function(require,module,exports){
 // Maps a virtual DOM tree onto a real DOM tree in an efficient manner.
 // We don't want to read all of the DOM nodes in the tree so we use
 // the in-order tree indexing to eliminate recursion down certain branches.
@@ -10942,7 +11232,7 @@ function ascending(a, b) {
     return a > b ? 1 : -1
 }
 
-},{}],145:[function(require,module,exports){
+},{}],148:[function(require,module,exports){
 var applyProperties = require("./apply-properties")
 
 var isWidget = require("../vnode/is-widget.js")
@@ -11095,7 +11385,7 @@ function replaceRoot(oldRoot, newRoot) {
     return newRoot;
 }
 
-},{"../vnode/is-widget.js":157,"../vnode/vpatch.js":160,"./apply-properties":142,"./update-widget":147}],146:[function(require,module,exports){
+},{"../vnode/is-widget.js":160,"../vnode/vpatch.js":163,"./apply-properties":145,"./update-widget":150}],149:[function(require,module,exports){
 var document = require("global/document")
 var isArray = require("x-is-array")
 
@@ -11177,7 +11467,7 @@ function patchIndices(patches) {
     return indices
 }
 
-},{"./create-element":143,"./dom-index":144,"./patch-op":145,"global/document":90,"x-is-array":164}],147:[function(require,module,exports){
+},{"./create-element":146,"./dom-index":147,"./patch-op":148,"global/document":93,"x-is-array":167}],150:[function(require,module,exports){
 var isWidget = require("../vnode/is-widget.js")
 
 module.exports = updateWidget
@@ -11194,7 +11484,7 @@ function updateWidget(a, b) {
     return false
 }
 
-},{"../vnode/is-widget.js":157}],148:[function(require,module,exports){
+},{"../vnode/is-widget.js":160}],151:[function(require,module,exports){
 'use strict';
 
 var EvStore = require('ev-store');
@@ -11223,7 +11513,7 @@ EvHook.prototype.unhook = function(node, propertyName) {
     es[propName] = undefined;
 };
 
-},{"ev-store":88}],149:[function(require,module,exports){
+},{"ev-store":91}],152:[function(require,module,exports){
 'use strict';
 
 module.exports = SoftSetHook;
@@ -11242,7 +11532,7 @@ SoftSetHook.prototype.hook = function (node, propertyName) {
     }
 };
 
-},{}],150:[function(require,module,exports){
+},{}],153:[function(require,module,exports){
 'use strict';
 
 var isArray = require('x-is-array');
@@ -11381,7 +11671,7 @@ function errorString(obj) {
     }
 }
 
-},{"../vnode/is-thunk":153,"../vnode/is-vhook":154,"../vnode/is-vnode":155,"../vnode/is-vtext":156,"../vnode/is-widget":157,"../vnode/vnode.js":159,"../vnode/vtext.js":161,"./hooks/ev-hook.js":148,"./hooks/soft-set-hook.js":149,"./parse-tag.js":151,"x-is-array":164}],151:[function(require,module,exports){
+},{"../vnode/is-thunk":156,"../vnode/is-vhook":157,"../vnode/is-vnode":158,"../vnode/is-vtext":159,"../vnode/is-widget":160,"../vnode/vnode.js":162,"../vnode/vtext.js":164,"./hooks/ev-hook.js":151,"./hooks/soft-set-hook.js":152,"./parse-tag.js":154,"x-is-array":167}],154:[function(require,module,exports){
 'use strict';
 
 var split = require('browser-split');
@@ -11437,7 +11727,7 @@ function parseTag(tag, props) {
     return props.namespace ? tagName : tagName.toUpperCase();
 }
 
-},{"browser-split":77}],152:[function(require,module,exports){
+},{"browser-split":80}],155:[function(require,module,exports){
 var isVNode = require("./is-vnode")
 var isVText = require("./is-vtext")
 var isWidget = require("./is-widget")
@@ -11479,13 +11769,13 @@ function renderThunk(thunk, previous) {
     return renderedThunk
 }
 
-},{"./is-thunk":153,"./is-vnode":155,"./is-vtext":156,"./is-widget":157}],153:[function(require,module,exports){
+},{"./is-thunk":156,"./is-vnode":158,"./is-vtext":159,"./is-widget":160}],156:[function(require,module,exports){
 module.exports = isThunk
 
 function isThunk(t) {
     return t && t.type === "Thunk"
 }
-},{}],154:[function(require,module,exports){
+},{}],157:[function(require,module,exports){
 module.exports = isHook
 
 function isHook(hook) {
@@ -11494,7 +11784,7 @@ function isHook(hook) {
        typeof hook.unhook === "function" && !hook.hasOwnProperty("unhook"))
 }
 
-},{}],155:[function(require,module,exports){
+},{}],158:[function(require,module,exports){
 var version = require("./version")
 
 module.exports = isVirtualNode
@@ -11503,7 +11793,7 @@ function isVirtualNode(x) {
     return x && x.type === "VirtualNode" && x.version === version
 }
 
-},{"./version":158}],156:[function(require,module,exports){
+},{"./version":161}],159:[function(require,module,exports){
 var version = require("./version")
 
 module.exports = isVirtualText
@@ -11512,17 +11802,17 @@ function isVirtualText(x) {
     return x && x.type === "VirtualText" && x.version === version
 }
 
-},{"./version":158}],157:[function(require,module,exports){
+},{"./version":161}],160:[function(require,module,exports){
 module.exports = isWidget
 
 function isWidget(w) {
     return w && w.type === "Widget"
 }
 
-},{}],158:[function(require,module,exports){
+},{}],161:[function(require,module,exports){
 module.exports = "2"
 
-},{}],159:[function(require,module,exports){
+},{}],162:[function(require,module,exports){
 var version = require("./version")
 var isVNode = require("./is-vnode")
 var isWidget = require("./is-widget")
@@ -11596,7 +11886,7 @@ function VirtualNode(tagName, properties, children, key, namespace) {
 VirtualNode.prototype.version = version
 VirtualNode.prototype.type = "VirtualNode"
 
-},{"./is-thunk":153,"./is-vhook":154,"./is-vnode":155,"./is-widget":157,"./version":158}],160:[function(require,module,exports){
+},{"./is-thunk":156,"./is-vhook":157,"./is-vnode":158,"./is-widget":160,"./version":161}],163:[function(require,module,exports){
 var version = require("./version")
 
 VirtualPatch.NONE = 0
@@ -11620,7 +11910,7 @@ function VirtualPatch(type, vNode, patch) {
 VirtualPatch.prototype.version = version
 VirtualPatch.prototype.type = "VirtualPatch"
 
-},{"./version":158}],161:[function(require,module,exports){
+},{"./version":161}],164:[function(require,module,exports){
 var version = require("./version")
 
 module.exports = VirtualText
@@ -11632,7 +11922,7 @@ function VirtualText(text) {
 VirtualText.prototype.version = version
 VirtualText.prototype.type = "VirtualText"
 
-},{"./version":158}],162:[function(require,module,exports){
+},{"./version":161}],165:[function(require,module,exports){
 var isObject = require("is-object")
 var isHook = require("../vnode/is-vhook")
 
@@ -11692,7 +11982,7 @@ function getPrototype(value) {
   }
 }
 
-},{"../vnode/is-vhook":154,"is-object":109}],163:[function(require,module,exports){
+},{"../vnode/is-vhook":157,"is-object":112}],166:[function(require,module,exports){
 var isArray = require("x-is-array")
 
 var VPatch = require("../vnode/vpatch")
@@ -12121,7 +12411,7 @@ function appendPatch(apply, patch) {
     }
 }
 
-},{"../vnode/handle-thunk":152,"../vnode/is-thunk":153,"../vnode/is-vnode":155,"../vnode/is-vtext":156,"../vnode/is-widget":157,"../vnode/vpatch":160,"./diff-props":162,"x-is-array":164}],164:[function(require,module,exports){
+},{"../vnode/handle-thunk":155,"../vnode/is-thunk":156,"../vnode/is-vnode":158,"../vnode/is-vtext":159,"../vnode/is-widget":160,"../vnode/vpatch":163,"./diff-props":165,"x-is-array":167}],167:[function(require,module,exports){
 var nativeIsArray = Array.isArray
 var toString = Object.prototype.toString
 
@@ -12131,7 +12421,7 @@ function isArray(obj) {
     return toString.call(obj) === "[object Array]"
 }
 
-},{}],165:[function(require,module,exports){
+},{}],168:[function(require,module,exports){
 module.exports = extend
 
 var hasOwnProperty = Object.prototype.hasOwnProperty;
@@ -12152,6 +12442,6 @@ function extend(target) {
     return target
 }
 
-},{}]},{},[69]);
+},{}]},{},[72]);
 </script>
 </html>

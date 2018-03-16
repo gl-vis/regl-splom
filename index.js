@@ -170,10 +170,16 @@ SPLOM.prototype.updateItem = function (i, options) {
 
 	}
 
+	// add proper range updating markers
+	let multirange
 	if (o.range) {
 		trace.range = o.range
+		multirange = trace.range && typeof trace.range[0] !== 'number'
 	}
-	let multirange = trace.range && typeof trace.range[0] !== 'number'
+
+	if (o.domain) {
+		trace.domain = o.domain
+	}
 
 
 	// create passes
@@ -205,7 +211,19 @@ SPLOM.prototype.updateItem = function (i, options) {
 					// y: {buffer: trace.buffer, offset: j, count: n, stride: m}
 				}
 				pass.bounds = getBox(trace.bounds, i, j)
-				pass.viewport = [j * iw + iw * pad, i * ih + ih * pad, (j + 1) * iw - iw * pad, (i + 1) * ih - ih * pad]
+
+			}
+
+			// TODO
+			if (o.domain || o.viewport || o.data) {
+				// if (trace.domain) {
+				// 	let domain = getBox(trace.domain)
+				// 	pass.viewport = []
+				// }
+				// // consider auto-domain equipartial
+				// else {
+					pass.viewport = [j * iw + iw * pad, i * ih + ih * pad, (j + 1) * iw - iw * pad, (i + 1) * ih - ih * pad]
+				// }
 			}
 
 			if (o.color) pass.color = trace.color
@@ -214,7 +232,7 @@ SPLOM.prototype.updateItem = function (i, options) {
 			if (o.borderColor) pass.borderColor = trace.borderColor
 
 			if (o.range) {
-				pass.range = multirange ? getBox(trace.range, i, j) : trace.range || bounds
+				pass.range = multirange ? getBox(trace.range, i, j) : trace.range || pass.bounds
 			}
 
 			trace.passes.push(key)

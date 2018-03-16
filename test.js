@@ -52,6 +52,7 @@ function update () {
 			color: alpha(palette[i % palette.length], Math.random() * .5 + .25),
 			size: 3,
 			range: [],
+			domain: [],
 			viewport: [0,0, regl._gl.drawingBufferWidth, regl._gl.drawingBufferHeight]
 		}))
 
@@ -64,6 +65,7 @@ function update () {
 				pass.data[col].mean = Math.random()
 				pass.data[col].sdev = Math.random()
 				pass.range[col] = passes[i-1] && passes[i-1].range[col] || [-5,-5,5,5]
+				pass.domain[col] = passes[i-1] && passes[i-1].domain[col] || [-5,-5,5,5]
 			}
 			let colData = pass.data[col]
 			let {mean, sdev} = colData
