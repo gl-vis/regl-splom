@@ -218,19 +218,17 @@ SPLOM.prototype.updateItem = function (i, options) {
 
 // draw all or passed passes
 SPLOM.prototype.draw = function (...args) {
-	for (let i = 0; i < this.traces.length; i++) {
-		this.drawItem(i)
+	if (!args.length) {
+		this.scatter.draw()
 	}
-
-	return this
-}
-
-
-// draw single pass
-SPLOM.prototype.drawItem = function (i) {
-	let { passes, passOffset } = this.traces[i]
-
-	this.scatter.draw(...arrRange(passOffset, passOffset + passes.length))
+	else {
+		let idx = []
+		for (let i = 0; i < args.length; i++) {
+			let { passes, passOffset } = this.traces[args[i]]
+			idx.push(...arrRange(passOffset, passOffset + passes.length))
+		}
+		this.scatter.draw(...idx)
+	}
 
 	return this
 }
