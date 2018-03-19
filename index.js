@@ -118,7 +118,8 @@ SPLOM.prototype.updateItem = function (i, options) {
 		marker: 'markers marker shape',
 		range: 'range ranges databox dataBox',
 		viewport: 'viewport viewBox viewbox',
-		domain: 'domain domains areas',
+		domain: 'domain domains area areas',
+		padding: 'pad padding paddings pads margin margins',
 		transpose: 'transpose transposed'
 	})
 
@@ -134,7 +135,8 @@ SPLOM.prototype.updateItem = function (i, options) {
 		size: 12,
 		borderColor: 'transparent',
 		borderSize: 1,
-		viewport:  rect([regl._gl.drawingBufferWidth, regl._gl.drawingBufferHeight])
+		viewport:  rect([regl._gl.drawingBufferWidth, regl._gl.drawingBufferHeight]),
+		padding: [0, 0, 0, 0]
 	}))
 
 
@@ -180,7 +182,18 @@ SPLOM.prototype.updateItem = function (i, options) {
 	if (o.domain) {
 		trace.domain = o.domain
 	}
-
+	let multipadding = false
+	if (o.padding != null) {
+		// multiple paddings
+		if (Array.isArray(o.padding) && o.padding.length === trace.columns && typeof o.padding[o.padding.length - 1] === 'number') {
+			trace.padding = o.padding.map(getPad)
+			multipadding = true
+		}
+		// single padding
+		else {
+			trace.padding = getPad(o.padding)
+		}
+	}
 
 	// create passes
 	let m = trace.columns
@@ -218,13 +231,14 @@ SPLOM.prototype.updateItem = function (i, options) {
 			}
 
 			if (o.domain || o.viewport || o.data) {
+				let pad = multipadding ? getBox(trace.padding, i, j) : trace.padding
 				if (trace.domain) {
 					let [lox, loy, hix, hiy] = getBox(trace.domain, i, j)
-					pass.viewport = [lox * w, loy * h, hix * w, hiy * h]
+					pass.viewport = [ lox * w + pad[0], loy * h + pad[1], hix * w - pad[2], hiy * h - pad[3] ]
 				}
 				// consider auto-domain equipartial
 				else {
-					pass.viewport = [j * iw + iw * pad, i * ih + ih * pad, (j + 1) * iw - iw * pad, (i + 1) * ih - ih * pad]
+					pass.viewport = [ j * iw + iw * pad[0], i * ih + ih * pad[1], (j + 1) * iw - iw * pad[2], (i + 1) * ih - ih * pad[3] ]
 				}
 			}
 
@@ -284,31 +298,53 @@ function passId (trace, i, j) {
 
 
 // return bounding box corresponding to a pass
-function getBox (ranges, i, j) {
+function getBox (items, i, j) {
 	let ilox, iloy, ihix, ihiy, jlox, jloy, jhix, jhiy
-	let irange = ranges[i], jrange = ranges[j]
+	let iitem = items[i], jitem = items[j]
 
-	if (irange.length > 2) {
-		ilox = irange[0]
-		ihix = irange[2]
-		iloy = irange[1]
-		ihiy = irange[3]
+	if (iitem.length > 2) {
+		ilox = iitem[0]
+		ihix = iitem[2]
+		iloy = iitem[1]
+		ihiy = iitem[3]
+	}
+	else if (iitem.length) {
+		ilox = iloy = iitem[0]
+		ihix = ihiy = iitem[1]
 	}
 	else {
-		ilox = iloy = irange[0]
-		ihix = ihiy = irange[1]
+		ilox = iitem.x
+		iloy = iitem.y
+		ihix = iitem.x + iitem.width
+		ihiy = iitem.y + iitem.height
 	}
 
-	if (jrange.length > 2) {
-		jlox = jrange[0]
-		jhix = jrange[2]
-		jloy = jrange[1]
-		jhiy = jrange[3]
+	if (jitem.length > 2) {
+		jlox = jitem[0]
+		jhix = jitem[2]
+		jloy = jitem[1]
+		jhiy = jitem[3]
+	}
+	else if (jitem.length) {
+		jlox = jloy = jitem[0]
+		jhix = jhiy = jitem[1]
 	}
 	else {
-		jlox = jloy = jrange[0]
-		jhix = jhiy = jrange[1]
+		jlox = jitem.x
+		jloy = jitem.y
+		jhix = jitem.x + jitem.width
+		jhiy = jitem.y + jitem.height
 	}
 
 	return [ jlox, iloy, jhix, ihiy ]
+}
+
+
+function getPad (arg) {
+	if (typeof arg === 'number') return [arg, arg, arg, arg]
+	else if (arg.length === 2) return [arg[0], arg[1], arg[0], arg[1]]
+	else {
+		let box = rect(arg)
+		return [box.x, box.y, box.x + box.width, box.y + box.height]
+	}
 }
