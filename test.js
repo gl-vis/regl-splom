@@ -53,7 +53,7 @@ function update () {
 			size: 3,
 			range: [],
 			domain: [],
-			viewport: [0,0, regl._gl.drawingBufferWidth, regl._gl.drawingBufferHeight],
+			// viewport: [100,100, 200,200],
 			padding: 2
 		}))
 
@@ -65,9 +65,9 @@ function update () {
 				pass.data[col] = []
 				pass.data[col].mean = Math.random()
 				pass.data[col].sdev = Math.random()
-				pass.range[col] = passes[i-1] && passes[i-1].range[col] || [-1,-1,1,1]
-				pass.domain[col] = passes[i-1] && passes[i-1].domain[col] || [col/variables,col/variables,(col+1)/variables,(col+1)/variables]
+				pass.range[col] = passes[i-1] && passes[i-1].range[col] || [-3,-3,3,3]
 			}
+			pass.domain[col] = [col/variables,col/variables,(col+1)/variables,(col+1)/variables]
 			let colData = pass.data[col]
 			let { mean, sdev } = colData
 			if (colData.length > points) colData.length = points

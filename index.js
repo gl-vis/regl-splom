@@ -201,6 +201,8 @@ SPLOM.prototype.updateItem = function (i, options) {
 
 	let w = trace.viewport.width
 	let h = trace.viewport.height
+	let left = trace.viewport.x
+	let top = trace.viewport.y
 	let iw = w / m
 	let ih = h / m
 	let pad = .0
@@ -234,11 +236,21 @@ SPLOM.prototype.updateItem = function (i, options) {
 				let pad = multipadding ? getBox(trace.padding, i, j) : trace.padding
 				if (trace.domain) {
 					let [lox, loy, hix, hiy] = getBox(trace.domain, i, j)
-					pass.viewport = [ lox * w + pad[0], loy * h + pad[1], hix * w - pad[2], hiy * h - pad[3] ]
+					pass.viewport = [
+						left + lox * w + pad[0],
+						top + loy * h + pad[1],
+						left + hix * w - pad[2],
+						top + hiy * h - pad[3]
+					]
 				}
 				// consider auto-domain equipartial
 				else {
-					pass.viewport = [ j * iw + iw * pad[0], i * ih + ih * pad[1], (j + 1) * iw - iw * pad[2], (i + 1) * ih - ih * pad[3] ]
+					pass.viewport = [
+						left + j * iw + iw * pad[0],
+						top + i * ih + ih * pad[1],
+						left + (j + 1) * iw - iw * pad[2],
+						top + (i + 1) * ih - ih * pad[3]
+					]
 				}
 			}
 
