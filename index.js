@@ -218,14 +218,14 @@ SPLOM.prototype.updateItem = function (i, options) {
 			if (o.data) {
 				if (o.transpose) {
 					pass.positions = {
-						x: {buffer: trace.buffer, offset: i, count: n, stride: m},
-						y: {buffer: trace.buffer, offset: j, count: n, stride: m}
+						x: {buffer: trace.buffer, offset: j, count: n, stride: m},
+						y: {buffer: trace.buffer, offset: i, count: n, stride: m}
 					}
 				}
 				else {
 					pass.positions = {
-						x: {buffer: trace.buffer, offset: i * n, count: n},
-						y: {buffer: trace.buffer, offset: j * n, count: n}
+						x: {buffer: trace.buffer, offset: j * n, count: n},
+						y: {buffer: trace.buffer, offset: i * n, count: n}
 					}
 				}
 
