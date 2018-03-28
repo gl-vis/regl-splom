@@ -4,10 +4,8 @@
 const createScatter = require('regl-scatter2d/scatter')
 const flatten = require('flatten-vertex-data')
 const pick = require('pick-by-alias')
-const defined = require('defined')
 const getBounds = require('array-bounds')
 const raf = require('raf')
-const lpad = require('left-pad')
 const arrRange = require('array-range')
 const rect = require('parse-rect')
 
@@ -75,7 +73,7 @@ SPLOM.prototype.update = function (...args) {
 	// remove nulled passes
 	this.traces = this.traces.filter(Boolean)
 
-	// FIXME: convert scattergl to buffer-per-pass maybe and update passes independently
+	// FIXME: update passes independently
 	let passes = []
 	let offset = 0
 	for (let i = 0; i < this.traces.length; i++) {
@@ -205,7 +203,6 @@ SPLOM.prototype.updateItem = function (i, options) {
 	let top = trace.viewport.y
 	let iw = w / m
 	let ih = h / m
-	let pad = .0
 
 	trace.passes = []
 
@@ -289,9 +286,14 @@ SPLOM.prototype.draw = function (...args) {
 }
 
 
-//
+// dispose resources
 SPLOM.prototype.destroy = function () {
-	this.buffer.dispose()
+	this.traces.forEach(trace => {
+		if (trace.buffer && trace.buffer.destroy) trace.buffer.destroy()
+	})
+	this.traces = null
+	this.passes = null
+
 	this.scatter.destroy()
 
 	return this
