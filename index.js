@@ -276,8 +276,19 @@ SPLOM.prototype.draw = function (...args) {
 	else {
 		let idx = []
 		for (let i = 0; i < args.length; i++) {
-			let { passes, passOffset } = this.traces[args[i]]
-			idx.push(...arrRange(passOffset, passOffset + passes.length))
+			// draw(0, 2, 5) - draw traces
+			if (typeof args[i] === 'number' ) {
+				let { passes, passOffset } = this.traces[args[i]]
+				idx.push(...arrRange(passOffset, passOffset + passes.length))
+			}
+			// draw([0, 1, 2 ...], [3, 4, 5]) - draw points
+			else if (args[i].length) {
+				let els = args[i]
+				let { passes, passOffset } = this.traces[i]
+				passes = passes.map((passId, i) => {
+					idx[passOffset + i] = els
+				})
+			}
 		}
 		this.scatter.draw(...idx)
 	}
