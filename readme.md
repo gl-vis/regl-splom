@@ -1,8 +1,8 @@
 # regl-scattermatrix
 
-Matrix of scatter plots (SPLOM). A wrapper over [regl-scatter2d](https://github.com/dfcreative/regl-scatter2d) for optimized intersected data rendering.
+Matrix of scatter plots (SPLOM). A wrapper over [regl-scatter2d](https://github.com/dy/regl-scatter2d) for optimized intersected data rendering.
 
-* [x] minimal GPU memory footprint: N vs N*N in direct [regl-scatter2d](https://github.com/dfcreative/regl-scatter2d) case.
+* [x] minimal GPU memory footprint: N vs N*N in direct [regl-scatter2d](https://github.com/dy/regl-scatter2d) case.
 * [ ] optimized performance due to binary trees for 1d point clustering, opposed to default 2d quad clustering.
 
 
@@ -41,18 +41,26 @@ Option | Description
 `data` | An array with arrays for the columns.
 `range` | Array with data ranges corresponding to `data`. Every range can be an array `[min, max]` or `[minX, minY, maxX, maxY]`. If undefined - detected automatically.
 `domain` | Array with domains for the data, ie. the area data dimension holds  within the `viewport`. Each domain can be an array `[min, max]` for symmetric placement or `[minX, minY, maxX, maxY]` for precise position. Domain values are from `0..1` interval, defining what area of the `viewport` a dimension holds. By default domains cover viewport evnely.
-`padding` | Padding within domains (in px), or list of paddings per-domain. By default `[0,0,0,0]`. Can be a number, an array or any [rectangle](https://github.com/dfcreative/parse-rect) format.
+`padding` | Padding within domains (in px), or list of paddings per-domain. By default `[0,0,0,0]`. Can be a number, an array or any [rectangle](https://github.com/dy/parse-rect) format.
 `color`, `size`, `borderColor`, `borderSize` | Points style.
-`viewport` | Area that the plot holds within the canvas. Can take any [rectangle](https://github.com/dfcreative/parse-rect) format.
+`viewport` | Area that the plot holds within the canvas. Can take any [rectangle](https://github.com/dy/parse-rect) format.
 <!--
 `transpose` | Use transposed view of data, ie. swap columns and rows.
 `normalizeDomain` | Normalize domains to fit the viewport.
 `snap` | Enable snapping for the points, ie. hide invisible points
 -->
 
-### `splom.draw(...ids?)`
+### `splom.draw(...ids?|...points?)`
 
-Draw all defined passes, or only selected ones provided by `ids`.
+Draw all defined passes, or only selected ones provided by `ids`. Optionally define point indexes to render.
+
+```js
+// draw 1 and 3 passes
+splom.draw(1, 3)
+
+// draw 1, 2 and 3 points from the first pass and 3 point from the second pass
+splom.draw([1, 2, 3], [3])
+```
 
 ### `splom.destroy()`
 
@@ -60,9 +68,9 @@ Dispose renderer and all the associated resources
 
 ## Related
 
-* [regl-scatter2d](https://github.com/dfcreative/regl-scatter2d)
-* [regl-line2d](https://github.com/dfcreative/regl-line2d)
-* [regl-error2d](https://github.com/dfcreative/regl-error2d)
+* [regl-scatter2d](https://github.com/dy/regl-scatter2d)
+* [regl-line2d](https://github.com/dy/regl-line2d)
+* [regl-error2d](https://github.com/dy/regl-error2d)
 
 
 ## License
