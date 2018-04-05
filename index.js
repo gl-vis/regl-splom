@@ -106,7 +106,7 @@ SPLOM.prototype.updateItem = function (i, options) {
 	if (!options) return this
 
 	let o = pick(options, {
-		data: 'data items columns rows values dimensions samples',
+		data: 'data items columns rows values dimensions samples x',
 		snap: 'snap cluster',
 		size: 'sizes size radius',
 		color: 'colors color fill fill-color fillColor',
@@ -118,7 +118,9 @@ SPLOM.prototype.updateItem = function (i, options) {
 		viewport: 'viewport viewBox viewbox',
 		domain: 'domain domains area areas',
 		padding: 'pad padding paddings pads margin margins',
-		transpose: 'transpose transposed'
+		transpose: 'transpose transposed',
+		diagonal: 'diagonal diag showDiagonal',
+		mode: 'mode triangle type show'
 	})
 
 	// we provide regl buffer per-trace, since trace data can be changed
@@ -134,7 +136,9 @@ SPLOM.prototype.updateItem = function (i, options) {
 		borderColor: 'transparent',
 		borderSize: 1,
 		viewport:  rect([regl._gl.drawingBufferWidth, regl._gl.drawingBufferHeight]),
-		padding: [0, 0, 0, 0]
+		padding: [0, 0, 0, 0],
+		opacity: 1,
+		diagonal: true
 	}))
 
 
@@ -151,9 +155,13 @@ SPLOM.prototype.updateItem = function (i, options) {
 	if (o.borderSize != null) {
 		trace.borderSize = o.borderSize
 	}
+	if (o.opacity != null) {
+		trace.opacity = o.opacity
+	}
 	if (o.viewport) {
 		trace.viewport = rect(o.viewport)
 	}
+	if (o.diagonal != null) trace.diagonal = o.diagonal
 
 	// put flattened data into buffer
 	if (o.data) {
@@ -208,6 +216,8 @@ SPLOM.prototype.updateItem = function (i, options) {
 
 	for (let i = 0; i < m; i++) {
 		for (let j = 0; j < m; j++) {
+			if (!trace.diagonal && j === i) continue;
+
 			let key = passId(trace.id, i, j)
 
 			let pass = this.passes[key] || (this.passes[key] = {})
@@ -255,6 +265,7 @@ SPLOM.prototype.updateItem = function (i, options) {
 			if (o.size) pass.size = trace.size
 			if (o.borderSize) pass.borderSize = trace.borderSize
 			if (o.borderColor) pass.borderColor = trace.borderColor
+			if (o.opacity) pass.opacity = trace.opacity
 
 			if (o.range) {
 				pass.range = multirange ? getBox(trace.range, i, j) : trace.range || pass.bounds

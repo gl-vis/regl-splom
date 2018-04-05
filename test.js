@@ -55,7 +55,8 @@ function update () {
 			range: [],
 			domain: [],
 			// viewport: [100,100, 200,200],
-			padding: 2
+			padding: 2,
+			diagonal: true
 		}))
 
 		if (!pass.data) pass.data = []
@@ -84,7 +85,8 @@ function update () {
 	console.timeEnd('update')
 
 	console.time('draw')
-	splom.draw([1,2,3,4,5])
+	// splom.draw([1,2,3,4,5])
+	splom.draw()
 	console.timeEnd('draw')
 }
 

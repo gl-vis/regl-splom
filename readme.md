@@ -42,13 +42,14 @@ Option | Description
 `range` | Array with data ranges corresponding to `data`. Every range can be an array `[min, max]` or `[minX, minY, maxX, maxY]`. If undefined - detected automatically.
 `domain` | Array with domains for the data, ie. the area data dimension holds  within the `viewport`. Each domain can be an array `[min, max]` for symmetric placement or `[minX, minY, maxX, maxY]` for precise position. Domain values are from `0..1` interval, defining what area of the `viewport` a dimension holds. By default domains cover viewport evnely.
 `padding` | Padding within domains (in px), or list of paddings per-domain. By default `[0,0,0,0]`. Can be a number, an array or any [rectangle](https://github.com/dy/parse-rect) format.
-`color`, `size`, `borderColor`, `borderSize` | Points style.
+`color`, `size`, `borderColor`, `borderSize`, `opacity` | Points style.
+`diagonal` | Show or hide diagonal.
+`mode` | Display `upper` triangle matrix, `lower` triangle matrix or `both` for diagonal matrix.
 `viewport` | Area that the plot holds within the canvas. Can take any [rectangle](https://github.com/dy/parse-rect) format.
-<!--
-`transpose` | Use transposed view of data, ie. swap columns and rows.
-`normalizeDomain` | Normalize domains to fit the viewport.
-`snap` | Enable snapping for the points, ie. hide invisible points
--->
+<!-- `transpose` | Use transposed view of data, ie. swap columns and rows. -->
+<!-- `normalizeDomain` | Normalize domains to fit the viewport. -->
+<!-- `snap` | Enable snapping for the points, ie. hide invisible points -->
+
 
 ### `splom.draw(...ids?|...points?)`
 
