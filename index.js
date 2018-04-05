@@ -120,7 +120,8 @@ SPLOM.prototype.updateItem = function (i, options) {
 		padding: 'pad padding paddings pads margin margins',
 		transpose: 'transpose transposed',
 		diagonal: 'diagonal diag showDiagonal',
-		hide: 'hide hidden disable'
+		upper: 'upper up top upperhalf upperHalf showupperhalf showUpperHalf',
+		lower: 'lower low bottom lowerhalf lowerHalf showlowerhalf showLowerHalf'
 	})
 
 	// we provide regl buffer per-trace, since trace data can be changed
@@ -139,7 +140,8 @@ SPLOM.prototype.updateItem = function (i, options) {
 		padding: [0, 0, 0, 0],
 		opacity: 1,
 		diagonal: true,
-		hide: false
+		upper: true,
+		lower: true
 	}))
 
 
@@ -163,7 +165,8 @@ SPLOM.prototype.updateItem = function (i, options) {
 		trace.viewport = rect(o.viewport)
 	}
 	if (o.diagonal != null) trace.diagonal = o.diagonal
-	if (o.hide != null) trace.hide = o.hide
+	if (o.upper != null) trace.upper = o.upper
+	if (o.lower != null) trace.lower = o.lower
 
 	// put flattened data into buffer
 	if (o.data) {
@@ -177,7 +180,6 @@ SPLOM.prototype.updateItem = function (i, options) {
 		for (let i = 0; i < trace.columns; i++) {
 			trace.bounds[i] = getBounds(o.data[i], 1)
 		}
-
 	}
 
 	// add proper range updating markers
@@ -218,16 +220,9 @@ SPLOM.prototype.updateItem = function (i, options) {
 
 	for (let i = 0; i < m; i++) {
 		for (let j = 0; j < m; j++) {
-			if (!trace.diagonal && j === i) continue;
-
-			if (trace.hide) {
-				if (trace.hide === 'low' || trace.hide === 'lower' || trace.hide === 'top') {
-					if (i > j) continue;
-				}
-				else if (trace.hide === 'up' || trace.hide === 'upper' || trace.hide === 'bottom') {
-					if (i < j) continue;
-				}
-			}
+			if (!trace.diagonal && j === i) continue
+			if (!trace.upper && i < j) continue
+			if (!trace.lower && i > j) continue
 
 			let key = passId(trace.id, i, j)
 
