@@ -120,7 +120,7 @@ SPLOM.prototype.updateItem = function (i, options) {
 		padding: 'pad padding paddings pads margin margins',
 		transpose: 'transpose transposed',
 		diagonal: 'diagonal diag showDiagonal',
-		mode: 'mode triangle type show'
+		hide: 'hide hidden disable'
 	})
 
 	// we provide regl buffer per-trace, since trace data can be changed
@@ -138,7 +138,8 @@ SPLOM.prototype.updateItem = function (i, options) {
 		viewport:  rect([regl._gl.drawingBufferWidth, regl._gl.drawingBufferHeight]),
 		padding: [0, 0, 0, 0],
 		opacity: 1,
-		diagonal: true
+		diagonal: true,
+		hide: false
 	}))
 
 
@@ -162,6 +163,7 @@ SPLOM.prototype.updateItem = function (i, options) {
 		trace.viewport = rect(o.viewport)
 	}
 	if (o.diagonal != null) trace.diagonal = o.diagonal
+	if (o.hide != null) trace.hide = o.hide
 
 	// put flattened data into buffer
 	if (o.data) {
@@ -217,6 +219,15 @@ SPLOM.prototype.updateItem = function (i, options) {
 	for (let i = 0; i < m; i++) {
 		for (let j = 0; j < m; j++) {
 			if (!trace.diagonal && j === i) continue;
+
+			if (trace.hide) {
+				if (trace.hide === 'low' || trace.hide === 'lower' || trace.hide === 'top') {
+					if (i > j) continue;
+				}
+				else if (trace.hide === 'up' || trace.hide === 'upper' || trace.hide === 'bottom') {
+					if (i < j) continue;
+				}
+			}
 
 			let key = passId(trace.id, i, j)
 

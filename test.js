@@ -56,7 +56,8 @@ function update () {
 			domain: [],
 			// viewport: [100,100, 200,200],
 			padding: 2,
-			diagonal: true
+			diagonal: true,
+			hide: 'bottom'
 		}))
 
 		if (!pass.data) pass.data = []

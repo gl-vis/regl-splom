@@ -44,7 +44,7 @@ Option | Description
 `padding` | Padding within domains (in px), or list of paddings per-domain. By default `[0,0,0,0]`. Can be a number, an array or any [rectangle](https://github.com/dy/parse-rect) format.
 `color`, `size`, `borderColor`, `borderSize`, `opacity` | Points style.
 `diagonal` | Show or hide diagonal.
-`mode` | Display `upper` triangle matrix, `lower` triangle matrix or `both` for diagonal matrix.
+`hide` | Hide `upper` triangle matrix or `lower` triangle matrix.
 `viewport` | Area that the plot holds within the canvas. Can take any [rectangle](https://github.com/dy/parse-rect) format.
 <!-- `transpose` | Use transposed view of data, ie. swap columns and rows. -->
 <!-- `normalizeDomain` | Normalize domains to fit the viewport. -->
