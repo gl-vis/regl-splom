@@ -117,7 +117,6 @@ SPLOM.prototype.updateItem = function (i, options) {
 		range: 'range ranges databox dataBox',
 		viewport: 'viewport viewBox viewbox',
 		domain: 'domain domains area areas',
-		adjust: 'adjustDomain adjust adjustDiag adjustDiagonal rescale scaleDiag',
 		padding: 'pad padding paddings pads margin margins',
 		transpose: 'transpose transposed',
 		diagonal: 'diagonal diag showDiagonal',
@@ -142,8 +141,7 @@ SPLOM.prototype.updateItem = function (i, options) {
 		opacity: 1,
 		diagonal: true,
 		upper: true,
-		lower: true,
-		adjust: true
+		lower: true
 	}))
 
 
@@ -193,27 +191,6 @@ SPLOM.prototype.updateItem = function (i, options) {
 
 	if (o.domain) {
 		trace.domain = o.domain
-
-		// adjust domain when only half is visible
-		if (!trace.diagonal && (!trace.upper || !trace.lower) && trace.adjust) {
-			let shift = 1 / trace.domain.length
-			if (trace.upper) {
-				trace.domain.forEach((d, i) => {
-					d[1] = (d[1] - shift) / (1 - shift)
-					d[3] = (d[3] - shift) / (1 - shift)
-					d[0] = (d[0]) / (1 - shift)
-					d[2] = (d[2]) / (1 - shift)
-				})
-			}
-			else if (trace.lower) {
-				trace.domain.forEach((d, i) => {
-					d[1] = (d[1]) / (1 - shift)
-					d[3] = (d[3]) / (1 - shift)
-					d[0] = (d[0] - shift) / (1 - shift)
-					d[2] = (d[2] - shift) / (1 - shift)
-				})
-			}
-		}
 	}
 	let multipadding = false
 	if (o.padding != null) {

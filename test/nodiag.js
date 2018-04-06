@@ -24,9 +24,35 @@ splom.update({
   //   [0.5, 0, 1, 0.5],
   //   [null, 0.5, 1, 1]
   // ],
-  adjustDomain: false,
+  adjustDomain: true,
   diagonal: false,
   lower: false
 })
 
 splom.draw()
+
+splom.destroy()
+
+
+
+
+// adjust domain when only half is visible
+// if (!trace.diagonal && (!trace.upper || !trace.lower) && trace.adjust) {
+//   let shift = 1 / trace.domain.length
+//   if (trace.upper) {
+//     trace.domain.forEach((d, i) => {
+//       d[1] = (d[1] - shift) / (1 - shift)
+//       d[3] = (d[3] - shift) / (1 - shift)
+//       d[0] = (d[0]) / (1 - shift)
+//       d[2] = (d[2]) / (1 - shift)
+//     })
+//   }
+//   else if (trace.lower) {
+//     trace.domain.forEach((d, i) => {
+//       d[1] = (d[1]) / (1 - shift)
+//       d[3] = (d[3]) / (1 - shift)
+//       d[0] = (d[0] - shift) / (1 - shift)
+//       d[2] = (d[2] - shift) / (1 - shift)
+//     })
+//   }
+// }
