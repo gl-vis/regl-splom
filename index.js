@@ -117,11 +117,12 @@ SPLOM.prototype.updateItem = function (i, options) {
 		range: 'range ranges databox dataBox',
 		viewport: 'viewport viewBox viewbox',
 		domain: 'domain domains area areas',
+		adjust: 'adjustDomain adjust adjustDiag adjustDiagonal rescale scaleDiag',
 		padding: 'pad padding paddings pads margin margins',
 		transpose: 'transpose transposed',
 		diagonal: 'diagonal diag showDiagonal',
-		upper: 'upper up top upperhalf upperHalf showupperhalf showUpperHalf',
-		lower: 'lower low bottom lowerhalf lowerHalf showlowerhalf showLowerHalf'
+		upper: 'upper up top upperhalf upperHalf showupperhalf showUpper showUpperHalf',
+		lower: 'lower low bottom lowerhalf lowerHalf showlowerhalf showLowerHalf showLower'
 	})
 
 	// we provide regl buffer per-trace, since trace data can be changed
@@ -141,7 +142,8 @@ SPLOM.prototype.updateItem = function (i, options) {
 		opacity: 1,
 		diagonal: true,
 		upper: true,
-		lower: true
+		lower: true,
+		adjust: true
 	}))
 
 
@@ -191,6 +193,27 @@ SPLOM.prototype.updateItem = function (i, options) {
 
 	if (o.domain) {
 		trace.domain = o.domain
+
+		// adjust domain when only half is visible
+		if (!trace.diagonal && (!trace.upper || !trace.lower) && trace.adjust) {
+			let shift = 1 / trace.domain.length
+			if (trace.upper) {
+				trace.domain.forEach((d, i) => {
+					d[1] = (d[1] - shift) / (1 - shift)
+					d[3] = (d[3] - shift) / (1 - shift)
+					d[0] = (d[0]) / (1 - shift)
+					d[2] = (d[2]) / (1 - shift)
+				})
+			}
+			else if (trace.lower) {
+				trace.domain.forEach((d, i) => {
+					d[1] = (d[1]) / (1 - shift)
+					d[3] = (d[3]) / (1 - shift)
+					d[0] = (d[0] - shift) / (1 - shift)
+					d[2] = (d[2] - shift) / (1 - shift)
+				})
+			}
+		}
 	}
 	let multipadding = false
 	if (o.padding != null) {
@@ -221,8 +244,8 @@ SPLOM.prototype.updateItem = function (i, options) {
 	for (let i = 0; i < m; i++) {
 		for (let j = 0; j < m; j++) {
 			if (!trace.diagonal && j === i) continue
-			if (!trace.upper && i < j) continue
-			if (!trace.lower && i > j) continue
+			if (!trace.upper && i > j) continue
+			if (!trace.lower && i < j) continue
 
 			let key = passId(trace.id, i, j)
 
@@ -249,6 +272,7 @@ SPLOM.prototype.updateItem = function (i, options) {
 				let pad = multipadding ? getBox(trace.padding, i, j) : trace.padding
 				if (trace.domain) {
 					let [lox, loy, hix, hiy] = getBox(trace.domain, i, j)
+
 					pass.viewport = [
 						left + lox * w + pad[0],
 						top + loy * h + pad[1],
