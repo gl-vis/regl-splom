@@ -57,7 +57,33 @@ function update () {
 			// viewport: [100,100, 200,200],
 			padding: 2,
 			diagonal: true,
-			hide: 'bottom'
+			hide: 'bottom',
+			marker: (function () {
+				let w = 200, h = 200
+				let dist = new Array(w*h)
+				for (let i = 0; i < w; i++) {
+					for (let j = 0; j < h; j++) {
+						if (i > j) {
+							if (i < h - j) {
+								dist[j*w + i] = j/(h/2)
+							}
+							else {
+								dist[j*w + i] = 1 - (i-w/2)/(w/2)
+							}
+						}
+						else {
+							if (i < h - j) {
+								dist[j*w + i] = i/(w/2)
+							}
+							else {
+								dist[j*w + i] = 1 - (j-h/2)/(h/2)
+							}
+						}
+					}
+				}
+
+				return dist
+			})()
 		}))
 
 		if (!pass.data) pass.data = []
@@ -141,4 +167,5 @@ panzoom(splom.canvas, e => {
 	splom.draw()
 	console.timeEnd('draw')
 })
+
 

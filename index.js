@@ -133,6 +133,7 @@ SPLOM.prototype.updateItem = function (i, options) {
 			data: null
 		}),
 		color: 'black',
+		marker: null,
 		size: 12,
 		borderColor: 'transparent',
 		borderSize: 1,
@@ -151,6 +152,9 @@ SPLOM.prototype.updateItem = function (i, options) {
 	}
 	if (o.size != null) {
 		trace.size = o.size
+	}
+	if (o.marker != null) {
+		trace.marker = o.marker
 	}
 	if (o.borderColor != null) {
 		trace.borderColor = o.borderColor
@@ -270,6 +274,7 @@ SPLOM.prototype.updateItem = function (i, options) {
 
 			if (o.color) pass.color = trace.color
 			if (o.size) pass.size = trace.size
+			if (o.marker) pass.marker = trace.marker
 			if (o.borderSize) pass.borderSize = trace.borderSize
 			if (o.borderColor) pass.borderColor = trace.borderColor
 			if (o.opacity) pass.opacity = trace.opacity
