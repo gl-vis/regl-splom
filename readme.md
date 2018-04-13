@@ -1,18 +1,18 @@
-# regl-scattermatrix
+# regl-splom
 
-Matrix of scatter plots (SPLOM). A wrapper over [regl-scatter2d](https://github.com/dy/regl-scatter2d) for optimized intersected data rendering.
+Matrix of scatter plots. A wrapper over [regl-scatter2d](https://github.com/dy/regl-scatter2d) for optimized intersected data rendering.
 
-* [x] minimal GPU memory footprint: N vs N*N in direct [regl-scatter2d](https://github.com/dy/regl-scatter2d) case.
+* [x] minimal GPU memory footprint: N vs N*N in direct [regl-scatter2d](https://github.com/dy/regl-scatter2d) passes case.
 * [ ] optimized performance due to binary trees for 1d point clustering, opposed to default 2d quad clustering.
 
 
 ## Usage
 
-[![npm install regl-scattermatrix](https://nodei.co/npm/regl-scattermatrix.png?mini=true)](https://npmjs.org/package/regl-scattermatrix/)
+[![npm install regl-splom](https://nodei.co/npm/regl-splom.png?mini=true)](https://npmjs.org/package/regl-splom/)
 
 ```js
 let regl = require('regl')({extensions: 'oes_element_index_uint'})
-let createMatrix = require('regl-scattermatrix')
+let createMatrix = require('regl-splom')
 
 let scatterMatrix = createMatrix(regl)
 

@@ -1,5 +1,5 @@
 {
-  "name": "regl-scattermatrix",
+  "name": "regl-splom",
   "version": "1.0.0",
   "description": "Scatterplot matrix for 2d plots",
   "main": "./index.js",
@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dy/regl-scattermatrix.git"
+    "url": "git+https://github.com/dy/regl-splom.git"
   },
   "keywords": [
     "regl",
@@ -23,9 +23,9 @@
   "author": "Dmitry Yv <df.creative@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/dy/regl-scattermatrix/issues"
+    "url": "https://github.com/dy/regl-splom/issues"
   },
-  "homepage": "https://github.com/dy/regl-scattermatrix#readme",
+  "homepage": "https://github.com/dy/regl-splom#readme",
   "dependencies": {
     "array-bounds": "^1.0.1",
     "array-range": "^1.0.1",
