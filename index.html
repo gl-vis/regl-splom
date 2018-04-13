@@ -1,34 +1,34 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>regl-scattermatrix</title>
+<title>regl-splom</title>
 <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
-<meta charset=utf-8><meta name="application-name" content="regl-scattermatrix">
+<meta charset=utf-8><meta name="application-name" content="regl-splom">
 <meta name="subject" content="Scatterplot matrix for 2d plots">
 <meta name="abstract" content="Scatterplot matrix for 2d plots">
-<meta name="twitter:title" content="regl-scattermatrix">
+<meta name="twitter:title" content="regl-splom">
 <meta name="description" content="Scatterplot matrix for 2d plots">
 <meta name="twitter:description" content="Scatterplot matrix for 2d plots">
 <meta name="author" content="Dmitry Yv &lt;df&period;creative&commat;gmail&period;com&gt;">
 <meta name="twitter:creator" content="Dmitry Yv &lt;df&period;creative&commat;gmail&period;com&gt;">
 <meta name="twitter:card" content="summary">
-<meta itemprop="title" content="regl-scattermatrix">
+<meta itemprop="title" content="regl-splom">
 <meta itemprop="description" content="Scatterplot matrix for 2d plots">
-<meta property="og:title" content="regl-scattermatrix">
+<meta property="og:title" content="regl-splom">
 <meta property="og:description" content="Scatterplot matrix for 2d plots">
 <meta property="article:author" content="Dmitry Yv &lt;df&period;creative&commat;gmail&period;com&gt;">
 <style type="text/css">.github-corner{display:block;position:absolute;top:0;left:auto;right:0;z-index:10000}.github-corner svg{display:block}.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%{transform:rotate(0)}20%{transform:rotate(-25deg)}40%{transform:rotate(10deg)}60%{transform:rotate(-25deg)}80%{transform:rotate(10deg)}100%{transform:rotate(0)}}@media(max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style><style type="text/css">/*! normalize.css v7.0.0 | MIT License | github.com/necolas/normalize.css */html{line-height:1.15;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%}body{margin:0}article,aside,footer,header,nav,section{display:block}h1{font-size:2em;margin:.67em 0}figcaption,figure,main{display:block}figure{margin:1em 40px}hr{box-sizing:content-box;height:0;overflow:visible}pre{font-family:monospace,monospace;font-size:1em}a{background-color:transparent;-webkit-text-decoration-skip:objects}abbr[title]{border-bottom:0;text-decoration:underline;text-decoration:underline dotted}b,strong{font-weight:inherit}b,strong{font-weight:bolder}code,kbd,samp{font-family:monospace,monospace;font-size:1em}dfn{font-style:italic}mark{background-color:#ff0;color:#000}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-0.25em}sup{top:-0.5em}audio,video{display:inline-block}audio:not([controls]){display:none;height:0}img{border-style:none}svg:not(:root){overflow:hidden}button,input,optgroup,select,textarea{font-family:sans-serif;font-size:100%;line-height:1.15;margin:0}button,input{overflow:visible}button,select{text-transform:none}button,html [type="button"],[type="reset"],[type="submit"]{-webkit-appearance:button}button::-moz-focus-inner,[type="button"]::-moz-focus-inner,[type="reset"]::-moz-focus-inner,[type="submit"]::-moz-focus-inner{border-style:none;padding:0}button:-moz-focusring,[type="button"]:-moz-focusring,[type="reset"]:-moz-focusring,[type="submit"]:-moz-focusring{outline:1px dotted ButtonText}fieldset{padding:.35em .75em .625em}legend{box-sizing:border-box;color:inherit;display:table;max-width:100%;padding:0;white-space:normal}progress{display:inline-block;vertical-align:baseline}textarea{overflow:auto}[type="checkbox"],[type="radio"]{box-sizing:border-box;padding:0}[type="number"]::-webkit-inner-spin-button,[type="number"]::-webkit-outer-spin-button{height:auto}[type="search"]{-webkit-appearance:textfield;outline-offset:-2px}[type="search"]::-webkit-search-cancel-button,[type="search"]::-webkit-search-decoration{-webkit-appearance:none}::-webkit-file-upload-button{-webkit-appearance:button;font:inherit}details,menu{display:block}summary{display:list-item}canvas{display:inline-block}template{display:none}[hidden]{display:none}html {
   touch-action: manipulation;
 }
 </style></head>
-<body><script>Array.prototype.fill||(Array.prototype.fill=function(t){if(null==this)throw new TypeError("this is null or not defined");for(var e=Object(this),o=e.length>>>0,r=arguments[1]>>0,d=r<0?Math.max(o+r,0):Math.min(r,o),i=arguments[2],y=void 0===i?o:i>>0,n=y<0?Math.max(o+y,0):Math.min(y,o);d<n;)e[d]=t,d++;return e});var methods=["values","sort","some","slice","reverse","reduceRight","reduce","map","keys","lastIndexOf","join","indexOf","includes","forEach","find","findIndex","copyWithin","filter","entries","every","fill"];if("undefined"!=typeof Int8Array)for(i=methods.length;i--;){method=methods[i];Int8Array.prototype[method]||(Int8Array.prototype[method]=Array.prototype[method])}if("undefined"!=typeof Uint8Array)for(i=methods.length;i--;){method=methods[i];Uint8Array.prototype[method]||(Uint8Array.prototype[method]=Array.prototype[method])}if("undefined"!=typeof Uint8ClampedArray)for(i=methods.length;i--;){method=methods[i];Uint8ClampedArray.prototype[method]||(Uint8ClampedArray.prototype[method]=Array.prototype[method])}if("undefined"!=typeof Int16Array)for(i=methods.length;i--;){method=methods[i];Int16Array.prototype[method]||(Int16Array.prototype[method]=Array.prototype[method])}if("undefined"!=typeof Uint16Array)for(i=methods.length;i--;){method=methods[i];Uint16Array.prototype[method]||(Uint16Array.prototype[method]=Array.prototype[method])}if("undefined"!=typeof Int32Array)for(i=methods.length;i--;){method=methods[i];Int32Array.prototype[method]||(Int32Array.prototype[method]=Array.prototype[method])}if("undefined"!=typeof Uint32Array)for(i=methods.length;i--;){method=methods[i];Uint32Array.prototype[method]||(Uint32Array.prototype[method]=Array.prototype[method])}if("undefined"!=typeof Float32Array)for(i=methods.length;i--;){method=methods[i];Float32Array.prototype[method]||(Float32Array.prototype[method]=Array.prototype[method])}if("undefined"!=typeof Float64Array)for(i=methods.length;i--;){method=methods[i];Float64Array.prototype[method]||(Float64Array.prototype[method]=Array.prototype[method])}if("undefined"!=typeof TypedArray)for(var i=methods.length;i--;){var method=methods[i];TypedArray.prototype[method]||(TypedArray.prototype[method]=Array.prototype[method])}if(window.AnalyserNode&&!window.AnalyserNode.prototype.getFloatTimeDomainData){var uint8=new Uint8Array(2048);window.AnalyserNode.prototype.getFloatTimeDomainData=function(t){this.getByteTimeDomainData(uint8);for(var e=0,o=t.length;e<o;e++)t[e]=.0078125*(uint8[e]-128)}}</script><a href="https://github.com/dfcreative/regl-scattermatrix" class="github-corner" aria-label="View source on Github"><svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 250 250" fill="#fff">
+<body><script>Array.prototype.fill||(Array.prototype.fill=function(t){if(null==this)throw new TypeError("this is null or not defined");for(var e=Object(this),o=e.length>>>0,r=arguments[1]>>0,d=r<0?Math.max(o+r,0):Math.min(r,o),i=arguments[2],y=void 0===i?o:i>>0,n=y<0?Math.max(o+y,0):Math.min(y,o);d<n;)e[d]=t,d++;return e});var methods=["values","sort","some","slice","reverse","reduceRight","reduce","map","keys","lastIndexOf","join","indexOf","includes","forEach","find","findIndex","copyWithin","filter","entries","every","fill"];if("undefined"!=typeof Int8Array)for(i=methods.length;i--;){method=methods[i];Int8Array.prototype[method]||(Int8Array.prototype[method]=Array.prototype[method])}if("undefined"!=typeof Uint8Array)for(i=methods.length;i--;){method=methods[i];Uint8Array.prototype[method]||(Uint8Array.prototype[method]=Array.prototype[method])}if("undefined"!=typeof Uint8ClampedArray)for(i=methods.length;i--;){method=methods[i];Uint8ClampedArray.prototype[method]||(Uint8ClampedArray.prototype[method]=Array.prototype[method])}if("undefined"!=typeof Int16Array)for(i=methods.length;i--;){method=methods[i];Int16Array.prototype[method]||(Int16Array.prototype[method]=Array.prototype[method])}if("undefined"!=typeof Uint16Array)for(i=methods.length;i--;){method=methods[i];Uint16Array.prototype[method]||(Uint16Array.prototype[method]=Array.prototype[method])}if("undefined"!=typeof Int32Array)for(i=methods.length;i--;){method=methods[i];Int32Array.prototype[method]||(Int32Array.prototype[method]=Array.prototype[method])}if("undefined"!=typeof Uint32Array)for(i=methods.length;i--;){method=methods[i];Uint32Array.prototype[method]||(Uint32Array.prototype[method]=Array.prototype[method])}if("undefined"!=typeof Float32Array)for(i=methods.length;i--;){method=methods[i];Float32Array.prototype[method]||(Float32Array.prototype[method]=Array.prototype[method])}if("undefined"!=typeof Float64Array)for(i=methods.length;i--;){method=methods[i];Float64Array.prototype[method]||(Float64Array.prototype[method]=Array.prototype[method])}if("undefined"!=typeof TypedArray)for(var i=methods.length;i--;){var method=methods[i];TypedArray.prototype[method]||(TypedArray.prototype[method]=Array.prototype[method])}if(window.AnalyserNode&&!window.AnalyserNode.prototype.getFloatTimeDomainData){var uint8=new Uint8Array(2048);window.AnalyserNode.prototype.getFloatTimeDomainData=function(t){this.getByteTimeDomainData(uint8);for(var e=0,o=t.length;e<o;e++)t[e]=.0078125*(uint8[e]-128)}}</script><a href="https://github.com/dy/regl-splom" class="github-corner" aria-label="View source on Github"><svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 250 250" fill="#fff">
   <path d="M0 0l115 115h15l12 27 108 108V0z" fill="#333"/>
   <path class="octo-arm" d="M128 109c-15-9-9-19-9-19 3-7 2-11 2-11-1-7 3-2 3-2 4 5 2 11 2 11-3 10 5 15 9 16" style="-webkit-transform-origin: 130px 106px; transform-origin: 130px 106px"/>
   <path class="octo-body" d="M115 115s4 2 5 0l14-14c3-2 6-3 8-3-8-11-15-24 2-41 5-5 10-7 16-7 1-2 3-7 12-11 0 0 5 3 7 16 4 2 8 5 12 9s7 8 9 12c14 3 17 7 17 7-4 8-9 11-11 11 0 6-2 11-7 16-16 16-30 10-41 2 0 3-1 7-5 11l-12 11c-1 1 1 5 1 5z"/>
 </svg>
 </a></body>
 <script>
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function(){function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s}return e})()({1:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -546,8 +546,16 @@ var objectKeys = Object.keys || function (obj) {
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
+var objectCreate = Object.create || objectCreatePolyfill
+var objectKeys = Object.keys || objectKeysPolyfill
+var bind = Function.prototype.bind || functionBindPolyfill
+
 function EventEmitter() {
-  this._events = this._events || {};
+  if (!this._events || !Object.prototype.hasOwnProperty.call(this, '_events')) {
+    this._events = objectCreate(null);
+    this._eventsCount = 0;
+  }
+
   this._maxListeners = this._maxListeners || undefined;
 }
 module.exports = EventEmitter;
@@ -560,276 +568,487 @@ EventEmitter.prototype._maxListeners = undefined;
 
 // By default EventEmitters will print a warning if more than 10 listeners are
 // added to it. This is a useful default which helps finding memory leaks.
-EventEmitter.defaultMaxListeners = 10;
+var defaultMaxListeners = 10;
+
+var hasDefineProperty;
+try {
+  var o = {};
+  if (Object.defineProperty) { Object.defineProperty(o, 'x', { value: 0 }); }
+  hasDefineProperty = o.x === 0;
+} catch (err) { hasDefineProperty = false }
+if (hasDefineProperty) {
+  Object.defineProperty(EventEmitter, 'defaultMaxListeners', {
+    enumerable: true,
+    get: function() {
+      return defaultMaxListeners;
+    },
+    set: function(arg) {
+      // check whether the input is a positive number (whose value is zero or
+      // greater and not a NaN).
+      if (typeof arg !== 'number' || arg < 0 || arg !== arg)
+        { throw new TypeError('"defaultMaxListeners" must be a positive number'); }
+      defaultMaxListeners = arg;
+    }
+  });
+} else {
+  EventEmitter.defaultMaxListeners = defaultMaxListeners;
+}
 
 // Obviously not all Emitters should be limited to 10. This function allows
 // that to be increased. Set to zero for unlimited.
-EventEmitter.prototype.setMaxListeners = function(n) {
-  if (!isNumber(n) || n < 0 || isNaN(n))
-    { throw TypeError('n must be a positive number'); }
+EventEmitter.prototype.setMaxListeners = function setMaxListeners(n) {
+  if (typeof n !== 'number' || n < 0 || isNaN(n))
+    { throw new TypeError('"n" argument must be a positive number'); }
   this._maxListeners = n;
   return this;
 };
 
-EventEmitter.prototype.emit = function(type) {
-  var this$1 = this;
+function $getMaxListeners(that) {
+  if (that._maxListeners === undefined)
+    { return EventEmitter.defaultMaxListeners; }
+  return that._maxListeners;
+}
 
-  var er, handler, len, args, i, listeners;
+EventEmitter.prototype.getMaxListeners = function getMaxListeners() {
+  return $getMaxListeners(this);
+};
 
-  if (!this._events)
-    { this._events = {}; }
-
-  // If there is no 'error' event listener then throw.
-  if (type === 'error') {
-    if (!this._events.error ||
-        (isObject(this._events.error) && !this._events.error.length)) {
-      er = arguments[1];
-      if (er instanceof Error) {
-        throw er; // Unhandled 'error' event
-      } else {
-        // At least give some kind of context to the user
-        var err = new Error('Uncaught, unspecified "error" event. (' + er + ')');
-        err.context = er;
-        throw err;
-      }
-    }
+// These standalone emit* functions are used to optimize calling of event
+// handlers for fast cases because emit() itself often has a variable number of
+// arguments and can be deoptimized because of that. These functions always have
+// the same number of arguments and thus do not get deoptimized, so the code
+// inside them can execute faster.
+function emitNone(handler, isFn, self) {
+  if (isFn)
+    { handler.call(self); }
+  else {
+    var len = handler.length;
+    var listeners = arrayClone(handler, len);
+    for (var i = 0; i < len; ++i)
+      { listeners[i].call(self); }
   }
+}
+function emitOne(handler, isFn, self, arg1) {
+  if (isFn)
+    { handler.call(self, arg1); }
+  else {
+    var len = handler.length;
+    var listeners = arrayClone(handler, len);
+    for (var i = 0; i < len; ++i)
+      { listeners[i].call(self, arg1); }
+  }
+}
+function emitTwo(handler, isFn, self, arg1, arg2) {
+  if (isFn)
+    { handler.call(self, arg1, arg2); }
+  else {
+    var len = handler.length;
+    var listeners = arrayClone(handler, len);
+    for (var i = 0; i < len; ++i)
+      { listeners[i].call(self, arg1, arg2); }
+  }
+}
+function emitThree(handler, isFn, self, arg1, arg2, arg3) {
+  if (isFn)
+    { handler.call(self, arg1, arg2, arg3); }
+  else {
+    var len = handler.length;
+    var listeners = arrayClone(handler, len);
+    for (var i = 0; i < len; ++i)
+      { listeners[i].call(self, arg1, arg2, arg3); }
+  }
+}
 
-  handler = this._events[type];
+function emitMany(handler, isFn, self, args) {
+  if (isFn)
+    { handler.apply(self, args); }
+  else {
+    var len = handler.length;
+    var listeners = arrayClone(handler, len);
+    for (var i = 0; i < len; ++i)
+      { listeners[i].apply(self, args); }
+  }
+}
 
-  if (isUndefined(handler))
+EventEmitter.prototype.emit = function emit(type) {
+  var arguments$1 = arguments;
+
+  var er, handler, len, args, i, events;
+  var doError = (type === 'error');
+
+  events = this._events;
+  if (events)
+    { doError = (doError && events.error == null); }
+  else if (!doError)
     { return false; }
 
-  if (isFunction(handler)) {
-    switch (arguments.length) {
-      // fast cases
-      case 1:
-        handler.call(this);
-        break;
-      case 2:
-        handler.call(this, arguments[1]);
-        break;
-      case 3:
-        handler.call(this, arguments[1], arguments[2]);
-        break;
-      // slower
-      default:
-        args = Array.prototype.slice.call(arguments, 1);
-        handler.apply(this, args);
+  // If there is no 'error' event listener then throw.
+  if (doError) {
+    if (arguments.length > 1)
+      { er = arguments[1]; }
+    if (er instanceof Error) {
+      throw er; // Unhandled 'error' event
+    } else {
+      // At least give some kind of context to the user
+      var err = new Error('Unhandled "error" event. (' + er + ')');
+      err.context = er;
+      throw err;
     }
-  } else if (isObject(handler)) {
-    args = Array.prototype.slice.call(arguments, 1);
-    listeners = handler.slice();
-    len = listeners.length;
-    for (i = 0; i < len; i++)
-      { listeners[i].apply(this$1, args); }
+    return false;
+  }
+
+  handler = events[type];
+
+  if (!handler)
+    { return false; }
+
+  var isFn = typeof handler === 'function';
+  len = arguments.length;
+  switch (len) {
+      // fast cases
+    case 1:
+      emitNone(handler, isFn, this);
+      break;
+    case 2:
+      emitOne(handler, isFn, this, arguments[1]);
+      break;
+    case 3:
+      emitTwo(handler, isFn, this, arguments[1], arguments[2]);
+      break;
+    case 4:
+      emitThree(handler, isFn, this, arguments[1], arguments[2], arguments[3]);
+      break;
+      // slower
+    default:
+      args = new Array(len - 1);
+      for (i = 1; i < len; i++)
+        { args[i - 1] = arguments$1[i]; }
+      emitMany(handler, isFn, this, args);
   }
 
   return true;
 };
 
-EventEmitter.prototype.addListener = function(type, listener) {
+function _addListener(target, type, listener, prepend) {
   var m;
+  var events;
+  var existing;
 
-  if (!isFunction(listener))
-    { throw TypeError('listener must be a function'); }
+  if (typeof listener !== 'function')
+    { throw new TypeError('"listener" argument must be a function'); }
 
-  if (!this._events)
-    { this._events = {}; }
+  events = target._events;
+  if (!events) {
+    events = target._events = objectCreate(null);
+    target._eventsCount = 0;
+  } else {
+    // To avoid recursion in the case that type === "newListener"! Before
+    // adding it to the listeners, first emit "newListener".
+    if (events.newListener) {
+      target.emit('newListener', type,
+          listener.listener ? listener.listener : listener);
 
-  // To avoid recursion in the case that type === "newListener"! Before
-  // adding it to the listeners, first emit "newListener".
-  if (this._events.newListener)
-    { this.emit('newListener', type,
-              isFunction(listener.listener) ?
-              listener.listener : listener); }
+      // Re-assign `events` because a newListener handler could have caused the
+      // this._events to be assigned to a new object
+      events = target._events;
+    }
+    existing = events[type];
+  }
 
-  if (!this._events[type])
+  if (!existing) {
     // Optimize the case of one listener. Don't need the extra array object.
-    { this._events[type] = listener; }
-  else if (isObject(this._events[type]))
-    // If we've already got an array, just append.
-    { this._events[type].push(listener); }
-  else
-    // Adding the second element, need to change to array.
-    { this._events[type] = [this._events[type], listener]; }
-
-  // Check for listener leak
-  if (isObject(this._events[type]) && !this._events[type].warned) {
-    if (!isUndefined(this._maxListeners)) {
-      m = this._maxListeners;
+    existing = events[type] = listener;
+    ++target._eventsCount;
+  } else {
+    if (typeof existing === 'function') {
+      // Adding the second element, need to change to array.
+      existing = events[type] =
+          prepend ? [listener, existing] : [existing, listener];
     } else {
-      m = EventEmitter.defaultMaxListeners;
+      // If we've already got an array, just append.
+      if (prepend) {
+        existing.unshift(listener);
+      } else {
+        existing.push(listener);
+      }
     }
 
-    if (m && m > 0 && this._events[type].length > m) {
-      this._events[type].warned = true;
-      console.error('(node) warning: possible EventEmitter memory ' +
-                    'leak detected. %d listeners added. ' +
-                    'Use emitter.setMaxListeners() to increase limit.',
-                    this._events[type].length);
-      if (typeof console.trace === 'function') {
-        // not supported in IE 10
-        console.trace();
+    // Check for listener leak
+    if (!existing.warned) {
+      m = $getMaxListeners(target);
+      if (m && m > 0 && existing.length > m) {
+        existing.warned = true;
+        var w = new Error('Possible EventEmitter memory leak detected. ' +
+            existing.length + ' "' + String(type) + '" listeners ' +
+            'added. Use emitter.setMaxListeners() to ' +
+            'increase limit.');
+        w.name = 'MaxListenersExceededWarning';
+        w.emitter = target;
+        w.type = type;
+        w.count = existing.length;
+        if (typeof console === 'object' && console.warn) {
+          console.warn('%s: %s', w.name, w.message);
+        }
       }
     }
   }
 
-  return this;
+  return target;
+}
+
+EventEmitter.prototype.addListener = function addListener(type, listener) {
+  return _addListener(this, type, listener, false);
 };
 
 EventEmitter.prototype.on = EventEmitter.prototype.addListener;
 
-EventEmitter.prototype.once = function(type, listener) {
-  if (!isFunction(listener))
-    { throw TypeError('listener must be a function'); }
+EventEmitter.prototype.prependListener =
+    function prependListener(type, listener) {
+      return _addListener(this, type, listener, true);
+    };
 
-  var fired = false;
+function onceWrapper() {
+  var arguments$1 = arguments;
 
-  function g() {
-    this.removeListener(type, g);
-
-    if (!fired) {
-      fired = true;
-      listener.apply(this, arguments);
+  if (!this.fired) {
+    this.target.removeListener(this.type, this.wrapFn);
+    this.fired = true;
+    switch (arguments.length) {
+      case 0:
+        return this.listener.call(this.target);
+      case 1:
+        return this.listener.call(this.target, arguments[0]);
+      case 2:
+        return this.listener.call(this.target, arguments[0], arguments[1]);
+      case 3:
+        return this.listener.call(this.target, arguments[0], arguments[1],
+            arguments[2]);
+      default:
+        var args = new Array(arguments.length);
+        for (var i = 0; i < args.length; ++i)
+          { args[i] = arguments$1[i]; }
+        this.listener.apply(this.target, args);
     }
   }
+}
 
-  g.listener = listener;
-  this.on(type, g);
+function _onceWrap(target, type, listener) {
+  var state = { fired: false, wrapFn: undefined, target: target, type: type, listener: listener };
+  var wrapped = bind.call(onceWrapper, state);
+  wrapped.listener = listener;
+  state.wrapFn = wrapped;
+  return wrapped;
+}
 
+EventEmitter.prototype.once = function once(type, listener) {
+  if (typeof listener !== 'function')
+    { throw new TypeError('"listener" argument must be a function'); }
+  this.on(type, _onceWrap(this, type, listener));
   return this;
 };
 
-// emits a 'removeListener' event iff the listener was removed
-EventEmitter.prototype.removeListener = function(type, listener) {
-  var list, position, length, i;
+EventEmitter.prototype.prependOnceListener =
+    function prependOnceListener(type, listener) {
+      if (typeof listener !== 'function')
+        { throw new TypeError('"listener" argument must be a function'); }
+      this.prependListener(type, _onceWrap(this, type, listener));
+      return this;
+    };
 
-  if (!isFunction(listener))
-    { throw TypeError('listener must be a function'); }
+// Emits a 'removeListener' event if and only if the listener was removed.
+EventEmitter.prototype.removeListener =
+    function removeListener(type, listener) {
+      var list, events, position, i, originalListener;
 
-  if (!this._events || !this._events[type])
-    { return this; }
+      if (typeof listener !== 'function')
+        { throw new TypeError('"listener" argument must be a function'); }
 
-  list = this._events[type];
-  length = list.length;
-  position = -1;
+      events = this._events;
+      if (!events)
+        { return this; }
 
-  if (list === listener ||
-      (isFunction(list.listener) && list.listener === listener)) {
-    delete this._events[type];
-    if (this._events.removeListener)
-      { this.emit('removeListener', type, listener); }
+      list = events[type];
+      if (!list)
+        { return this; }
 
-  } else if (isObject(list)) {
-    for (i = length; i-- > 0;) {
-      if (list[i] === listener ||
-          (list[i].listener && list[i].listener === listener)) {
-        position = i;
-        break;
+      if (list === listener || list.listener === listener) {
+        if (--this._eventsCount === 0)
+          { this._events = objectCreate(null); }
+        else {
+          delete events[type];
+          if (events.removeListener)
+            { this.emit('removeListener', type, list.listener || listener); }
+        }
+      } else if (typeof list !== 'function') {
+        position = -1;
+
+        for (i = list.length - 1; i >= 0; i--) {
+          if (list[i] === listener || list[i].listener === listener) {
+            originalListener = list[i].listener;
+            position = i;
+            break;
+          }
+        }
+
+        if (position < 0)
+          { return this; }
+
+        if (position === 0)
+          { list.shift(); }
+        else
+          { spliceOne(list, position); }
+
+        if (list.length === 1)
+          { events[type] = list[0]; }
+
+        if (events.removeListener)
+          { this.emit('removeListener', type, originalListener || listener); }
       }
-    }
 
-    if (position < 0)
-      { return this; }
+      return this;
+    };
 
-    if (list.length === 1) {
-      list.length = 0;
-      delete this._events[type];
-    } else {
-      list.splice(position, 1);
-    }
+EventEmitter.prototype.removeAllListeners =
+    function removeAllListeners(type) {
+      var this$1 = this;
 
-    if (this._events.removeListener)
-      { this.emit('removeListener', type, listener); }
-  }
+      var listeners, events, i;
 
-  return this;
-};
+      events = this._events;
+      if (!events)
+        { return this; }
 
-EventEmitter.prototype.removeAllListeners = function(type) {
-  var this$1 = this;
+      // not listening for removeListener, no need to emit
+      if (!events.removeListener) {
+        if (arguments.length === 0) {
+          this._events = objectCreate(null);
+          this._eventsCount = 0;
+        } else if (events[type]) {
+          if (--this._eventsCount === 0)
+            { this._events = objectCreate(null); }
+          else
+            { delete events[type]; }
+        }
+        return this;
+      }
 
-  var key, listeners;
+      // emit removeListener for all listeners on all events
+      if (arguments.length === 0) {
+        var keys = objectKeys(events);
+        var key;
+        for (i = 0; i < keys.length; ++i) {
+          key = keys[i];
+          if (key === 'removeListener') { continue; }
+          this$1.removeAllListeners(key);
+        }
+        this.removeAllListeners('removeListener');
+        this._events = objectCreate(null);
+        this._eventsCount = 0;
+        return this;
+      }
 
-  if (!this._events)
-    { return this; }
+      listeners = events[type];
 
-  // not listening for removeListener, no need to emit
-  if (!this._events.removeListener) {
-    if (arguments.length === 0)
-      { this._events = {}; }
-    else if (this._events[type])
-      { delete this._events[type]; }
-    return this;
-  }
+      if (typeof listeners === 'function') {
+        this.removeListener(type, listeners);
+      } else if (listeners) {
+        // LIFO order
+        for (i = listeners.length - 1; i >= 0; i--) {
+          this$1.removeListener(type, listeners[i]);
+        }
+      }
 
-  // emit removeListener for all listeners on all events
-  if (arguments.length === 0) {
-    for (key in this$1._events) {
-      if (key === 'removeListener') { continue; }
-      this$1.removeAllListeners(key);
-    }
-    this.removeAllListeners('removeListener');
-    this._events = {};
-    return this;
-  }
+      return this;
+    };
 
-  listeners = this._events[type];
-
-  if (isFunction(listeners)) {
-    this.removeListener(type, listeners);
-  } else if (listeners) {
-    // LIFO order
-    while (listeners.length)
-      { this$1.removeListener(type, listeners[listeners.length - 1]); }
-  }
-  delete this._events[type];
-
-  return this;
-};
-
-EventEmitter.prototype.listeners = function(type) {
+EventEmitter.prototype.listeners = function listeners(type) {
+  var evlistener;
   var ret;
-  if (!this._events || !this._events[type])
+  var events = this._events;
+
+  if (!events)
     { ret = []; }
-  else if (isFunction(this._events[type]))
-    { ret = [this._events[type]]; }
-  else
-    { ret = this._events[type].slice(); }
+  else {
+    evlistener = events[type];
+    if (!evlistener)
+      { ret = []; }
+    else if (typeof evlistener === 'function')
+      { ret = [evlistener.listener || evlistener]; }
+    else
+      { ret = unwrapListeners(evlistener); }
+  }
+
   return ret;
 };
 
-EventEmitter.prototype.listenerCount = function(type) {
-  if (this._events) {
-    var evlistener = this._events[type];
-
-    if (isFunction(evlistener))
-      { return 1; }
-    else if (evlistener)
-      { return evlistener.length; }
-  }
-  return 0;
-};
-
 EventEmitter.listenerCount = function(emitter, type) {
-  return emitter.listenerCount(type);
+  if (typeof emitter.listenerCount === 'function') {
+    return emitter.listenerCount(type);
+  } else {
+    return listenerCount.call(emitter, type);
+  }
 };
 
-function isFunction(arg) {
-  return typeof arg === 'function';
+EventEmitter.prototype.listenerCount = listenerCount;
+function listenerCount(type) {
+  var events = this._events;
+
+  if (events) {
+    var evlistener = events[type];
+
+    if (typeof evlistener === 'function') {
+      return 1;
+    } else if (evlistener) {
+      return evlistener.length;
+    }
+  }
+
+  return 0;
 }
 
-function isNumber(arg) {
-  return typeof arg === 'number';
+EventEmitter.prototype.eventNames = function eventNames() {
+  return this._eventsCount > 0 ? Reflect.ownKeys(this._events) : [];
+};
+
+// About 1.5x faster than the two-arg version of Array#splice().
+function spliceOne(list, index) {
+  for (var i = index, k = i + 1, n = list.length; k < n; i += 1, k += 1)
+    { list[i] = list[k]; }
+  list.pop();
 }
 
-function isObject(arg) {
-  return typeof arg === 'object' && arg !== null;
+function arrayClone(arr, n) {
+  var copy = new Array(n);
+  for (var i = 0; i < n; ++i)
+    { copy[i] = arr[i]; }
+  return copy;
 }
 
-function isUndefined(arg) {
-  return arg === void 0;
+function unwrapListeners(arr) {
+  var ret = new Array(arr.length);
+  for (var i = 0; i < ret.length; ++i) {
+    ret[i] = arr[i].listener || arr[i];
+  }
+  return ret;
+}
+
+function objectCreatePolyfill(proto) {
+  var F = function() {};
+  F.prototype = proto;
+  return new F;
+}
+function objectKeysPolyfill(obj) {
+  var keys = [];
+  for (var k in obj) { if (Object.prototype.hasOwnProperty.call(obj, k)) {
+    keys.push(k);
+  } }
+  return k;
+}
+function functionBindPolyfill(context) {
+  var fn = this;
+  return function () {
+    return fn.apply(context, arguments);
+  };
 }
 
 },{}],4:[function(require,module,exports){
@@ -1647,149 +1866,6 @@ function hasOwnProperty(obj, prop) {
 },{"./support/isBuffer":6,"_process":4,"inherits":5}],8:[function(require,module,exports){
 'use strict'
 
-
-var getBounds = require('array-bounds')
-var pick = require('pick-by-alias')
-var defined = require('defined')
-
-
-module.exports = PointCluster
-
-function PointCluster(srcPoints, options) {
-  if (!(this instanceof PointCluster)) { return new PointCluster(srcPoints, options) }
-
-
-  // sort out options
-  if (!options) { options = {} }
-  if (typeof options === 'string') { options = { type: options } }
-
-  options = pick(options, {
-    bounds: 'range bounds',
-    // type: 'type kind split',
-    // sort: 'sortBy sortby sort',
-    // tail: 'tail reverse levelReverse reverseLevel tailFirst last',
-    nodeSize: 'node nodeSize minNodeSize minSize size'
-  })
-
-  // this.type = defined(options.type, 'quad')
-  // this.sort = defined(options.sort, 'x')
-  // this.tail = defined(options.tail, false)
-  this.nodeSize = defined(options.nodeSize, 0)
-
-  var bounds = this.bounds = defined(options.bounds, getBounds(srcPoints, 2))
-  if (bounds[0] === bounds[2]) { bounds[2]++ }
-  if (bounds[1] === bounds[3]) { bounds[3]++ }
-
-  this.points = this.normalize(srcPoints, bounds)
-
-  // init variables
-  var n = srcPoints.length >>> 1
-  var ids = this.ids = Array(n)
-  for (var i = 0; i < n; ++i) {
-    ids[i] = i
-  }
-  // let weights = new Uint32Array(n)
-  // let levels = new Uint8Array(n)
-
-
-  /*
-  // use x-sort if required
-  if (options.sort) {
-    // pack levels: uint8, x-coord: uint16 and id: uint32 to float64
-    let packed = new Float64Array(n)
-    let packedInt = new Uint32Array(packed.buffer)
-    for (let i = 0; i < n; i++) {
-      packedInt[i * 2] = i
-      packedInt[i * 2 + 1] = (0x3ff00000 & (levels[i] << 20) | 0x0000ffff & ((1 - points[i * 2]) * 0xffff))
-    }
-
-    // do native sort
-    packed.sort()
-
-    // unpack data back
-    let sortedLevels = new Uint8Array(n)
-    let sortedWeights = new Uint32Array(n)
-    let sortedIds = new Uint32Array(n)
-    let sortedPoints = new Float64Array(n * 2)
-    for (let i = 0; i < n; i++) {
-      let id = packedInt[(n - i - 1) * 2]
-      sortedLevels[i] = levels[id]
-      sortedWeights[i] = weights[id]
-      sortedIds[i] = ids[id]
-      sortedPoints[i * 2] = points[id * 2]
-      sortedPoints[i * 2 + 1] = points[id * 2 + 1]
-    }
-
-    ids = sortedIds
-    levels = sortedLevels
-    points = sortedPoints
-    weights = sortedWeights
-  }
-
-
-  // form levels of details
-  let lod         = []
-  let lastLevel   = 0
-  let prevOffset  = n
-  for(let ptr = n - 1; ptr >= 0; --ptr) {
-    let level = levels[ptr]
-    if(level === lastLevel) continue
-
-    lod.push({
-      pixelSize: diam * Math.pow(0.5, level),
-      offset: ptr + 1,
-      count: prevOffset - (ptr + 1)
-    })
-    prevOffset = ptr+1
-
-    lastLevel = level
-  }
-  lod.push({
-    pixelSize: diam * Math.pow(0.5, levels[0] + 1),
-    offset: 0,
-    count: prevOffset
-  })
-
-
-  // get points within radius of the point
-  function radius (xy, r) {
-
-  }
-
-  // get points within the range
-  function range () {
-    let {x, y, width, height} = parseRect(...arguments)
-
-    // get down by levels
-  }
-
-  // get points belonging to the indicated level
-  function level (size) {
-
-  }
-  */
-}
-
-// return array with normalized points
-PointCluster.prototype.normalize = function(srcPoints, bounds) {
-  var lox = bounds[0]
-  var loy = bounds[1]
-  var hix = bounds[2]
-  var hiy = bounds[3]
-  var scaleX = 1.0 / (hix - lox)
-  var scaleY = 1.0 / (hiy - loy)
-  var result = new Array(srcPoints.length)
-
-  for (var i = 0, n = srcPoints.length / 2; i < n; i++) {
-    result[2*i]   = (srcPoints[2*i]   - lox) * scaleX
-    result[2*i+1] = (srcPoints[2*i+1] - loy) * scaleY
-  }
-
-  return result
-}
-},{"array-bounds":9,"defined":12,"pick-by-alias":13}],9:[function(require,module,exports){
-'use strict'
-
 module.exports = normalize;
 
 function normalize (arr, dim) {
@@ -1814,7 +1890,7 @@ function normalize (arr, dim) {
 
 	return bounds;
 }
-},{}],10:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 "use strict"
 
 function compileSearch(funcName, predicate, reversed, extraArgs, earlyOut) {
@@ -1867,314 +1943,16 @@ module.exports = {
   eq: compileBoundsSearch("-",  true,   "EQ", true)
 }
 
+},{}],10:[function(require,module,exports){
+module.exports = clamp
+
+function clamp(value, min, max) {
+  return min < max
+    ? (value < min ? min : value > max ? max : value)
+    : (value < max ? max : value > min ? min : value)
+}
+
 },{}],11:[function(require,module,exports){
-module.exports = clamp
-
-function clamp(value, min, max) {
-  return min < max
-    ? (value < min ? min : value > max ? max : value)
-    : (value < max ? max : value > min ? min : value)
-}
-
-},{}],12:[function(require,module,exports){
-module.exports = function () {
-    var arguments$1 = arguments;
-
-    for (var i = 0; i < arguments.length; i++) {
-        if (arguments$1[i] !== undefined) { return arguments$1[i]; }
-    }
-};
-
-},{}],13:[function(require,module,exports){
-'use strict'
-
-
-module.exports = function pick (src, props, keepRest) {
-	var result = {}, prop, i
-
-	if (typeof props === 'string') { props = toList(props) }
-	if (Array.isArray(props)) {
-		var res = {}
-		for (i = 0; i < props.length; i++) {
-			res[props[i]] = true
-		}
-		props = res
-	}
-
-	// convert strings to lists
-	for (prop in props) {
-		props[prop] = toList(props[prop])
-	}
-
-	// keep-rest strategy requires unmatched props to be preserved
-	var occupied = {}
-
-	for (prop in props) {
-		var aliases = props[prop]
-
-		if (Array.isArray(aliases)) {
-			for (i = 0; i < aliases.length; i++) {
-				var alias = aliases[i]
-
-				if (keepRest) {
-					occupied[alias] = true
-				}
-
-				if (alias in src) {
-					result[prop] = src[alias]
-
-					if (keepRest) {
-						for (var j = i; j < aliases.length; j++) {
-							occupied[aliases[j]] = true
-						}
-					}
-
-					break
-				}
-			}
-		}
-		else if (prop in src) {
-			if (props[prop]) {
-				result[prop] = src[prop]
-			}
-
-			if (keepRest) {
-				occupied[prop] = true
-			}
-		}
-	}
-
-	if (keepRest) {
-		for (prop in src) {
-			if (occupied[prop]) { continue }
-			result[prop] = src[prop]
-		}
-	}
-
-	return result
-}
-
-var CACHE = {}
-
-function toList(arg) {
-	if (CACHE[arg]) { return CACHE[arg] }
-	if (typeof arg === 'string') {
-		arg = CACHE[arg] = arg.split(/\s*,\s*|\s+/)
-	}
-	return arg
-}
-},{}],14:[function(require,module,exports){
-/**
- * @module  point-cluster/quad-bucket
- *
- * Bucket based clustering
- */
-
-'use strict'
-
-var PointCluster = require('./cluster')
-var search = require('binary-search-bounds')
-var clamp = require('clamp')
-
-module.exports = QuadCluster
-
-function QuadCluster(coords, options) {
-	if (!(this instanceof QuadCluster)) { return new QuadCluster(coords, options) }
-
-	PointCluster.call(this, coords, options)
-
-	var points = this.points
-
-	// point indexes for levels [0: [a,b,c,d], 1: [a,b,c,d,e,f,...], ...]
-	var levels = this.levels = []
-
-	// starting indexes of subranges in sub levels
-	var sublevels = this.sublevels = []
-
-	// keep track of cx/cy
-	var groups = this.groups = []
-
-	var bounds = this.bounds
-	this.diam = Math.max(bounds[2] - bounds[0], bounds[3] - bounds[1])
-
-	sort(0, 0, 1, this.ids, 0, 1)
-
-	// FIXME: it is possible to create one typed array heap and reuse that to avoid memory blow
-	function sort (x, y, diam, ids, level, group) {
-		if (!ids.length) { return null }
-
-		// save first point as level representative
-		var item = ids[0]
-		var levelItems = levels[level] || (levels[level] = [])
-		levelItems.push(item)
-
-		var levelGroups = groups[level] || (groups[level] = [])
-		levelGroups.push(group)
-
-		var sublevel = sublevels[level] || (sublevels[level] = [])
-		var offset = levelItems.length - 1
-		if (ids.length <= 1) {
-			sublevel.push(null, null, null, null)
-			return offset
-		}
-
-		var d2 = diam * .5
-		var cx = x + d2, cy = y + d2
-
-		// distribute points by 4 buckets
-		var lolo = [], lohi = [], hilo = [], hihi = []
-
-		for (var i = 1; i < ids.length; i++) {
-			var idx = ids[i],
-				x$1 = points[idx * 2],
-				y$1 = points[idx * 2 + 1]
-			x$1 < cx ? (y$1 < cy ? lolo.push(idx) : lohi.push(idx)) : (y$1 < cy ? hilo.push(idx) : hihi.push(idx))
-		}
-
-		level++
-		group <<= 2
-		sublevel.push(
-			sort(x, y, d2, lolo, level, group),
-			sort(x, cy, d2, lohi, level, group + 1),
-			sort(cx, y, d2, hilo, level, group + 2),
-			sort(cx, cy, d2, hihi, level, group + 3)
-		)
-
-		return offset
-	}
-}
-
-QuadCluster.prototype = Object.create(PointCluster.prototype)
-
-QuadCluster.prototype.closest = function (x, y) {
-
-}
-
-QuadCluster.prototype.range = function (l, t, r, b) {
-
-}
-
-QuadCluster.prototype.radius = function (x, y, r) {
-
-}
-
-// get group id closest to the x,y coordinate, corresponding to a level
-QuadCluster.prototype.group = function (realx, realy, level) {
-	var group = 1
-
-	var ref = this.normalize([realx, realy], this.bounds);
-	var x = ref[0];
-	var y = ref[1];
-
-	x = clamp(x, 0, 1)
-	y = clamp(y, 0, 1)
-
-	var cx = .5, cy = .5
-	var diam = .5
-
-	for (var i = 0; i < level; i++) {
-		group <<= 2
-
-		group += x < cx ? (y < cy ? 0 : 1) : (y < cy ? 2 : 3)
-
-		diam *= .5
-
-		cx += x < cx ? -diam : diam
-		cy += y < cy ? -diam : diam
-	}
-
-	return group
-}
-
-// get range offsets within levels to render lods appropriate for zoom level
-QuadCluster.prototype.offsets = function (pxSize, lox, loy, hix, hiy) {
-	var this$1 = this;
-
-	var offsets = []
-	var diam = this.diam
-
-	for (var level = 0; level < this.levels.length; level++) {
-		var levelGroups = this$1.groups[level]
-		var levelPixelSize = diam * Math.pow(0.5, level)
-
-		if (levelPixelSize && levelPixelSize < pxSize) {
-			continue
-		}
-
-		var levelGroupStart = this$1.group(lox, loy, level)
-		var levelGroupEnd = this$1.group(hix, hiy, level)
-
-		// FIXME: utilize sublevels to speed up search range here
-		var startOffset = search.ge(levelGroups, levelGroupStart)
-		var endOffset = search.le(levelGroups, levelGroupEnd, startOffset, levelGroups.length - 1) + 1
-
-		offsets[level] = [startOffset, endOffset]
-	}
-
-	return offsets
-}
-},{"./cluster":8,"binary-search-bounds":10,"clamp":11}],15:[function(require,module,exports){
-'use strict'
-
-module.exports = normalize;
-
-function normalize (arr, dim) {
-	if (!arr || arr.length == null) { throw Error('Argument should be an array') }
-
-	if (dim == null) { dim = 1 }
-	else { dim = Math.floor(dim) }
-
-	var bounds = Array(dim * 2)
-
-	for (var offset = 0; offset < dim; offset++) {
-		var max = -Infinity, min = Infinity, i = offset, l = arr.length;
-
-		for (; i < l; i+=dim) {
-			if (arr[i] > max) { max = arr[i]; }
-			if (arr[i] < min) { min = arr[i]; }
-		}
-
-		bounds[offset] = min
-		bounds[dim + offset] = max
-	}
-
-	return bounds;
-}
-},{}],16:[function(require,module,exports){
-
-module.exports = function newArray(start, end) {
-    var n0 = typeof start === 'number',
-        n1 = typeof end === 'number'
-
-    if (n0 && !n1) {
-        end = start
-        start = 0
-    } else if (!n0 && !n1) {
-        start = 0
-        end = 0
-    }
-
-    start = start|0
-    end = end|0
-    var len = end-start
-    if (len<0)
-        { throw new Error('array length must be positive') }
-    
-    var a = new Array(len)
-    for (var i=0, c=start; i<len; i++, c++)
-        { a[i] = c }
-    return a
-}
-},{}],17:[function(require,module,exports){
-module.exports = clamp
-
-function clamp(value, min, max) {
-  return min < max
-    ? (value < min ? min : value > max ? max : value)
-    : (value < max ? max : value > min ? min : value)
-}
-
-},{}],18:[function(require,module,exports){
 /** @module  color-id */
 
 'use strict'
@@ -2222,7 +2000,7 @@ function fromNumber (n, normalized) {
 
 	return [r/255, g/255, b/255, a/255]
 }
-},{"clamp":17}],19:[function(require,module,exports){
+},{"clamp":10}],12:[function(require,module,exports){
 module.exports = {
 	"aliceblue": [240, 248, 255],
 	"antiquewhite": [250, 235, 215],
@@ -2373,7 +2151,7 @@ module.exports = {
 	"yellow": [255, 255, 0],
 	"yellowgreen": [154, 205, 50]
 };
-},{}],20:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 /** @module  color-rgba */
 
 'use strict'
@@ -2441,7 +2219,7 @@ module.exports = function normalize (color, type) {
 
 	return output
 }
-},{"clamp":17,"color-rgba":22,"dtype":26}],21:[function(require,module,exports){
+},{"clamp":10,"color-rgba":15,"dtype":19}],14:[function(require,module,exports){
 (function (global){
 /**
  * @module color-parse
@@ -2618,7 +2396,7 @@ function parse (cstr) {
 	}
 }
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"color-name":19,"defined":25,"is-plain-obj":30}],22:[function(require,module,exports){
+},{"color-name":12,"defined":18,"is-plain-obj":24}],15:[function(require,module,exports){
 /** @module  color-rgba */
 
 'use strict'
@@ -2650,7 +2428,7 @@ module.exports = function rgba (color) {
 
 	return values
 }
-},{"clamp":17,"color-parse":21,"color-space/hsl":23}],23:[function(require,module,exports){
+},{"clamp":10,"color-parse":14,"color-space/hsl":16}],16:[function(require,module,exports){
 /**
  * @module color-space/hsl
  */
@@ -2759,7 +2537,7 @@ rgb.hsl = function(rgb) {
 	return [h, s * 100, l * 100];
 };
 
-},{"./rgb":24}],24:[function(require,module,exports){
+},{"./rgb":17}],17:[function(require,module,exports){
 /**
  * RGB space.
  *
@@ -2775,7 +2553,7 @@ module.exports = {
 	alias: ['RGB']
 };
 
-},{}],25:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 module.exports = function () {
     var arguments$1 = arguments;
 
@@ -2784,7 +2562,7 @@ module.exports = function () {
     }
 };
 
-},{}],26:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 module.exports = function(dtype) {
   switch (dtype) {
     case 'int8':
@@ -2810,7 +2588,7 @@ module.exports = function(dtype) {
   }
 }
 
-},{}],27:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 /*eslint new-cap:0*/
 var dtype = require('dtype')
 module.exports = flattenVertexData
@@ -2857,7 +2635,7 @@ function flattenVertexData (data, output, offset) {
   return output
 }
 
-},{"dtype":26}],28:[function(require,module,exports){
+},{"dtype":19}],21:[function(require,module,exports){
 module.exports = function(strings) {
   if (typeof strings === 'string') { strings = [strings] }
   var exprs = [].slice.call(arguments,1)
@@ -2869,12 +2647,19 @@ module.exports = function(strings) {
   return parts.join('')
 }
 
-},{}],29:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 'use strict';
 module.exports = typeof navigator !== 'undefined' &&
 	(/MSIE/.test(navigator.userAgent) || /Trident\//.test(navigator.appVersion));
 
-},{}],30:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
+'use strict';
+module.exports = function (x) {
+	var type = typeof x;
+	return x !== null && (type === 'object' || type === 'function');
+};
+
+},{}],24:[function(require,module,exports){
 'use strict';
 var toString = Object.prototype.toString;
 
@@ -2883,7 +2668,13 @@ module.exports = function (x) {
 	return toString.call(x) === '[object Object]' && (prototype = Object.getPrototypeOf(x), prototype === null || prototype === Object.getPrototypeOf({}));
 };
 
-},{}],31:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
+'use strict';
+module.exports = Math.log2 || function (x) {
+	return Math.log(x) * Math.LOG2E;
+};
+
+},{}],26:[function(require,module,exports){
 /*
 object-assign
 (c) Sindre Sorhus
@@ -2977,7 +2768,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 	return to;
 };
 
-},{}],32:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 'use strict'
 
 var pick = require('pick-by-alias')
@@ -3050,7 +2841,7 @@ function parseRect (arg) {
 
   return rect
 }
-},{"pick-by-alias":33}],33:[function(require,module,exports){
+},{"pick-by-alias":28}],28:[function(require,module,exports){
 'use strict'
 
 
@@ -3128,7 +2919,7 @@ function toList(arg) {
 	}
 	return arg
 }
-},{}],34:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 'use strict'
 
 var CACHE = {}
@@ -3161,7 +2952,523 @@ module.exports = function pick (src, props) {
 
 	return result
 }
-},{}],35:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
+'use strict'
+
+module.exports = require('./quad')
+},{"./quad":33}],31:[function(require,module,exports){
+'use strict'
+
+var pick = require('pick-by-alias')
+
+module.exports = parseRect
+
+function parseRect (arg) {
+  var rect
+
+  // direct arguments sequence
+  if (arguments.length > 1) {
+    arg = arguments
+  }
+
+  // svg viewbox
+  if (typeof arg === 'string') {
+    arg = arg.split(/\s/).map(parseFloat)
+  }
+  else if (typeof arg === 'number') {
+    arg = [arg]
+  }
+
+  // 0, 0, 100, 100 - array-like
+  if (arg.length && typeof arg[0] === 'number') {
+    // [w, w]
+    if (arg.length === 1) {
+      rect = {
+        width: arg[0],
+        height: arg[0],
+        x: 0, y: 0
+      }
+    }
+    // [w, h]
+    else if (arg.length === 2) {
+      rect = {
+        width: arg[0],
+        height: arg[1],
+        x: 0, y: 0
+      }
+    }
+    // [l, t, r, b]
+    else {
+      rect = {
+        x: arg[0],
+        y: arg[1],
+        width: (arg[2] - arg[0]) || 0,
+        height: (arg[3] - arg[1]) || 0
+      }
+    }
+  }
+  // {x, y, w, h} or {l, t, b, r}
+  else if (arg) {
+    arg = pick(arg, {
+      left: 'x l left Left',
+      top: 'y t top Top',
+      width: 'w width W Width',
+      height: 'h height W Width',
+      bottom: 'b bottom Bottom',
+      right: 'r right Right'
+    })
+
+    rect = {
+      x: arg.left || 0,
+      y: arg.top || 0
+    }
+
+    if (arg.width == null) {
+      if (arg.right) { rect.width = arg.right - rect.x }
+      else { rect.width = 0 }
+    }
+    else {
+      rect.width = arg.width
+    }
+
+    if (arg.height == null) {
+      if (arg.bottom) { rect.height = arg.bottom - rect.y }
+      else { rect.height = 0 }
+    }
+    else {
+      rect.height = arg.height
+    }
+  }
+
+  return rect
+}
+},{"pick-by-alias":32}],32:[function(require,module,exports){
+'use strict'
+
+
+module.exports = function pick (src, props, keepRest) {
+	var result = {}, prop, i
+
+	if (typeof props === 'string') { props = toList(props) }
+	if (Array.isArray(props)) {
+		var res = {}
+		for (i = 0; i < props.length; i++) {
+			res[props[i]] = true
+		}
+		props = res
+	}
+
+	// convert strings to lists
+	for (prop in props) {
+		props[prop] = toList(props[prop])
+	}
+
+	// keep-rest strategy requires unmatched props to be preserved
+	var occupied = {}
+
+	for (prop in props) {
+		var aliases = props[prop]
+
+		if (Array.isArray(aliases)) {
+			for (i = 0; i < aliases.length; i++) {
+				var alias = aliases[i]
+
+				if (keepRest) {
+					occupied[alias] = true
+				}
+
+				if (alias in src) {
+					result[prop] = src[alias]
+
+					if (keepRest) {
+						for (var j = i; j < aliases.length; j++) {
+							occupied[aliases[j]] = true
+						}
+					}
+
+					break
+				}
+			}
+		}
+		else if (prop in src) {
+			if (props[prop]) {
+				result[prop] = src[prop]
+			}
+
+			if (keepRest) {
+				occupied[prop] = true
+			}
+		}
+	}
+
+	if (keepRest) {
+		for (prop in src) {
+			if (occupied[prop]) { continue }
+			result[prop] = src[prop]
+		}
+	}
+
+	return result
+}
+
+var CACHE = {}
+
+function toList(arg) {
+	if (CACHE[arg]) { return CACHE[arg] }
+	if (typeof arg === 'string') {
+		arg = CACHE[arg] = arg.split(/\s*,\s*|\s+/)
+	}
+	return arg
+}
+},{}],33:[function(require,module,exports){
+/**
+ * @module  point-cluster/quad
+ *
+ * Bucket based quad tree clustering
+ */
+
+'use strict'
+
+var search = require('binary-search-bounds')
+var clamp = require('clamp')
+var rect = require('parse-rect')
+var getBounds = require('array-bounds')
+var pick = require('pick-by-alias')
+var defined = require('defined')
+var flatten = require('flatten-vertex-data')
+var isObj = require('is-obj')
+var dtype = require('dtype')
+var log2 = require('math-log2')
+
+
+module.exports = function cluster (srcPoints, options) {
+	if (!options) { options = {} }
+
+	srcPoints = flatten(srcPoints, 'float64')
+
+	options = pick(options, {
+		bounds: 'range bounds dataBox databox',
+		maxDepth: 'depth maxDepth maxdepth level maxLevel maxlevel levels',
+		dtype: 'type dtype format out dst output destination'
+		// sort: 'sortBy sortby sort',
+		// pick: 'pick levelPoint',
+		// nodeSize: 'node nodeSize minNodeSize minSize size'
+	})
+
+	// let nodeSize = defined(options.nodeSize, 1)
+	var maxDepth = defined(options.maxDepth, 255)
+	var bounds = defined(options.bounds, getBounds(srcPoints, 2))
+	if (bounds[0] === bounds[2]) { bounds[2]++ }
+	if (bounds[1] === bounds[3]) { bounds[3]++ }
+
+	var points = normalize(srcPoints, bounds)
+
+	// init variables
+	var n = srcPoints.length >>> 1
+	var ids
+	if (!options.dtype) { options.dtype = 'array' }
+
+	if (typeof options.dtype === 'string') {
+		ids = new (dtype(options.dtype))(n)
+	}
+	else if (options.dtype) {
+		ids = options.dtype
+		if (Array.isArray(ids)) { ids.length = n }
+	}
+	for (var i = 0; i < n; ++i) {
+		ids[i] = i
+	}
+
+	// point indexes for levels [0: [a,b,c,d], 1: [a,b,c,d,e,f,...], ...]
+	var levels = []
+
+	// starting indexes of subranges in sub levels, levels.length * 4
+	var sublevels = []
+
+	// unique group ids, sorted in z-curve fashion within levels
+	var groups = []
+
+	// level offsets in `ids`
+	var offsets = []
+
+
+	// sort points
+	sort(0, 0, 1, ids, 0, 1)
+
+
+	// return reordered ids with provided methods
+	// save level offsets in output buffer
+	var offset = 0
+	for (var level = 0; level < levels.length; level++) {
+		var levelItems = levels[level]
+		if (ids.set) { ids.set(levelItems, offset) }
+		else {
+			for (var i$1 = 0, l = levelItems.length; i$1 < l; i$1++) {
+				ids[i$1 + offset] = levelItems[i$1]
+			}
+		}
+		var nextOffset = offset + levels[level].length
+		offsets[level] = [offset, nextOffset]
+		offset = nextOffset
+	}
+
+	ids.range = range
+
+	return ids
+
+
+
+	// FIXME: it is possible to create one typed array heap and reuse that to avoid memory blow
+	function sort (x, y, diam, ids, level, group) {
+		if (!ids.length) { return null }
+
+		// save first point as level representative
+		var levelItems = levels[level] || (levels[level] = [])
+		var levelGroups = groups[level] || (groups[level] = [])
+		var sublevel = sublevels[level] || (sublevels[level] = [])
+		var offset = levelItems.length
+
+		level++
+
+		// max depth reached - put all items into a first group
+		if (level > maxDepth) {
+			for (var i = 0; i < ids.length; i++) {
+				levelItems.push(ids[i])
+				levelGroups.push(group)
+				sublevel.push(null, null, null, null)
+			}
+
+			return offset
+		}
+
+		levelItems.push(ids[0])
+		levelGroups.push(group)
+
+		if (ids.length <= 1) {
+			sublevel.push(null, null, null, null)
+			return offset
+		}
+
+
+		var d2 = diam * .5
+		var cx = x + d2, cy = y + d2
+
+		// distribute points by 4 buckets
+		var lolo = [], lohi = [], hilo = [], hihi = []
+
+		for (var i$1 = 1, l = ids.length; i$1 < l; i$1++) {
+			var idx = ids[i$1],
+				x$1 = points[idx * 2],
+				y$1 = points[idx * 2 + 1]
+			x$1 < cx ? (y$1 < cy ? lolo.push(idx) : lohi.push(idx)) : (y$1 < cy ? hilo.push(idx) : hihi.push(idx))
+		}
+
+		group <<= 2
+		sublevel.push(
+			sort(x, y, d2, lolo, level, group),
+			sort(x, cy, d2, lohi, level, group + 1),
+			sort(cx, y, d2, hilo, level, group + 2),
+			sort(cx, cy, d2, hihi, level, group + 3)
+		)
+
+		return offset
+	}
+
+	// get all points within the passed range
+	function range () {
+		var arguments$1 = arguments;
+
+		var args = [], len = arguments.length;
+		while ( len-- ) { args[ len ] = arguments$1[ len ]; }
+
+		var options
+
+		if (isObj(args[args.length - 1])) {
+			var arg = args.pop()
+
+			// detect if that was a rect object
+			if (!args.length && (arg.x != null || arg.l != null || arg.left != null)) {
+				args = [arg]
+				options = {}
+			}
+
+			options = pick(arg, {
+				level: 'level maxLevel',
+				d: 'd diam diameter r radius px pxSize pixel pixelSize maxD size minSize',
+				lod: 'lod details ranges offsets'
+			})
+		}
+		else {
+			options = {}
+		}
+
+		if (!args.length) { args = bounds }
+
+		var box = rect.apply( void 0, args )
+
+		var ref = [
+			Math.min(box.x, box.x + box.width),
+			Math.min(box.y, box.y + box.height),
+			Math.max(box.x, box.x + box.width),
+			Math.max(box.y, box.y + box.height)
+		];
+		var minX = ref[0];
+		var minY = ref[1];
+		var maxX = ref[2];
+		var maxY = ref[3];
+
+		var ref$1 = normalize([minX, minY, maxX, maxY], bounds );
+		var nminX = ref$1[0];
+		var nminY = ref$1[1];
+		var nmaxX = ref$1[2];
+		var nmaxY = ref$1[3];
+
+		var maxLevel = defined(options.level, levels.length)
+
+		// limit maxLevel by px size
+		if (options.d != null) {
+			var d
+			if (typeof options.d === 'number') { d = [options.d, options.d] }
+			else if (options.d.length) { d = options.d }
+
+			maxLevel = Math.min(
+				Math.ceil(-log2(Math.abs(d[0]) / (bounds[2] - bounds[0]))),
+				Math.ceil(-log2(Math.abs(d[1]) / (bounds[3] - bounds[1]))),
+				maxLevel
+			)
+		}
+
+		// return levels of details
+		if (options.lod) {
+			return lod(nminX, nminY, nmaxX, nmaxY, maxLevel)
+		}
+
+
+
+		// do selection ids
+		var selection = []
+
+		// FIXME: probably we can do LOD here beforehead
+		select( 0, 0, 1, 0, 0, 1)
+
+		function select ( lox, loy, d, level, from, to ) {
+			if (from === null || to === null) { return }
+
+			var hix = lox + d
+			var hiy = loy + d
+
+			// if box does not intersect level - ignore
+			if ( nminX > hix || nminY > hiy || nmaxX < lox || nmaxY < loy ) { return }
+			if ( level >= maxLevel ) { return }
+			if ( from === to ) { return }
+
+			// if points fall into box range - take it
+			var levelItems = levels[level]
+
+			if (to === undefined) { to = levelItems.length }
+
+			for (var i = from; i < to; i++) {
+				var id = levelItems[i]
+
+				var px = srcPoints[ id * 2 ]
+				var py = srcPoints[ id * 2 + 1 ]
+
+				if ( px >= minX && px <= maxX && py >= minY && py <= maxY ) {selection.push(id)
+				}
+			}
+
+			// for every subsection do select
+			var offsets = sublevels[ level ]
+			var off0 = offsets[ from * 4 + 0 ]
+			var off1 = offsets[ from * 4 + 1 ]
+			var off2 = offsets[ from * 4 + 2 ]
+			var off3 = offsets[ from * 4 + 3 ]
+			var end = nextOffset(offsets, from + 1)
+
+			var d2 = d * .5
+			var nextLevel = level + 1
+			select( lox, loy, d2, nextLevel, off0, off1 || off2 || off3 || end)
+			select( lox, loy + d2, d2, nextLevel, off1, off2 || off3 || end)
+			select( lox + d2, loy, d2, nextLevel, off2, off3 || end)
+			select( lox + d2, loy + d2, d2, nextLevel, off3, end)
+		}
+
+		function nextOffset(offsets, from) {
+			var offset = null, i = 0
+			while(offset === null) {
+				offset = offsets[ from * 4 + i ]
+				i++
+				if (i > offsets.length) { return null }
+			}
+			return offset
+		}
+
+		return selection
+	}
+
+	// get range offsets within levels to render lods appropriate for zoom level
+	// TODO: it is possible to store minSize of a point to optimize neede level calc
+	function lod (lox, loy, hix, hiy, maxLevel) {
+		var ranges = []
+
+		for (var level = 0; level < maxLevel; level++) {
+			var levelGroups = groups[level]
+			var from = offsets[level][0]
+
+			var levelGroupStart = group(lox, loy, level)
+			var levelGroupEnd = group(hix, hiy, level)
+
+			// FIXME: utilize sublevels to speed up search range here
+			var startOffset = search.ge(levelGroups, levelGroupStart)
+			var endOffset = search.gt(levelGroups, levelGroupEnd, startOffset, levelGroups.length - 1)
+
+			ranges[level] = [startOffset + from, endOffset + from]
+		}
+
+		return ranges
+	}
+
+	// get group id closest to the x,y coordinate, corresponding to a level
+	function group (x, y, level) {
+		var group = 1
+
+		var cx = .5, cy = .5
+		var diam = .5
+
+		for (var i = 0; i < level; i++) {
+			group <<= 2
+
+			group += x < cx ? (y < cy ? 0 : 1) : (y < cy ? 2 : 3)
+
+			diam *= .5
+
+			cx += x < cx ? -diam : diam
+			cy += y < cy ? -diam : diam
+		}
+
+		return group
+	}
+}
+
+
+// normalize points by bounds
+function normalize (pts, bounds) {
+	var lox = bounds[0];
+	var loy = bounds[1];
+	var hix = bounds[2];
+	var hiy = bounds[3];
+	var scaleX = 1.0 / (hix - lox)
+	var scaleY = 1.0 / (hiy - loy)
+	var result = new Array(pts.length)
+
+	for (var i = 0, n = pts.length / 2; i < n; i++) {
+		result[2*i] = clamp((pts[2*i] - lox) * scaleX, 0, 1)
+		result[2*i+1] = clamp((pts[2*i+1] - loy) * scaleY, 0, 1)
+	}
+
+	return result
+}
+},{"array-bounds":8,"binary-search-bounds":9,"clamp":10,"defined":18,"dtype":19,"flatten-vertex-data":20,"is-obj":23,"math-log2":25,"parse-rect":31,"pick-by-alias":32}],34:[function(require,module,exports){
 /* @module to-float32 */
 
 'use strict'
@@ -3196,7 +3503,7 @@ function float32 (arr) {
 	float.set(arr)
 	return float
 }
-},{}],36:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 /**
  * @module update-diff
  */
@@ -3228,13 +3535,13 @@ module.exports = function updateDiff (obj, diff, mappers) {
 
 	return obj
 }
-},{}],37:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 'use strict'
 
 var rgba = require('color-normalize')
 var getBounds = require('array-bounds')
 var colorId = require('color-id')
-var cluster = require('../point-cluster')
+var cluster = require('point-cluster')
 var extend = require('object-assign')
 var glslify = require('glslify')
 var pick = require('pick-by-alias')
@@ -3244,14 +3551,15 @@ var ie = require('is-iexplorer')
 var ref = require('to-float32');
 var float32 = ref.float32;
 var fract32 = ref.fract32;
-var arrayRange = require('array-range')
 var parseRect = require('parse-rect')
-var defined = require('defined')
+
 
 module.exports = Scatter
 
 
 function Scatter (regl, options) {
+	var this$1 = this;
+
 	if (!(this instanceof Scatter)) { return new Scatter(regl, options) }
 
 	if (typeof regl === 'function') {
@@ -3268,10 +3576,7 @@ function Scatter (regl, options) {
 	regl = options.regl
 
 	// persistent variables
-	var gl = regl._gl,
-		drawMarker, drawCircle,
-		sizeBuffer, positionBuffer, positionFractBuffer, colorBuffer,
-		paletteTexture, palette = [], paletteIds = {},
+	var gl = regl._gl, paletteTexture, palette = [], paletteIds = {},
 
 		// state
 		groups = [],
@@ -3284,7 +3589,7 @@ function Scatter (regl, options) {
 
 	// direct color buffer mode
 	// IE does not support palette anyways
-	var tooManyColors = ie
+	this.tooManyColors = ie
 
 	// texture with color palette
 	paletteTexture = regl.texture({
@@ -3299,28 +3604,6 @@ function Scatter (regl, options) {
 		min: 'nearest'
 	})
 
-	// buffers to reuse
-	sizeBuffer = regl.buffer({
-		usage: 'dynamic',
-		type: 'float',
-		data: null
-	})
-	colorBuffer = regl.buffer({
-		usage: 'dynamic',
-		type: 'uint8',
-		data: null
-	})
-	positionBuffer = regl.buffer({
-		usage: 'dynamic',
-		type: 'float',
-		data: null
-	})
-	positionFractBuffer = regl.buffer({
-		usage: 'dynamic',
-		type: 'float',
-		data: null
-	})
-
 	extend(this, {
 		regl: regl,
 		gl: gl,
@@ -3329,121 +3612,86 @@ function Scatter (regl, options) {
 		markerTextures: markerTextures,
 		palette: palette,
 		paletteIds: paletteIds,
-		tooManyColors: tooManyColors,
 		paletteTexture: paletteTexture,
 		maxColors: maxColors,
-		positionBuffer: positionBuffer,
-		positionFractBuffer: positionFractBuffer,
-		colorBuffer: colorBuffer,
+		maxSize: maxSize,
 		canvas: gl.canvas
 	})
 
-	// fast-create from existing regl-scatter instance
-	if (options.clone) {
-		groups = options.clone.groups.map(function (group) {
-			group = extend({}, group)
-			if (group.markerIds) {
-				group.markerIds = group.markerIds.map(function (ids) {
-					// recreate regl elements here
-					var newIds = ids.slice()
-					newIds.lod = ids.lod
-					newIds.snap = ids.snap
-					newIds.data = ids.data
-					newIds.id = ids.id
-					newIds.elements = regl.elements({
-						primitive: 'points',
-						type: 'uint32',
-						data: ids.data
-					})
-					return newIds
-				})
-			}
-			return group
-		})
-
-		// create marker textures
-		options.clone.markers.forEach(function (markers) {
-			addMarker(markers)
-		})
-		// clone palette texture
-		updatePalette(options.clone.palette)
-		updateBuffers({point: true, color: true, size: true})
-	}
-	// full create from options
-	else {
-		this.update(options)
-	}
-
+	this.update(options)
 
 	// common shader options
 	var shaderOptions = {
 		uniforms: {
 			pixelRatio: regl.context('pixelRatio'),
 			palette: paletteTexture,
-			paletteSize: function (ctx, prop) { return [tooManyColors ? 0 : maxColors, paletteTexture.height]; },
+			paletteSize: function (ctx, prop) { return [this$1.tooManyColors ? 0 : maxColors, paletteTexture.height]; },
 			scale: regl.prop('scale'),
 			scaleFract: regl.prop('scaleFract'),
 			translate: regl.prop('translate'),
 			translateFract: regl.prop('translateFract'),
 			opacity: regl.prop('opacity'),
-			marker: regl.prop('marker'),
+			marker: regl.prop('markerTexture'),
 		},
 
 		attributes: {
-			x: function (ctx, prop) {
-				return prop.xAttr || {
-					buffer: positionBuffer,
-					stride: 8,
-					offset: 0
-				}
-			},
-			y: function (ctx, prop) {
-				return prop.yAttr || {
-					buffer: positionBuffer,
-					stride: 8,
-					offset: 4
-				}
-			},
-			xFract: function (ctx, prop) {
-				return {
-					buffer: positionFractBuffer,
-					stride: 8,
-					offset: 0
-				}
-			},
-			yFract: function (ctx, prop) {
-				return {
-					buffer: positionFractBuffer,
-					stride: 8,
-					offset: 4
-				}
-			},
+			// FIXME: optimize these parts
+			x: function (ctx, prop) { return prop.xAttr || {
+				buffer: prop.positionBuffer,
+				stride: 8,
+				offset: 0
+			}; },
+			y: function (ctx, prop) { return prop.yAttr || {
+				buffer: prop.positionBuffer,
+				stride: 8,
+				offset: 4
+			}; },
+			xFract: function (ctx, prop) { return prop.xAttr ? { constant: [0, 0] } : {
+				buffer: prop.positionFractBuffer,
+				stride: 8,
+				offset: 0
+			}; },
+			yFract: function (ctx, prop) { return prop.yAttr ? { constant: [0, 0] } : {
+				buffer: prop.positionFractBuffer,
+				stride: 8,
+				offset: 4
+			}; },
 			size: function (ctx, prop) { return prop.size.length ? {
-				buffer: sizeBuffer,
+				buffer: prop.sizeBuffer,
 				stride: 2,
 				offset: 0
-			} : {constant: [Math.round(prop.size * 255 / maxSize)]}; },
+			} : {
+				constant: [ Math.round(prop.size * 255 / this$1.maxSize) ]
+			}; },
 			borderSize: function (ctx, prop) { return prop.borderSize.length ? {
-				buffer: sizeBuffer,
+				buffer: prop.sizeBuffer,
 				stride: 2,
 				offset: 1
-			} : {constant: [Math.round(prop.borderSize * 255 / maxSize)]}; },
+			} : {
+				constant: [ Math.round(prop.borderSize * 255 / this$1.maxSize) ]
+			}; },
 			colorId: function (ctx, prop) { return prop.color.length ? {
-				buffer: colorBuffer,
-				stride: tooManyColors ? 8 : 4,
+				buffer: prop.colorBuffer,
+				stride: this$1.tooManyColors ? 8 : 4,
 				offset: 0
-			} : {constant: tooManyColors ? palette.slice(prop.color * 4, prop.color * 4 + 4) : [prop.color]}; },
+			} : {
+				constant: this$1.tooManyColors ? palette.slice(prop.color * 4, prop.color * 4 + 4) : [ prop.color ]
+			}; },
 			borderColorId: function (ctx, prop) { return prop.borderColor.length ? {
-				buffer: colorBuffer,
-				stride: tooManyColors ? 8 : 4,
-				offset: tooManyColors ? 4 : 2
-			} : {constant: tooManyColors ? palette.slice(prop.borderColor * 4, prop.borderColor * 4 + 4) : [prop.borderColor]}; }
+				buffer: prop.colorBuffer,
+				stride: this$1.tooManyColors ? 8 : 4,
+				offset: this$1.tooManyColors ? 4 : 2
+			} : {
+				constant: this$1.tooManyColors ? palette.slice(prop.borderColor * 4, prop.borderColor * 4 + 4) : [ prop.borderColor ]
+			}; },
+			isActive: function (ctx, prop) { return prop.activation === true ? { constant: [1] } : prop.activation ? prop.activation : { constant: [0] }; }
 		},
-
 
 		blend: {
 			enable: true,
 			color: [0,0,0,1],
+
+			// photoshop blending
 			func: {
 				srcRGB: 'src alpha',
 				dstRGB: 'one minus src alpha',
@@ -3461,7 +3709,6 @@ function Scatter (regl, options) {
 		stencil: {enable: false},
 		depth: {enable: false},
 
-
 		elements: regl.prop('elements'),
 		count: regl.prop('count'),
 		offset: regl.prop('offset'),
@@ -3471,8 +3718,8 @@ function Scatter (regl, options) {
 
 	// draw sdf-marker
 	var markerOptions = extend({}, shaderOptions)
-	markerOptions.frag = glslify(["precision mediump float;\n#define GLSLIFY 1\n\nvarying vec4 fragColor, fragBorderColor;\nvarying float fragWidth, fragBorderColorLevel, fragColorLevel;\n\nuniform sampler2D marker;\nuniform float pixelRatio, opacity;\n\nfloat smoothStep(float x, float y) {\n  return 1.0 / (1.0 + exp(50.0*(x - y)));\n}\n\nvoid main() {\n  float dist = texture2D(marker, gl_PointCoord).r, delta = fragWidth;\n\n  //max-distance alpha\n  if (dist < 0.003) discard;\n\n  //null-border case\n  if (fragBorderColorLevel == fragColorLevel || fragBorderColor.a == 0.) {\n    float colorAmt = smoothstep(.5 - delta, .5 + delta, dist);\n    gl_FragColor = vec4(fragColor.rgb, colorAmt * fragColor.a);\n    return;\n  }\n\n  float borderColorAmt = smoothstep(fragBorderColorLevel - delta, fragBorderColorLevel + delta, dist);\n  float colorAmt = smoothstep(fragColorLevel - delta, fragColorLevel + delta, dist);\n\n  vec4 color = fragBorderColor;\n  color.a *= borderColorAmt;\n  color = mix(color, fragColor, colorAmt);\n  color.a *= opacity;\n\n  gl_FragColor = color;\n}\n"])
-	markerOptions.vert = glslify(["precision mediump float;\n#define GLSLIFY 1\n\nattribute float x, y, xFract, yFract;\nattribute float size, borderSize;\nattribute vec4 colorId, borderColorId;\n\nuniform vec2 scale, scaleFract, translate, translateFract, paletteSize;\nuniform float pixelRatio;\nuniform sampler2D palette;\n\nconst float maxSize = 100.;\nconst float borderLevel = .5;\n\nvarying vec4 fragColor, fragBorderColor;\nvarying float fragPointSize, fragBorderRadius,\n\t\tfragWidth, fragBorderColorLevel, fragColorLevel;\n\nvec2 paletteCoord(float id) {\n  return vec2(\n    (mod(id, paletteSize.x) + .5) / paletteSize.x,\n    (floor(id / paletteSize.x) + .5) / paletteSize.y\n  );\n}\nvec2 paletteCoord(vec2 id) {\n  return vec2(\n    (id.x + .5) / paletteSize.x,\n    (id.y + .5) / paletteSize.y\n  );\n}\nvec4 getColor(vec4 id) {\n  // zero-palette means we deal with direct buffer\n  if (paletteSize.x == 0.) return id / 255.;\n  return texture2D(palette, paletteCoord(id.xy));\n}\n\nvoid main() {\n  vec2 position = vec2(x, y);\n  vec2 positionFract = vec2(xFract, yFract);\n\n  vec4 color = getColor(colorId);\n  vec4 borderColor = getColor(borderColorId);\n\n  float size = size * maxSize / 255.;\n  float borderSize = borderSize * maxSize / 255.;\n\n  gl_PointSize = 2. * size * pixelRatio;\n  fragPointSize = size * pixelRatio;\n\n  vec2 pos = (position + translate) * scale\n      + (positionFract + translateFract) * scale\n      + (position + translate) * scaleFract\n      + (positionFract + translateFract) * scaleFract;\n\n  gl_Position = vec4(pos * 2. - 1., 0, 1);\n\n  fragColor = color;\n  fragBorderColor = borderColor;\n  fragWidth = 1. / gl_PointSize;\n\n  fragBorderColorLevel = clamp(borderLevel - borderLevel * borderSize / size, 0., 1.);\n  fragColorLevel = clamp(borderLevel + (1. - borderLevel) * borderSize / size, 0., 1.);\n}\n"])
+	markerOptions.frag = glslify(["precision mediump float;\n#define GLSLIFY 1\n\nvarying vec4 fragColor, fragBorderColor;\nvarying float fragWidth, fragBorderColorLevel, fragColorLevel;\n\nuniform sampler2D marker;\nuniform float pixelRatio, opacity;\n\nfloat smoothStep(float x, float y) {\n  return 1.0 / (1.0 + exp(50.0*(x - y)));\n}\n\nvoid main() {\n  float dist = texture2D(marker, gl_PointCoord).r, delta = fragWidth;\n\n  // max-distance alpha\n  if (dist < 0.003) discard;\n\n  // null-border case\n  if (fragBorderColorLevel == fragColorLevel || fragBorderColor.a == 0.) {\n    float colorAmt = smoothstep(.5 - delta, .5 + delta, dist);\n    gl_FragColor = vec4(fragColor.rgb, colorAmt * fragColor.a * opacity);\n    return;\n  }\n\n  float borderColorAmt = smoothstep(fragBorderColorLevel - delta, fragBorderColorLevel + delta, dist);\n  float colorAmt = smoothstep(fragColorLevel - delta, fragColorLevel + delta, dist);\n\n  vec4 color = fragBorderColor;\n  color.a *= borderColorAmt;\n  color = mix(color, fragColor, colorAmt);\n  color.a *= opacity;\n\n  gl_FragColor = color;\n}\n"])
+	markerOptions.vert = glslify(["precision mediump float;\n#define GLSLIFY 1\n\nattribute float x, y, xFract, yFract;\nattribute float size, borderSize;\nattribute vec4 colorId, borderColorId;\nattribute float isActive;\n\nuniform vec2 scale, scaleFract, translate, translateFract, paletteSize;\nuniform float pixelRatio;\nuniform sampler2D palette;\n\nconst float maxSize = 100.;\nconst float borderLevel = .5;\n\nvarying vec4 fragColor, fragBorderColor;\nvarying float fragPointSize, fragBorderRadius,\n    fragWidth, fragBorderColorLevel, fragColorLevel;\n\nvec2 paletteCoord(float id) {\n  return vec2(\n    (mod(id, paletteSize.x) + .5) / paletteSize.x,\n    (floor(id / paletteSize.x) + .5) / paletteSize.y\n  );\n}\nvec2 paletteCoord(vec2 id) {\n  return vec2(\n    (id.x + .5) / paletteSize.x,\n    (id.y + .5) / paletteSize.y\n  );\n}\nvec4 getColor(vec4 id) {\n  // zero-palette means we deal with direct buffer\n  if (paletteSize.x == 0.) return id / 255.;\n  return texture2D(palette, paletteCoord(id.xy));\n}\n\nvoid main() {\n  if (isActive == 0.) return;\n\n  vec2 position = vec2(x, y);\n  vec2 positionFract = vec2(xFract, yFract);\n\n  vec4 color = getColor(colorId);\n  vec4 borderColor = getColor(borderColorId);\n\n  float size = size * maxSize / 255.;\n  float borderSize = borderSize * maxSize / 255.;\n\n  gl_PointSize = 2. * size * pixelRatio;\n  fragPointSize = size * pixelRatio;\n\n  vec2 pos = (position + translate) * scale\n      + (positionFract + translateFract) * scale\n      + (position + translate) * scaleFract\n      + (positionFract + translateFract) * scaleFract;\n\n  gl_Position = vec4(pos * 2. - 1., 0, 1);\n\n  fragColor = color;\n  fragBorderColor = borderColor;\n  fragWidth = 1. / gl_PointSize;\n\n  fragBorderColorLevel = clamp(borderLevel - borderLevel * borderSize / size, 0., 1.);\n  fragColorLevel = clamp(borderLevel + (1. - borderLevel) * borderSize / size, 0., 1.);\n}\n"])
 
 	try {
 		this.drawMarker = regl(markerOptions)
@@ -3481,8 +3728,8 @@ function Scatter (regl, options) {
 
 	// draw circle
 	var circleOptions = extend({}, shaderOptions)
-	circleOptions.frag = glslify(["precision highp float;\n#define GLSLIFY 1\n\nvarying vec4 fragColor, fragBorderColor;\n\nuniform float opacity;\nvarying float fragBorderRadius, fragWidth;\n\nfloat smoothStep(float edge0, float edge1, float x) {\n\tfloat t;\n\tt = clamp((x - edge0) / (edge1 - edge0), 0.0, 1.0);\n\treturn t * t * (3.0 - 2.0 * t);\n}\n\nvoid main() {\n\tfloat radius, alpha = 1.0, delta = fragWidth;\n\n\tradius = length(2.0 * gl_PointCoord.xy - 1.0);\n\n\tif(radius > 1.0 + delta) {\n\t\tdiscard;\n\t}\n\n\talpha -= smoothstep(1.0 - delta, 1.0 + delta, radius);\n\n\tfloat borderRadius = fragBorderRadius;\n\tfloat ratio = smoothstep(borderRadius - delta, borderRadius + delta, radius);\n\tvec4 color = mix(fragColor, fragBorderColor, ratio);\n\tcolor.a *= alpha * opacity;\n\tgl_FragColor = color;\n}\n"])
-	circleOptions.vert = glslify(["precision highp float;\n#define GLSLIFY 1\n\nattribute float x, y, xFract, yFract;\nattribute float size, borderSize;\nattribute vec4 colorId, borderColorId;\n\nuniform vec2 scale, scaleFract, translate, translateFract;\nuniform float pixelRatio;\nuniform sampler2D palette;\nuniform vec2 paletteSize;\n\nconst float maxSize = 100.;\n\nvarying vec4 fragColor, fragBorderColor;\nvarying float fragBorderRadius, fragWidth;\n\nvec2 paletteCoord(float id) {\n  return vec2(\n    (mod(id, paletteSize.x) + .5) / paletteSize.x,\n    (floor(id / paletteSize.x) + .5) / paletteSize.y\n  );\n}\nvec2 paletteCoord(vec2 id) {\n  return vec2(\n    (id.x + .5) / paletteSize.x,\n    (id.y + .5) / paletteSize.y\n  );\n}\n\nvec4 getColor(vec4 id) {\n  // zero-palette means we deal with direct buffer\n  if (paletteSize.x == 0.) return id / 255.;\n  return texture2D(palette, paletteCoord(id.xy));\n}\n\nvoid main() {\n  vec2 position = vec2(x, y);\n  vec2 positionFract = vec2(xFract, yFract);\n\n  vec4 color = getColor(colorId);\n  vec4 borderColor = getColor(borderColorId);\n\n  float size = size * maxSize / 255.;\n  float borderSize = borderSize * maxSize / 255.;\n\n  gl_PointSize = (size + borderSize) * pixelRatio;\n\n  vec2 pos = (position + translate) * scale\n\t\t\t+ (positionFract + translateFract) * scale\n\t\t\t+ (position + translate) * scaleFract\n\t\t\t+ (positionFract + translateFract) * scaleFract;\n\n  gl_Position = vec4(pos * 2. - 1., 0, 1);\n\n  fragBorderRadius = 1. - 2. * borderSize / (size + borderSize);\n  fragColor = color;\n  fragBorderColor = borderColor.a == 0. ? vec4(color.rgb, 0.) : borderColor;\n  fragWidth = 1. / gl_PointSize;\n}\n"])
+	circleOptions.frag = glslify(["precision highp float;\n#define GLSLIFY 1\n\nvarying vec4 fragColor, fragBorderColor;\n\nuniform float opacity;\nvarying float fragBorderRadius, fragWidth;\n\nfloat smoothStep(float edge0, float edge1, float x) {\n\tfloat t;\n\tt = clamp((x - edge0) / (edge1 - edge0), 0.0, 1.0);\n\treturn t * t * (3.0 - 2.0 * t);\n}\n\nvoid main() {\n\tfloat radius, alpha = 1.0, delta = fragWidth;\n\n\tradius = length(2.0 * gl_PointCoord.xy - 1.0);\n\n\tif (radius > 1.0 + delta) {\n\t\tdiscard;\n\t}\n\n\talpha -= smoothstep(1.0 - delta, 1.0 + delta, radius);\n\n\tfloat borderRadius = fragBorderRadius;\n\tfloat ratio = smoothstep(borderRadius - delta, borderRadius + delta, radius);\n\tvec4 color = mix(fragColor, fragBorderColor, ratio);\n\tcolor.a *= alpha * opacity;\n\tgl_FragColor = color;\n}\n"])
+	circleOptions.vert = glslify(["precision highp float;\n#define GLSLIFY 1\n\nattribute float x, y, xFract, yFract;\nattribute float size, borderSize;\nattribute vec4 colorId, borderColorId;\nattribute float isActive;\n\nuniform vec2 scale, scaleFract, translate, translateFract;\nuniform float pixelRatio;\nuniform sampler2D palette;\nuniform vec2 paletteSize;\n\nconst float maxSize = 100.;\n\nvarying vec4 fragColor, fragBorderColor;\nvarying float fragBorderRadius, fragWidth;\n\nvec2 paletteCoord(float id) {\n  return vec2(\n    (mod(id, paletteSize.x) + .5) / paletteSize.x,\n    (floor(id / paletteSize.x) + .5) / paletteSize.y\n  );\n}\nvec2 paletteCoord(vec2 id) {\n  return vec2(\n    (id.x + .5) / paletteSize.x,\n    (id.y + .5) / paletteSize.y\n  );\n}\n\nvec4 getColor(vec4 id) {\n  // zero-palette means we deal with direct buffer\n  if (paletteSize.x == 0.) return id / 255.;\n  return texture2D(palette, paletteCoord(id.xy));\n}\n\nvoid main() {\n  // ignore inactive points\n  if (isActive == 0.) return;\n\n  vec2 position = vec2(x, y);\n  vec2 positionFract = vec2(xFract, yFract);\n\n  vec4 color = getColor(colorId);\n  vec4 borderColor = getColor(borderColorId);\n\n  float size = size * maxSize / 255.;\n  float borderSize = borderSize * maxSize / 255.;\n\n  gl_PointSize = (size + borderSize) * pixelRatio;\n\n  vec2 pos = (position + translate) * scale\n      + (positionFract + translateFract) * scale\n      + (position + translate) * scaleFract\n      + (positionFract + translateFract) * scaleFract;\n\n  gl_Position = vec4(pos * 2. - 1., 0, 1);\n\n  fragBorderRadius = 1. - 2. * borderSize / (size + borderSize);\n  fragColor = color;\n  fragBorderColor = borderColor.a == 0. || borderSize == 0. ? vec4(color.rgb, 0.) : borderColor;\n  fragWidth = 1. / gl_PointSize;\n}\n"])
 
 	// polyfill IE
 	if (ie) { circleOptions.frag = circleOptions.frag.replace('smoothstep', 'smoothStep') }
@@ -3490,19 +3737,19 @@ function Scatter (regl, options) {
 	this.drawCircle = regl(circleOptions)
 }
 
-
+// single pass defaults
 Scatter.defaults = {
 	color: 'black',
 	borderColor: 'transparent',
-	borderSize: 1,
+	borderSize: 0,
 	size: 12,
 	opacity: 1,
 	marker: undefined,
 	viewport: null,
 	range: null,
 	pixelSize: null,
-	offset: 0,
 	count: 0,
+	offset: 0,
 	bounds: null,
 	positions: [],
 	snap: 1e4
@@ -3530,15 +3777,25 @@ Scatter.prototype.render = function () {
 // draw all groups or only indicated ones
 Scatter.prototype.draw = function () {
 	var arguments$1 = arguments;
+
 	var this$1 = this;
+	var args = [], len = arguments.length;
+	while ( len-- ) { args[ len ] = arguments$1[ len ]; }
 
 	var ref = this;
 	var groups = ref.groups;
-	if (arguments.length) {
-		for (var i = 0; i < arguments.length; i++) {
-			this$1.drawItem(i, arguments$1[i])
+
+	// if directly array passed - treat as passes
+	if (args.length === 1 && Array.isArray(args[0])  && (args[0][0] === null || Array.isArray(args[0][0]))) {
+		args = args[0]
+	}
+
+	if (args.length) {
+		for (var i = 0; i < args.length; i++) {
+			this$1.drawItem(i, args[i])
 		}
 	}
+	// draw all passes
 	else {
 		groups.forEach(function (group, i) {
 			this$1.drawItem(i)
@@ -3556,38 +3813,34 @@ Scatter.prototype.drawItem = function (id, els) {
 	var groups = ref.groups;
 	var group = groups[id]
 
+	// debug viewport
+	// let { viewport } = group
+	// gl.enable(gl.SCISSOR_TEST);
+	// gl.scissor(viewport.x, viewport.y, viewport.width, viewport.height);
+	// gl.clearColor(0, 0, 0, .5);
+	// gl.clear(gl.COLOR_BUFFER_BIT);
+
 	if (typeof els === 'number') {
+		id = els
 		group = groups[els]
 		els = null
 	}
 
 	if (!(group && group.count && group.opacity)) { return }
 
-	// if subset of elements to redraw passed - form a whitelist
-	var whitelist
-	if (els) {
-		whitelist = Array(group.count);
-
-		for (var i = 0; i < els.length; i++) {
-			whitelist[els[i]] = true
-		}
-	}
-
 	// draw circles
-	if (group.markerIds[0]) {
-		var opts = this.getMarkerDrawOptions(group.markerIds[0], group, whitelist)
-
-		this.drawCircle(opts)
+	if (group.activation[0]) {
+		// TODO: optimize this performance by making groups and regl.this props
+		this.drawCircle(this.getMarkerDrawOptions(0, group, els))
 	}
 
 	// draw all other available markers
 	var batch = []
-	for (var i$1 = 1; i$1 < group.markerIds.length; i$1++) {
-		var ids = group.markerIds[i$1]
 
-		if (!ids || !ids.length) { continue }
+	for (var i = 1; i < group.activation.length; i++) {
+		if (!group.activation[i] || (group.activation[i] !== true && !group.activation[i].data.length)) { continue }
 
-		[].push.apply(batch, this$1.getMarkerDrawOptions(ids, group, whitelist))
+		batch.push.apply(batch, this$1.getMarkerDrawOptions(i, group, els))
 	}
 
 	if (batch.length) {
@@ -3596,71 +3849,72 @@ Scatter.prototype.drawItem = function (id, els) {
 }
 
 // get options for the marker ids
-Scatter.prototype.getMarkerDrawOptions = function(ids, group, whitelist) {
+Scatter.prototype.getMarkerDrawOptions = function(markerId, group, elements) {
+	var this$1 = this;
+
 	var range = group.range;
-	var offset = group.offset;
+	var tree = group.tree;
+	var viewport = group.viewport;
+	var activation = group.activation;
+	var selectionBuffer = group.selectionBuffer;
+	var count = group.count;
 	var ref = this;
-	var markerTextures = ref.markerTextures;
+	var regl = ref.regl;
 
-	// unsnapped options
-	if (!ids.snap) {
-		var elements = whitelist ? filter(ids.data, whitelist) : ids.elements;
+	// direct points
+	if (!tree) {
+		// if elements array - draw unclustered points
+		if (elements) {
+			return [extend({}, group, {
+				markerTexture: this.markerTextures[markerId],
+				activation: activation[markerId],
+				count: elements.length,
+				elements: elements,
+				offset: 0
+			})]
+		}
 
-		return [extend({}, group, {
-			elements: elements,
-			offset: 0,
-			count: whitelist ? elements.length : ids.length,
-			marker: markerTextures[ids.id]
-		})]
+		return [ extend({}, group, {
+			markerTexture: this.markerTextures[markerId],
+			activation: activation[markerId],
+			offset: 0
+		}) ]
 	}
 
-	// scales batch
+	// clustered points
 	var batch = []
-	var lod = ids.lod;
-	var id = ids.id;
 
-	var pixelSize = Math.min((range[2] - range[0]) / group.viewport.width, (range[3] - range[1]) / group.viewport.height)
+	var lod = tree.range(range, { lod: true, px: [
+		(range[2] - range[0]) / viewport.width,
+		(range[3] - range[1]) / viewport.height
+	]})
 
-	var offsets = lod.offsets.apply(lod, [ pixelSize ].concat( range ))
-
-	for (var level = offsets.length; level--;) {
-		var ref$1 = offsets[level];
-		var startOffset = ref$1[0];
-		var endOffset = ref$1[1];
-		var items = lod.levels[level]
-
-		// whitelisted level requires subelements from the range
-		if (whitelist) {
-			// TODO: test this out, prob subrendering is broken
-			var elements$1 = filter(ids.data.subarray(startOffset, endOffset), whitelist)
-
-			batch.push(extend({}, group, {
-				elements: elements$1,
-				marker: markerTextures[id],
-				offset: 0,
-				count: elements$1.length
-			}))
+	// enable elements by using selection buffer
+	if (elements) {
+		var markerActivation = activation[markerId]
+		var mask = markerActivation.data
+		var data = new Uint8Array(count)
+		for (var i = 0; i < elements.length; i++) {
+			var id = elements[i]
+			data[id] = mask ? mask[id] : 1
 		}
-		else {
-			batch.push(extend({}, group, {
-				elements: ids.elements,
-				marker: markerTextures[id],
-				offset: startOffset + items.offset,
-				count: endOffset - startOffset
-			}))
-		}
+		selectionBuffer.subdata(data)
 	}
 
-	function filter(offsets, whitelist) {
-		var subEls = []
-		for (var i = 0, l = offsets.length; i < l; i++) {
-			var el = offsets[i]
-			var id = el - offset
-			if (whitelist[id]) {
-				subEls.push(el)
-			}
-		}
-		return subEls
+	for (var l = lod.length; l--;) {
+		var ref$1 = lod[l];
+		var from = ref$1[0];
+		var to = ref$1[1];
+
+		batch.push(extend({}, group, {
+			markerTexture: this$1.markerTextures[markerId],
+			activation: elements ? selectionBuffer : activation[markerId],
+			offset: from,
+			count: to - from,
+
+			// send tree elements
+			elements: group.elements
+		}))
 	}
 
 	return batch
@@ -3668,19 +3922,24 @@ Scatter.prototype.getMarkerDrawOptions = function(ids, group, whitelist) {
 
 // update groups options
 Scatter.prototype.update = function () {
+	var arguments$1 = arguments;
+
 	var this$1 = this;
+	var args = [], len = arguments.length;
+	while ( len-- ) { args[ len ] = arguments$1[ len ]; }
 
-	if (!arguments.length) { return }
+	if (!args.length) { return }
 
-	var args = [].slice.apply(arguments)
-
-	// global count of points
-	var pointCount = 0, sizeCount = 0, colorCount = 0
+	// passes are as single array
+	if (args.length === 1 && Array.isArray(args[0])) { args = args[0] }
 
 	var ref = this;
 	var groups = ref.groups;
 	var gl = ref.gl;
 	var regl = ref.regl;
+	var maxSize = ref.maxSize;
+	var maxColors = ref.maxColors;
+	var palette = ref.palette;
 
 	this.groups = groups = args.map(function (options, i) {
 		var group = groups[i]
@@ -3688,20 +3947,20 @@ Scatter.prototype.update = function () {
 		if (options === undefined) { return group }
 
 		if (options === null) { options = { positions: null } }
-		else if (typeof options === 'function') { options = {after: options} }
-		else if (typeof options[0] === 'number') { options = {positions: options} }
+		else if (typeof options === 'function') { options = { ondraw: options } }
+		else if (typeof options[0] === 'number') { options = { positions: options } }
 
 		// copy options to avoid mutation & handle aliases
 		options = pick(options, {
 			positions: 'positions data points',
-			snap: 'snap cluster',
+			snap: 'snap cluster lod tree',
 			size: 'sizes size radius',
 			borderSize: 'borderSizes borderSize border-size bordersize borderWidth borderWidths border-width borderwidth stroke-width strokeWidth strokewidth outline',
 			color: 'colors color fill fill-color fillColor',
 			borderColor: 'borderColors borderColor stroke stroke-color strokeColor',
 			marker: 'markers marker shape',
-			range: 'range dataBox',
-			viewport: 'viewport viewBox viewbox',
+			range: 'range dataBox databox',
+			viewport: 'viewport viewPort viewBox viewbox',
 			opacity: 'opacity alpha transparency',
 			bounds: 'bound bounds boundaries limits'
 		})
@@ -3716,8 +3975,33 @@ Scatter.prototype.update = function () {
 				scaleFract: null,
 				translateFract: null,
 
-				// list of ids corresponding to markers, with inner props
-				markerIds: []
+				// buffers for active markers
+				activation: [],
+
+				// buffer for filtered markers
+				selectionBuffer: regl.buffer({
+					usage: 'stream',
+					type: 'uint8'
+				}),
+
+				// buffers with data: it is faster to switch them per-pass
+				// than provide one congregate buffer
+				sizeBuffer: regl.buffer({
+					usage: 'dynamic',
+					type: 'uint8'
+				}),
+				colorBuffer: regl.buffer({
+					usage: 'dynamic',
+					type: 'uint8'
+				}),
+				positionBuffer: regl.buffer({
+					usage: 'dynamic',
+					type: 'float'
+				}),
+				positionFractBuffer: regl.buffer({
+					usage: 'dynamic',
+					type: 'float'
+				})
 			}
 			options = extend({}, Scatter.defaults, options)
 		}
@@ -3734,31 +4018,34 @@ Scatter.prototype.update = function () {
 			delete group.positions
 		}
 
+		// global count of points
+		var hasSize = 0, hasColor = 0
+
 		updateDiff(group, options, [{
 			snap: true,
-			size: function (s) {
-				if (!defined(s)) { s = Scatter.defaults.size }
-				sizeCount += s && s.length ? 1 : 0
+			size: function (s, group) {
+				if (s == null) { s = Scatter.defaults.size }
+				hasSize += s && s.length ? 1 : 0
 				return s
 			},
-			borderSize: function (s) {
-				if (!defined(s)) { s = Scatter.defaults.borderSize }
-				sizeCount += s && s.length ? 1 : 0
+			borderSize: function (s, group) {
+				if (s == null) { s = Scatter.defaults.borderSize }
+				hasSize += s && s.length ? 1 : 0
 				return s
 			},
 			opacity: parseFloat,
 
 			// add colors to palette, save references
 			color: function (c, group) {
-				if (!defined(c)) { c = Scatter.defaults.color }
+				if (c == null) { c = Scatter.defaults.color }
 				c = this$1.updateColor(c)
-				colorCount++
+				hasColor++
 				return c
 			},
 			borderColor: function (c, group) {
-				if (!defined(c)) { c = Scatter.defaults.borderColor }
+				if (c == null) { c = Scatter.defaults.borderColor }
 				c = this$1.updateColor(c)
-				colorCount++
+				hasColor++
 				return c
 			},
 
@@ -3768,6 +4055,11 @@ Scatter.prototype.update = function () {
 			},
 
 			positions: function (positions, group, options) {
+				var snap = options.snap;
+				var positionBuffer = group.positionBuffer;
+				var positionFractBuffer = group.positionFractBuffer;
+				var selectionBuffer = group.selectionBuffer;
+
 				// separate buffers for x/y coordinates
 				if (positions.x || positions.y) {
 					if (positions.x.length) {
@@ -3803,8 +4095,6 @@ Scatter.prototype.update = function () {
 						}
 					}
 					group.count = Math.max(group.xAttr.count, group.yAttr.count)
-					group.offset = 0
-					pointCount += group.count
 
 					return positions
 				}
@@ -3820,112 +4110,99 @@ Scatter.prototype.update = function () {
 					options.range = bounds
 				}
 
-				group.offset = pointCount
-				pointCount += count
-
 				// reset marker
 				if (!options.marker && !group.marker) {
 					delete group.marker;
 					options.marker = null;
 				}
 
+				// build cluster tree if required
+				if (snap && (snap === true || count > snap)) {
+					group.tree = cluster(positions, { bounds: bounds })
+				}
+				// existing tree instance
+				else if (snap && snap.length) {
+					group.tree = snap
+				}
+
+				if (group.tree) {
+					var opts = {
+						primitive: 'points',
+						usage: 'static',
+						data: group.tree,
+						type: 'uint32'
+					}
+					if (group.elements) { group.elements(opts) }
+					else { group.elements = regl.elements(opts) }
+				}
+
+				// update position buffers
+				positionBuffer({
+					data: float32(positions),
+					usage: 'dynamic'
+				})
+				positionFractBuffer({
+					data: fract32(positions),
+					usage: 'dynamic'
+				})
+
+				// expand selectionBuffer
+				selectionBuffer({
+					data: new Uint8Array(count),
+					type: 'uint8',
+					usage: 'stream'
+				})
+
 				return positions
 			}
 		}, {
 			// create marker ids corresponding to known marker textures
 			marker: function (markers, group, options) {
+				var activation = group.activation;
+
 				// reset marker elements
-				group.markerIds.length = 0
+				activation.forEach(function (buffer) { return buffer && buffer.destroy && buffer.destroy(); })
+				activation.length = 0
 
 				// single sdf marker
 				if (!markers || typeof markers[0] === 'number') {
 					var id = this$1.addMarker(markers)
-
-					var elements = arrayRange(group.count)
-
-					group.markerIds[id] = elements
+					activation[id] = true
 				}
-				// per-point markers
+
+				// per-point markers use mask buffers to enable markers in vert shader
 				else {
+					var markerMasks = []
+
 					for (var i = 0, l = Math.min(markers.length, group.count); i < l; i++) {
 						var id$1 = this$1.addMarker(markers[i])
 
-						if (!group.markerIds[id$1]) { group.markerIds[id$1] = [] }
-						group.markerIds[id$1].push(i)
+						if (!markerMasks[id$1]) { markerMasks[id$1] = new Uint8Array(group.count) }
+
+						// enable marker by default
+						markerMasks[id$1][i] = 1
+					}
+
+					for (var id$2 = 0; id$2 < markerMasks.length; id$2++) {
+						if (!markerMasks[id$2]) { continue }
+
+						var opts = {
+							data: markerMasks[id$2],
+							type: 'uint8',
+							usage: 'static'
+						}
+						if (!activation[id$2]) {
+							activation[id$2] = regl.buffer(opts)
+						}
+						else {
+							activation[id$2](opts)
+						}
+
+						activation[id$2].data = markerMasks[id$2]
 					}
 				}
 
 				return markers
-			}
-		}, {
-			// recalculate per-marker snapping
-			// first, it is faster to snap 100 points 100 times than 10000 points once (practically, not theoretically)
-			// second, it is easier to subset render per-marker than per-generic set
-			positions: function (positions, group) {
-				if (!positions || !positions.length) { return }
-
-				var markerIds = group.markerIds;
-				var snap = group.snap;
-				var bounds = group.bounds;
-				var offset = group.offset;
-
-				for (var i = 0; i < markerIds.length; i++) {
-					var ids = markerIds[i]
-					if (!ids || !ids.length) { continue }
-
-					var l = ids.length, els = (void 0)
-
-					ids.id = i;
-
-					if (snap && (snap === true || l > snap)) {
-						ids.snap = true
-						var markerPoints = (void 0)
-
-						// multimarker snapping is computationally more intense
-						if (markerIds.length > 1) {
-							markerPoints = Array(l * 2)
-
-							for (var i$1 = 0; i$1 < l; i$1++) {
-								var id = ids[i$1]
-								markerPoints[i$1 * 2] = positions[id * 2]
-								markerPoints[i$1 * 2 + 1] = positions[id * 2 + 1]
-							}
-						}
-						else {
-							markerPoints = new Float64Array(positions.length)
-							markerPoints.set(positions)
-						}
-
-						ids.lod = cluster(markerPoints, { bounds: bounds })
-
-						// augment levels offset params
-						els = new Uint32Array(l)
-						for (var level = 0, off = 0; level < ids.lod.levels.length; level++) {
-							var items = ids.lod.levels[level],
-								l$1 = items.length
-							for (var i$2 = 0; i$2 < l$1; i$2++) {
-								var id$1 = items[i$2], iid = ids[id$1]
-								els[i$2 + off] = iid + offset
-							}
-							items.offset = off
-							off += l$1
-						}
-					}
-					else {
-						els = new Uint32Array(l)
-						for (var i$3 = 0; i$3 < l; i$3++) {
-							els[i$3] = ids[i$3] + offset
-						}
-					}
-
-					ids.data = els;
-
-					ids.elements = regl.elements({
-						primitive: 'points',
-						type: 'uint32',
-						data: els
-					})
-				}
 			},
 
 			range: function (range, group, options) {
@@ -3945,157 +4222,98 @@ Scatter.prototype.update = function () {
 			},
 
 			viewport: function (vp) {
-				return parseRect(vp || [
+				var rect = parseRect(vp || [
 					gl.drawingBufferWidth,
 					gl.drawingBufferHeight
 				])
+
+				// normalize viewport to the canvas coordinates
+				// rect.y = gl.drawingBufferHeight - rect.height - rect.y
+
+				return rect
 			}
 		}])
 
-		return group
-	})
-
-	this.updateBuffers({
-		point: pointCount,
-		size: sizeCount,
-		color: colorCount
-	})
-}
-
-// update buffers data based on existing groups
-Scatter.prototype.updateBuffers = function(ref) {
-	var point = ref.point;
-	var size = ref.size;
-	var color = ref.color;
-
-	var ref$1 = this;
-	var paletteIds = ref$1.paletteIds;
-	var palette = ref$1.palette;
-	var groups = ref$1.groups;
-	var tooManyColors = ref$1.tooManyColors;
-	var colorBuffer = ref$1.colorBuffer;
-	var positionBuffer = ref$1.positionBuffer;
-	var positionFractBuffer = ref$1.positionFractBuffer;
-	var maxColors = ref$1.maxColors;
-
-	// put point/color data into buffers, if updated any of them
-	var len = groups.reduce(function (acc, group, i) {
-		return acc + (group ? group.count : 0)
-	}, 0)
-
-	if (point) {
-		var positionData = new Float32Array(len * 2)
-		var positionFractData = new Float32Array(len * 2)
-
-		groups.forEach(function (group, i) {
-			if (!group) { return }
-			var positions = group.positions;
+		// update size buffer, if needed
+		if (hasSize) {
 			var count = group.count;
-			var offset = group.offset;
-			if (!count) { return }
-			positionData.set(float32(positions), offset * 2)
-			positionFractData.set(fract32(positions), offset * 2)
-		})
-
-		positionBuffer(positionData)
-		positionFractBuffer(positionFractData)
-	}
-
-	if (size) {
-		var sizeData = new Uint8Array(len * 2)
-
-		groups.forEach(function (group, i) {
-			if (!group) { return }
-			var count = group.count;
-			var offset = group.offset;
 			var size = group.size;
 			var borderSize = group.borderSize;
-			if (!count) { return }
+			var sizeBuffer = group.sizeBuffer;
 
+			var sizes = new Uint8Array(count*2)
 			if (size.length || borderSize.length) {
-				var sizes = new Uint8Array(count*2)
 				for (var i$1 = 0; i$1 < count; i$1++) {
 					// we downscale size to allow for fractions
 					sizes[i$1*2] = Math.round((size[i$1] == null ? size : size[i$1]) * 255 / maxSize)
 					sizes[i$1*2 + 1] = Math.round((borderSize[i$1] == null ? borderSize : borderSize[i$1]) * 255 / maxSize)
 				}
-				sizeData.set(sizes, offset * 2)
 			}
-		})
-		sizeBuffer(sizeData)
-	}
-
-	if (color) {
-		var colorData
-
-		// if too many colors - put colors to buffer directly
-		if (tooManyColors) {
-			colorData = new Uint8Array(len * 8)
-
-			groups.forEach(function (group, i) {
-				if (!group) { return }
-				var count = group.count;
-				var offset = group.offset;
-				var color = group.color;
-				var borderColor = group.borderColor;
-				if (!count) { return }
-
-				if (color.length || borderColor.length) {
-					var colors = new Uint8Array(count * 8)
-					for (var i$1 = 0; i$1 < count; i$1++) {
-						var colorId = color[i$1]
-						colors[i$1*8] = palette[colorId*4]
-						colors[i$1*8 + 1] = palette[colorId*4 + 1]
-						colors[i$1*8 + 2] = palette[colorId*4 + 2]
-						colors[i$1*8 + 3] = palette[colorId*4 + 3]
-
-						var borderColorId = borderColor[i$1]
-						colors[i$1*8 + 4] = palette[borderColorId*4]
-						colors[i$1*8 + 5] = palette[borderColorId*4 + 1]
-						colors[i$1*8 + 6] = palette[borderColorId*4 + 2]
-						colors[i$1*8 + 7] = palette[borderColorId*4 + 3]
-					}
-
-					colorData.set(colors, offset * 8)
-				}
+			sizeBuffer({
+				data: sizes,
+				usage: 'dynamic'
 			})
 		}
 
-		// if limited amount of colors - keep palette color picking
-		// that saves significant memory
-		else {
-			colorData = new Uint8Array(len * 4)
+		// update color buffer if needed
+		if (hasColor) {
+			var count$1 = group.count;
+			var color = group.color;
+			var borderColor = group.borderColor;
+			var colorBuffer = group.colorBuffer;
+			var colors
 
-			groups.forEach(function (group, i) {
-				if (!group) { return }
-				var count = group.count;
-				var offset = group.offset;
-				var color = group.color;
-				var borderColor = group.borderColor;
-				if (!count) { return }
-
+			// if too many colors - put colors to buffer directly
+			if (this$1.tooManyColors) {
 				if (color.length || borderColor.length) {
-					var colorIds = new Uint8Array(count * 4)
-					for (var i$1 = 0; i$1 < count; i$1++) {
+					colors = new Uint8Array(count$1 * 8)
+					for (var i$2 = 0; i$2 < count$1; i$2++) {
+						var colorId = color[i$2]
+						colors[i$2*8] = palette[colorId*4]
+						colors[i$2*8 + 1] = palette[colorId*4 + 1]
+						colors[i$2*8 + 2] = palette[colorId*4 + 2]
+						colors[i$2*8 + 3] = palette[colorId*4 + 3]
+
+						var borderColorId = borderColor[i$2]
+						colors[i$2*8 + 4] = palette[borderColorId*4]
+						colors[i$2*8 + 5] = palette[borderColorId*4 + 1]
+						colors[i$2*8 + 6] = palette[borderColorId*4 + 2]
+						colors[i$2*8 + 7] = palette[borderColorId*4 + 3]
+					}
+				}
+			}
+
+			// if limited amount of colors - keep palette color picking
+			// that saves significant memory
+			else {
+				if (color.length || borderColor.length) {
+					// we need slight data increase by 2 due to vec4 borderId in shader
+					colors = new Uint8Array(count$1 * 4 + 2)
+					for (var i$3 = 0; i$3 < count$1; i$3++) {
 						// put color coords in palette texture
-						if (color[i$1] != null) {
-							colorIds[i$1*4] = color[i$1] % maxColors
-							colorIds[i$1*4 + 1] = Math.floor(color[i$1] / maxColors)
+						if (color[i$3] != null) {
+							colors[i$3*4] = color[i$3] % maxColors
+							colors[i$3*4 + 1] = Math.floor(color[i$3] / maxColors)
 						}
-						if (borderColor[i$1] != null) {
-							colorIds[i$1*4 + 2] = borderColor[i$1] % maxColors
-							colorIds[i$1*4 + 3] = Math.floor(borderColor[i$1] / maxColors)
+						if (borderColor[i$3] != null) {
+							colors[i$3*4 + 2] = borderColor[i$3] % maxColors
+							colors[i$3*4 + 3] = Math.floor(borderColor[i$3] / maxColors)
 						}
 					}
-
-					colorData.set(colorIds, offset * 4)
 				}
+			}
+
+			colorBuffer({
+				data: colors,
+				type: 'uint8',
+				usage: 'dynamic'
 			})
 		}
 
-		colorBuffer(colorData)
-	}
+		return group
+	})
 }
+
 
 // get (and create) marker texture id
 Scatter.prototype.addMarker = function (sdf) {
@@ -4141,7 +4359,6 @@ Scatter.prototype.updateColor = function (colors) {
 	var ref = this;
 	var paletteIds = ref.paletteIds;
 	var palette = ref.palette;
-	var tooManyColors = ref.tooManyColors;
 	var maxColors = ref.maxColors;
 
 	if (!Array.isArray(colors)) {
@@ -4189,7 +4406,7 @@ Scatter.prototype.updateColor = function (colors) {
 	}
 
 	// detect if too many colors in palette
-	if (!tooManyColors && palette.length > maxColors * maxColors * 4) { tooManyColors = true }
+	if (!this.tooManyColors && palette.length > maxColors * maxColors * 4) { this.tooManyColors = true }
 
 	// limit max color
 	this.updatePalette(palette)
@@ -4198,7 +4415,7 @@ Scatter.prototype.updateColor = function (colors) {
 	return idx.length === 1 ? idx[0] : idx
 }
 
-Scatter.prototype.updatePalette = function(palette) {
+Scatter.prototype.updatePalette = function (palette) {
 	if (this.tooManyColors) { return }
 
 	var ref = this;
@@ -4230,25 +4447,33 @@ Scatter.prototype.updatePalette = function(palette) {
 
 // remove unused stuff
 Scatter.prototype.destroy = function () {
-	groups.length = 0
+	this.groups.forEach(function (group) {
+		group.sizeBuffer.destroy()
+		group.positionBuffer.destroy()
+		group.positionFractBuffer.destroy()
+		group.colorBuffer.destroy()
+		group.activation.forEach(function (b) { return b && b.destroy && b.destroy(); })
+		group.selectionBuffer.destroy()
 
-	sizeBuffer.destroy()
-	positionBuffer.destroy()
-	positionFractBuffer.destroy()
-	colorBuffer.destroy()
-	paletteTexture.destroy()
+		if (group.elements) { group.elements.destroy() }
+	})
+	this.groups.length = 0
+
+	this.paletteTexture.destroy()
+
+	this.markerTextures.forEach(function (txt) { return txt && txt.destroy && txt.destroy(); })
+
+	return this
 }
-},{"../point-cluster":14,"array-bounds":15,"array-range":16,"color-id":18,"color-normalize":20,"defined":25,"flatten-vertex-data":27,"glslify":28,"is-iexplorer":29,"object-assign":31,"parse-rect":32,"pick-by-alias":34,"to-float32":35,"update-diff":36}],38:[function(require,module,exports){
+},{"array-bounds":8,"color-id":11,"color-normalize":13,"flatten-vertex-data":20,"glslify":21,"is-iexplorer":22,"object-assign":26,"parse-rect":27,"pick-by-alias":29,"point-cluster":30,"to-float32":34,"update-diff":35}],37:[function(require,module,exports){
 'use strict'
 
 
-var createScatter = require('../regl-scatter2d/scatter')
+var createScatter = require('regl-scatter2d/scatter')
 var flatten = require('flatten-vertex-data')
 var pick = require('pick-by-alias')
-var defined = require('defined')
 var getBounds = require('array-bounds')
 var raf = require('raf')
-var lpad = require('left-pad')
 var arrRange = require('array-range')
 var rect = require('parse-rect')
 
@@ -4329,7 +4554,7 @@ SPLOM.prototype.update = function () {
 	// remove nulled passes
 	this.traces = this.traces.filter(Boolean)
 
-	// FIXME: convert scattergl to buffer-per-pass maybe and update passes independently
+	// FIXME: update passes independently
 	var passes = []
 	var offset = 0
 	for (var i$1 = 0; i$1 < this.traces.length; i$1++) {
@@ -4366,7 +4591,7 @@ SPLOM.prototype.updateItem = function (i, options) {
 	if (!options) { return this }
 
 	var o = pick(options, {
-		data: 'data items columns rows values dimensions samples',
+		data: 'data items columns rows values dimensions samples x',
 		snap: 'snap cluster',
 		size: 'sizes size radius',
 		color: 'colors color fill fill-color fillColor',
@@ -4376,8 +4601,12 @@ SPLOM.prototype.updateItem = function (i, options) {
 		marker: 'markers marker shape',
 		range: 'range ranges databox dataBox',
 		viewport: 'viewport viewBox viewbox',
-		domain: 'domain domains areas',
-		transpose: 'transpose transposed'
+		domain: 'domain domains area areas',
+		padding: 'pad padding paddings pads margin margins',
+		transpose: 'transpose transposed',
+		diagonal: 'diagonal diag showDiagonal',
+		upper: 'upper up top upperhalf upperHalf showupperhalf showUpper showUpperHalf',
+		lower: 'lower low bottom lowerhalf lowerHalf showlowerhalf showLowerHalf showLower'
 	})
 
 	// we provide regl buffer per-trace, since trace data can be changed
@@ -4386,13 +4615,19 @@ SPLOM.prototype.updateItem = function (i, options) {
 		buffer: regl.buffer({
 			usage: 'dynamic',
 			type: 'float',
-			data: null,
-			color: 'black',
-			size: 12,
-			borderColor: 'transparent',
-			borderSize: 1
+			data: null
 		}),
-		viewport:  rect([regl._gl.drawingBufferWidth, regl._gl.drawingBufferHeight])
+		color: 'black',
+		marker: null,
+		size: 12,
+		borderColor: 'transparent',
+		borderSize: 1,
+		viewport:  rect([regl._gl.drawingBufferWidth, regl._gl.drawingBufferHeight]),
+		padding: [0, 0, 0, 0],
+		opacity: 1,
+		diagonal: true,
+		upper: true,
+		lower: true
 	}))
 
 
@@ -4403,15 +4638,24 @@ SPLOM.prototype.updateItem = function (i, options) {
 	if (o.size != null) {
 		trace.size = o.size
 	}
+	if (o.marker != null) {
+		trace.marker = o.marker
+	}
 	if (o.borderColor != null) {
 		trace.borderColor = o.borderColor
 	}
 	if (o.borderSize != null) {
 		trace.borderSize = o.borderSize
 	}
+	if (o.opacity != null) {
+		trace.opacity = o.opacity
+	}
 	if (o.viewport) {
 		trace.viewport = rect(o.viewport)
 	}
+	if (o.diagonal != null) { trace.diagonal = o.diagonal }
+	if (o.upper != null) { trace.upper = o.upper }
+	if (o.lower != null) { trace.lower = o.lower }
 
 	// put flattened data into buffer
 	if (o.data) {
@@ -4425,7 +4669,6 @@ SPLOM.prototype.updateItem = function (i, options) {
 		for (var i$1 = 0; i$1 < trace.columns; i$1++) {
 			trace.bounds[i$1] = getBounds(o.data[i$1], 1)
 		}
-
 	}
 
 	// add proper range updating markers
@@ -4438,7 +4681,18 @@ SPLOM.prototype.updateItem = function (i, options) {
 	if (o.domain) {
 		trace.domain = o.domain
 	}
-
+	var multipadding = false
+	if (o.padding != null) {
+		// multiple paddings
+		if (Array.isArray(o.padding) && o.padding.length === trace.columns && typeof o.padding[o.padding.length - 1] === 'number') {
+			trace.padding = o.padding.map(getPad)
+			multipadding = true
+		}
+		// single padding
+		else {
+			trace.padding = getPad(o.padding)
+		}
+	}
 
 	// create passes
 	var m = trace.columns
@@ -4446,48 +4700,73 @@ SPLOM.prototype.updateItem = function (i, options) {
 
 	var w = trace.viewport.width
 	var h = trace.viewport.height
+	var left = trace.viewport.x
+	var top = trace.viewport.y
 	var iw = w / m
 	var ih = h / m
-	var pad = .0
 
 	trace.passes = []
 
 	for (var i$2 = 0; i$2 < m; i$2++) {
 		for (var j = 0; j < m; j++) {
+			if (!trace.diagonal && j === i$2) { continue }
+			if (!trace.upper && i$2 > j) { continue }
+			if (!trace.lower && i$2 < j) { continue }
+
 			var key = passId(trace.id, i$2, j)
 
 			var pass = this$1.passes[key] || (this$1.passes[key] = {})
 
 			if (o.data) {
-				pass.positions = {
-					// planar
-					x: {buffer: trace.buffer, offset: i$2 * n, count: n},
-					y: {buffer: trace.buffer, offset: j * n, count: n}
-
-					// transposed
-					// x: {buffer: trace.buffer, offset: i, count: n, stride: m},
-					// y: {buffer: trace.buffer, offset: j, count: n, stride: m}
+				if (o.transpose) {
+					pass.positions = {
+						x: {buffer: trace.buffer, offset: j, count: n, stride: m},
+						y: {buffer: trace.buffer, offset: i$2, count: n, stride: m}
+					}
 				}
-				pass.bounds = getBox(trace.bounds, i$2, j)
+				else {
+					pass.positions = {
+						x: {buffer: trace.buffer, offset: j * n, count: n},
+						y: {buffer: trace.buffer, offset: i$2 * n, count: n}
+					}
+				}
 
+				pass.bounds = getBox(trace.bounds, i$2, j)
 			}
 
-			// TODO
 			if (o.domain || o.viewport || o.data) {
-				// if (trace.domain) {
-				// 	let domain = getBox(trace.domain)
-				// 	pass.viewport = []
-				// }
-				// // consider auto-domain equipartial
-				// else {
-					pass.viewport = [j * iw + iw * pad, i$2 * ih + ih * pad, (j + 1) * iw - iw * pad, (i$2 + 1) * ih - ih * pad]
-				// }
+				var pad = multipadding ? getBox(trace.padding, i$2, j) : trace.padding
+				if (trace.domain) {
+					var ref$1 = getBox(trace.domain, i$2, j);
+					var lox = ref$1[0];
+					var loy = ref$1[1];
+					var hix = ref$1[2];
+					var hiy = ref$1[3];
+
+					pass.viewport = [
+						left + lox * w + pad[0],
+						top + loy * h + pad[1],
+						left + hix * w - pad[2],
+						top + hiy * h - pad[3]
+					]
+				}
+				// consider auto-domain equipartial
+				else {
+					pass.viewport = [
+						left + j * iw + iw * pad[0],
+						top + i$2 * ih + ih * pad[1],
+						left + (j + 1) * iw - iw * pad[2],
+						top + (i$2 + 1) * ih - ih * pad[3]
+					]
+				}
 			}
 
 			if (o.color) { pass.color = trace.color }
 			if (o.size) { pass.size = trace.size }
+			if (o.marker) { pass.marker = trace.marker }
 			if (o.borderSize) { pass.borderSize = trace.borderSize }
 			if (o.borderColor) { pass.borderColor = trace.borderColor }
+			if (o.opacity) { pass.opacity = trace.opacity }
 
 			if (o.range) {
 				pass.range = multirange ? getBox(trace.range, i$2, j) : trace.range || pass.bounds
@@ -4515,22 +4794,40 @@ SPLOM.prototype.draw = function () {
 	else {
 		var idx = []
 		for (var i = 0; i < args.length; i++) {
-			var ref = this$1.traces[args[i]];
-			var passes = ref.passes;
-			var passOffset = ref.passOffset;
-			idx.push.apply(idx, arrRange(passOffset, passOffset + passes.length))
+			// draw(0, 2, 5) - draw traces
+			if (typeof args[i] === 'number' ) {
+				var ref = this$1.traces[args[i]];
+				var passes = ref.passes;
+				var passOffset = ref.passOffset;
+				idx.push.apply(idx, arrRange(passOffset, passOffset + passes.length))
+			}
+			// draw([0, 1, 2 ...], [3, 4, 5]) - draw points
+			else if (args[i].length) {
+				var els = args[i]
+				var ref$1 = this$1.traces[i];
+				var passes$1 = ref$1.passes;
+				var passOffset$1 = ref$1.passOffset;
+				passes$1 = passes$1.map(function (passId, i) {
+					idx[passOffset$1 + i] = els
+				})
+			}
 		}
-		(ref$1 = this.scatter).draw.apply(ref$1, idx)
+		(ref$2 = this.scatter).draw.apply(ref$2, idx)
 	}
 
 	return this
-	var ref$1;
+	var ref$2;
 }
 
 
-//
+// dispose resources
 SPLOM.prototype.destroy = function () {
-	this.buffer.dispose()
+	this.traces.forEach(function (trace) {
+		if (trace.buffer && trace.buffer.destroy) { trace.buffer.destroy() }
+	})
+	this.traces = null
+	this.passes = null
+
 	this.scatter.destroy()
 
 	return this
@@ -4549,35 +4846,57 @@ function passId (trace, i, j) {
 
 
 // return bounding box corresponding to a pass
-function getBox (ranges, i, j) {
+function getBox (items, i, j) {
 	var ilox, iloy, ihix, ihiy, jlox, jloy, jhix, jhiy
-	var irange = ranges[i], jrange = ranges[j]
+	var iitem = items[i], jitem = items[j]
 
-	if (irange.length > 2) {
-		ilox = irange[0]
-		ihix = irange[2]
-		iloy = irange[1]
-		ihiy = irange[3]
+	if (iitem.length > 2) {
+		ilox = iitem[0]
+		ihix = iitem[2]
+		iloy = iitem[1]
+		ihiy = iitem[3]
+	}
+	else if (iitem.length) {
+		ilox = iloy = iitem[0]
+		ihix = ihiy = iitem[1]
 	}
 	else {
-		ilox = iloy = irange[0]
-		ihix = ihiy = irange[1]
+		ilox = iitem.x
+		iloy = iitem.y
+		ihix = iitem.x + iitem.width
+		ihiy = iitem.y + iitem.height
 	}
 
-	if (jrange.length > 2) {
-		jlox = jrange[0]
-		jhix = jrange[2]
-		jloy = jrange[1]
-		jhiy = jrange[3]
+	if (jitem.length > 2) {
+		jlox = jitem[0]
+		jhix = jitem[2]
+		jloy = jitem[1]
+		jhiy = jitem[3]
+	}
+	else if (jitem.length) {
+		jlox = jloy = jitem[0]
+		jhix = jhiy = jitem[1]
 	}
 	else {
-		jlox = jloy = jrange[0]
-		jhix = jhiy = jrange[1]
+		jlox = jitem.x
+		jloy = jitem.y
+		jhix = jitem.x + jitem.width
+		jhiy = jitem.y + jitem.height
 	}
 
 	return [ jlox, iloy, jhix, ihiy ]
+}
+
+
+function getPad (arg) {
+	if (typeof arg === 'number') { return [arg, arg, arg, arg] }
+	else if (arg.length === 2) { return [arg[0], arg[1], arg[0], arg[1]] }
+	else {
+		var box = rect(arg)
+		return [box.x, box.y, box.x + box.width, box.y + box.height]
+	}
 }
-},{"../regl-scatter2d/scatter":37,"array-bounds":39,"array-range":40,"defined":45,"flatten-vertex-data":48,"left-pad":54,"parse-rect":60,"pick-by-alias":63,"raf":64}],39:[function(require,module,exports){
+},{"array-bounds":38,"array-range":39,"flatten-vertex-data":47,"parse-rect":58,"pick-by-alias":61,"raf":62,"regl-scatter2d/scatter":36}],38:[function(require,module,exports){
 'use strict'
 
 module.exports = normalize;
@@ -4604,7 +4923,7 @@ function normalize (arr, dim) {
 
 	return bounds;
 }
-},{}],40:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 
 module.exports = function newArray(start, end) {
     var n0 = typeof start === 'number',
@@ -4629,7 +4948,7 @@ module.exports = function newArray(start, end) {
         { a[i] = c }
     return a
 }
-},{}],41:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 'use strict';
 module.exports = function (val) {
 	if (val === null || val === undefined) {
@@ -4639,7 +4958,7 @@ module.exports = function (val) {
 	return Array.isArray(val) ? val : [val];
 };
 
-},{}],42:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 /**
  * @module  color-alpha
  */
@@ -4659,7 +4978,7 @@ function alpha (color, value) {
 
 	return obj.space + "a(" + (obj.values) + "," + value + ")";
 }
-},{"color-parse":44}],43:[function(require,module,exports){
+},{"color-parse":43}],42:[function(require,module,exports){
 'use strict'
 
 module.exports = {
@@ -4812,7 +5131,7 @@ module.exports = {
 	"yellow": [255, 255, 0],
 	"yellowgreen": [154, 205, 50]
 };
-},{}],44:[function(require,module,exports){
+},{}],43:[function(require,module,exports){
 (function (global){
 /**
  * @module color-parse
@@ -4989,7 +5308,7 @@ function parse (cstr) {
 	}
 }
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"color-name":43,"defined":45,"is-plain-obj":53}],45:[function(require,module,exports){
+},{"color-name":42,"defined":44,"is-plain-obj":52}],44:[function(require,module,exports){
 module.exports = function () {
     var arguments$1 = arguments;
 
@@ -4998,7 +5317,7 @@ module.exports = function () {
     }
 };
 
-},{}],46:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 module.exports = defaultProperty
 
 function defaultProperty (get, set) {
@@ -5010,7 +5329,7 @@ function defaultProperty (get, set) {
   }
 }
 
-},{}],47:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 module.exports = function(dtype) {
   switch (dtype) {
     case 'int8':
@@ -5036,7 +5355,7 @@ module.exports = function(dtype) {
   }
 }
 
-},{}],48:[function(require,module,exports){
+},{}],47:[function(require,module,exports){
 /*eslint new-cap:0*/
 var dtype = require('dtype')
 module.exports = flattenVertexData
@@ -5083,7 +5402,7 @@ function flattenVertexData (data, output, offset) {
   return output
 }
 
-},{"dtype":47}],49:[function(require,module,exports){
+},{"dtype":46}],48:[function(require,module,exports){
 /**
  * @module fps-indicator
  */
@@ -5222,7 +5541,7 @@ function fps (opts) {
 		raf(measure)
 	})
 }
-},{"raf":64,"right-now":67,"to-css":68}],50:[function(require,module,exports){
+},{"raf":62,"right-now":65,"to-css":66}],49:[function(require,module,exports){
 'use strict'
 
 module.exports = gaussRandom
@@ -5230,7 +5549,7 @@ module.exports = gaussRandom
 function gaussRandom() {
   return Math.sqrt(-2.0 * Math.log(Math.random())) * Math.cos(2.0 * Math.PI * Math.random())
 }
-},{}],51:[function(require,module,exports){
+},{}],50:[function(require,module,exports){
 module.exports = distance
 
 /**
@@ -5245,7 +5564,7 @@ function distance(a, b) {
         y = b[1] - a[1]
     return Math.sqrt(x*x + y*y)
 }
-},{}],52:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
 (function (global, factory) {
     if (typeof define === 'function' && define.amd) {
         define(['exports', 'module'], factory);
@@ -5730,7 +6049,7 @@ function distance(a, b) {
     }
 });
 
-},{}],53:[function(require,module,exports){
+},{}],52:[function(require,module,exports){
 'use strict';
 var toString = Object.prototype.toString;
 
@@ -5739,61 +6058,7 @@ module.exports = function (x) {
 	return toString.call(x) === '[object Object]' && (prototype = Object.getPrototypeOf(x), prototype === null || prototype === Object.getPrototypeOf({}));
 };
 
-},{}],54:[function(require,module,exports){
-/* This program is free software. It comes without any warranty, to
-     * the extent permitted by applicable law. You can redistribute it
-     * and/or modify it under the terms of the Do What The Fuck You Want
-     * To Public License, Version 2, as published by Sam Hocevar. See
-     * http://www.wtfpl.net/ for more details. */
-'use strict';
-module.exports = leftPad;
-
-var cache = [
-  '',
-  ' ',
-  '  ',
-  '   ',
-  '    ',
-  '     ',
-  '      ',
-  '       ',
-  '        ',
-  '         '
-];
-
-function leftPad (str, len, ch) {
-  // convert `str` to a `string`
-  str = str + '';
-  // `len` is the `pad`'s length now
-  len = len - str.length;
-  // doesn't need to pad
-  if (len <= 0) { return str; }
-  // `ch` defaults to `' '`
-  if (!ch && ch !== 0) { ch = ' '; }
-  // convert `ch` to a `string` cuz it could be a number
-  ch = ch + '';
-  // cache common use cases
-  if (ch === ' ' && len < 10) { return cache[len] + str; }
-  // `pad` starts with an empty string
-  var pad = '';
-  // loop
-  while (true) {
-    // add `ch` to `pad` if `len` is odd
-    if (len & 1) { pad += ch; }
-    // divide `len` by 2, ditch the remainder
-    len >>= 1;
-    // "double" the `ch` so this operation count grows logarithmically on `len`
-    // each time `ch` is "doubled", the `len` would need to be "doubled" too
-    // similar to finding a value in binary search tree, hence O(log(n))
-    if (len) { ch += ch; }
-    // `len` is 0, exit the loop
-    else { break; }
-  }
-  // pad `str`!
-  return pad + str;
-}
-
-},{}],55:[function(require,module,exports){
+},{}],53:[function(require,module,exports){
 var rootPosition = { left: 0, top: 0 }
 
 module.exports = mouseEventOffset
@@ -5820,7 +6085,7 @@ function getBoundingClientOffset (element) {
   }
 }
 
-},{}],56:[function(require,module,exports){
+},{}],54:[function(require,module,exports){
 'use strict'
 
 var toPX = require('to-px')
@@ -5862,9 +6127,9 @@ function mouseWheelListen(element, callback, noScroll) {
   return listener
 }
 
-},{"to-px":69}],57:[function(require,module,exports){
+},{"to-px":67}],55:[function(require,module,exports){
 module.exports=[["#69d2e7","#a7dbd8","#e0e4cc","#f38630","#fa6900"],["#fe4365","#fc9d9a","#f9cdad","#c8c8a9","#83af9b"],["#ecd078","#d95b43","#c02942","#542437","#53777a"],["#556270","#4ecdc4","#c7f464","#ff6b6b","#c44d58"],["#774f38","#e08e79","#f1d4af","#ece5ce","#c5e0dc"],["#e8ddcb","#cdb380","#036564","#033649","#031634"],["#490a3d","#bd1550","#e97f02","#f8ca00","#8a9b0f"],["#594f4f","#547980","#45ada8","#9de0ad","#e5fcc2"],["#00a0b0","#6a4a3c","#cc333f","#eb6841","#edc951"],["#e94e77","#d68189","#c6a49a","#c6e5d9","#f4ead5"],["#3fb8af","#7fc7af","#dad8a7","#ff9e9d","#ff3d7f"],["#d9ceb2","#948c75","#d5ded9","#7a6a53","#99b2b7"],["#ffffff","#cbe86b","#f2e9e1","#1c140d","#cbe86b"],["#efffcd","#dce9be","#555152","#2e2633","#99173c"],["#343838","#005f6b","#008c9e","#00b4cc","#00dffc"],["#413e4a","#73626e","#b38184","#f0b49e","#f7e4be"],["#ff4e50","#fc913a","#f9d423","#ede574","#e1f5c4"],["#99b898","#fecea8","#ff847c","#e84a5f","#2a363b"],["#655643","#80bca3","#f6f7bd","#e6ac27","#bf4d28"],["#00a8c6","#40c0cb","#f9f2e7","#aee239","#8fbe00"],["#351330","#424254","#64908a","#e8caa4","#cc2a41"],["#554236","#f77825","#d3ce3d","#f1efa5","#60b99a"],["#ff9900","#424242","#e9e9e9","#bcbcbc","#3299bb"],["#5d4157","#838689","#a8caba","#cad7b2","#ebe3aa"],["#8c2318","#5e8c6a","#88a65e","#bfb35a","#f2c45a"],["#fad089","#ff9c5b","#f5634a","#ed303c","#3b8183"],["#ff4242","#f4fad2","#d4ee5e","#e1edb9","#f0f2eb"],["#d1e751","#ffffff","#000000","#4dbce9","#26ade4"],["#f8b195","#f67280","#c06c84","#6c5b7b","#355c7d"],["#1b676b","#519548","#88c425","#bef202","#eafde6"],["#bcbdac","#cfbe27","#f27435","#f02475","#3b2d38"],["#5e412f","#fcebb6","#78c0a8","#f07818","#f0a830"],["#452632","#91204d","#e4844a","#e8bf56","#e2f7ce"],["#eee6ab","#c5bc8e","#696758","#45484b","#36393b"],["#f0d8a8","#3d1c00","#86b8b1","#f2d694","#fa2a00"],["#f04155","#ff823a","#f2f26f","#fff7bd","#95cfb7"],["#2a044a","#0b2e59","#0d6759","#7ab317","#a0c55f"],["#bbbb88","#ccc68d","#eedd99","#eec290","#eeaa88"],["#b9d7d9","#668284","#2a2829","#493736","#7b3b3b"],["#b3cc57","#ecf081","#ffbe40","#ef746f","#ab3e5b"],["#a3a948","#edb92e","#f85931","#ce1836","#009989"],["#67917a","#170409","#b8af03","#ccbf82","#e33258"],["#e8d5b7","#0e2430","#fc3a51","#f5b349","#e8d5b9"],["#aab3ab","#c4cbb7","#ebefc9","#eee0b7","#e8caaf"],["#300030","#480048","#601848","#c04848","#f07241"],["#ab526b","#bca297","#c5ceae","#f0e2a4","#f4ebc3"],["#607848","#789048","#c0d860","#f0f0d8","#604848"],["#a8e6ce","#dcedc2","#ffd3b5","#ffaaa6","#ff8c94"],["#3e4147","#fffedf","#dfba69","#5a2e2e","#2a2c31"],["#b6d8c0","#c8d9bf","#dadabd","#ecdbbc","#fedcba"],["#fc354c","#29221f","#13747d","#0abfbc","#fcf7c5"],["#1c2130","#028f76","#b3e099","#ffeaad","#d14334"],["#edebe6","#d6e1c7","#94c7b6","#403b33","#d3643b"],["#cc0c39","#e6781e","#c8cf02","#f8fcc1","#1693a7"],["#dad6ca","#1bb0ce","#4f8699","#6a5e72","#563444"],["#a7c5bd","#e5ddcb","#eb7b59","#cf4647","#524656"],["#fdf1cc","#c6d6b8","#987f69","#e3ad40","#fcd036"],["#5c323e","#a82743","#e15e32","#c0d23e","#e5f04c"],["#230f2b","#f21d41","#ebebbc","#bce3c5","#82b3ae"],["#b9d3b0","#81bda4","#b28774","#f88f79","#f6aa93"],["#3a111c","#574951","#83988e","#bcdea5","#e6f9bc"],["#5e3929","#cd8c52","#b7d1a3","#dee8be","#fcf7d3"],["#1c0113","#6b0103","#a30006","#c21a01","#f03c02"],["#382f32","#ffeaf2","#fcd9e5","#fbc5d8","#f1396d"],["#e3dfba","#c8d6bf","#93ccc6","#6cbdb5","#1a1f1e"],["#000000","#9f111b","#b11623","#292c37","#cccccc"],["#c1b398","#605951","#fbeec2","#61a6ab","#accec0"],["#8dccad","#988864","#fea6a2","#f9d6ac","#ffe9af"],["#f6f6f6","#e8e8e8","#333333","#990100","#b90504"],["#1b325f","#9cc4e4","#e9f2f9","#3a89c9","#f26c4f"],["#5e9fa3","#dcd1b4","#fab87f","#f87e7b","#b05574"],["#951f2b","#f5f4d7","#e0dfb1","#a5a36c","#535233"],["#413d3d","#040004","#c8ff00","#fa023c","#4b000f"],["#eff3cd","#b2d5ba","#61ada0","#248f8d","#605063"],["#2d2d29","#215a6d","#3ca2a2","#92c7a3","#dfece6"],["#cfffdd","#b4dec1","#5c5863","#a85163","#ff1f4c"],["#4e395d","#827085","#8ebe94","#ccfc8e","#dc5b3e"],["#9dc9ac","#fffec7","#f56218","#ff9d2e","#919167"],["#a1dbb2","#fee5ad","#faca66","#f7a541","#f45d4c"],["#ffefd3","#fffee4","#d0ecea","#9fd6d2","#8b7a5e"],["#a8a7a7","#cc527a","#e8175d","#474747","#363636"],["#ffedbf","#f7803c","#f54828","#2e0d23","#f8e4c1"],["#f8edd1","#d88a8a","#474843","#9d9d93","#c5cfc6"],["#f38a8a","#55443d","#a0cab5","#cde9ca","#f1edd0"],["#4e4d4a","#353432","#94ba65","#2790b0","#2b4e72"],["#0ca5b0","#4e3f30","#fefeeb","#f8f4e4","#a5b3aa"],["#a70267","#f10c49","#fb6b41","#f6d86b","#339194"],["#9d7e79","#ccac95","#9a947c","#748b83","#5b756c"],["#edf6ee","#d1c089","#b3204d","#412e28","#151101"],["#046d8b","#309292","#2fb8ac","#93a42a","#ecbe13"],["#4d3b3b","#de6262","#ffb88c","#ffd0b3","#f5e0d3"],["#fffbb7","#a6f6af","#66b6ab","#5b7c8d","#4f2958"],["#ff003c","#ff8a00","#fabe28","#88c100","#00c176"],["#fcfef5","#e9ffe1","#cdcfb7","#d6e6c3","#fafbe3"],["#9cddc8","#bfd8ad","#ddd9ab","#f7af63","#633d2e"],["#30261c","#403831","#36544f","#1f5f61","#0b8185"],["#d1313d","#e5625c","#f9bf76","#8eb2c5","#615375"],["#ffe181","#eee9e5","#fad3b2","#ffba7f","#ff9c97"],["#aaff00","#ffaa00","#ff00aa","#aa00ff","#00aaff"],["#c2412d","#d1aa34","#a7a844","#a46583","#5a1e4a"]]
-},{}],58:[function(require,module,exports){
+},{}],56:[function(require,module,exports){
 /*
 object-assign
 (c) Sindre Sorhus
@@ -5958,7 +6223,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 	return to;
 };
 
-},{}],59:[function(require,module,exports){
+},{}],57:[function(require,module,exports){
 /**
  * @module  pan-zoom
  *
@@ -6065,7 +6330,7 @@ function panzoom (target, cb) {
 		})
 	})
 }
-},{"impetus":52,"mouse-wheel":56,"touch-pinch":70,"touch-position":71}],60:[function(require,module,exports){
+},{"impetus":51,"mouse-wheel":54,"touch-pinch":68,"touch-position":69}],58:[function(require,module,exports){
 'use strict'
 
 var pick = require('pick-by-alias')
@@ -6084,17 +6349,29 @@ function parseRect (arg) {
   if (typeof arg === 'string') {
     arg = arg.split(/\s/).map(parseFloat)
   }
+  else if (typeof arg === 'number') {
+    arg = [arg]
+  }
 
   // 0, 0, 100, 100 - array-like
   if (arg.length && typeof arg[0] === 'number') {
-    if (arg.length === 2) {
+    // [w, w]
+    if (arg.length === 1) {
+      rect = {
+        width: arg[0],
+        height: arg[0],
+        x: 0, y: 0
+      }
+    }
+    // [w, h]
+    else if (arg.length === 2) {
       rect = {
         width: arg[0],
         height: arg[1],
-        x: 0,
-        y: 0
+        x: 0, y: 0
       }
     }
+    // [l, t, r, b]
     else {
       rect = {
         x: arg[0],
@@ -6104,14 +6381,15 @@ function parseRect (arg) {
       }
     }
   }
+  // {x, y, w, h} or {l, t, b, r}
   else if (arg) {
     arg = pick(arg, {
       left: 'x l left Left',
       top: 'y t top Top',
-      width: 'w width',
-      height: 'h height',
-      bottom: 'b bottom',
-      right: 'r right'
+      width: 'w width W Width',
+      height: 'h height W Width',
+      bottom: 'b bottom Bottom',
+      right: 'r right Right'
     })
 
     rect = {
@@ -6138,7 +6416,7 @@ function parseRect (arg) {
 
   return rect
 }
-},{"pick-by-alias":63}],61:[function(require,module,exports){
+},{"pick-by-alias":61}],59:[function(require,module,exports){
 module.exports = function parseUnit(str, out) {
     if (!out)
         { out = [ 0, '' ] }
@@ -6149,7 +6427,7 @@ module.exports = function parseUnit(str, out) {
     out[1] = str.match(/[\d.\-\+]*\s*(.*)/)[1] || ''
     return out
 }
-},{}],62:[function(require,module,exports){
+},{}],60:[function(require,module,exports){
 (function (process){
 // Generated by CoffeeScript 1.12.2
 (function() {
@@ -6189,7 +6467,7 @@ module.exports = function parseUnit(str, out) {
 
 
 }).call(this,require('_process'))
-},{"_process":4}],63:[function(require,module,exports){
+},{"_process":4}],61:[function(require,module,exports){
 'use strict'
 
 
@@ -6267,7 +6545,7 @@ function toList(arg) {
 	}
 	return arg
 }
-},{}],64:[function(require,module,exports){
+},{}],62:[function(require,module,exports){
 (function (global){
 var now = require('performance-now')
   , root = typeof window === 'undefined' ? global : window
@@ -6346,7 +6624,7 @@ module.exports.polyfill = function(object) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"performance-now":62}],65:[function(require,module,exports){
+},{"performance-now":60}],63:[function(require,module,exports){
 (function(da,ea){"object"===typeof exports&&"undefined"!==typeof module?module.exports=ea():"function"===typeof define&&define.amd?define(ea):da.createREGL=ea()})(this,function(){function da(a,b){this.id=vb++;this.type=a;this.data=b}function ea(a){if(0===a.length){ return[]; }var b=a.charAt(0),c=a.charAt(a.length-1);if(1<a.length&&b===c&&('"'===b||"'"===b)){ return['"'+a.substr(1,a.length-2).replace(/\\/g,"\\\\").replace(/"/g,'\\"')+'"']; }if(b=/\[(false|true|null|\d+|'[^']*'|"[^"]*")\]/.exec(a)){ return ea(a.substr(0,
 b.index)).concat(ea(b[1])).concat(ea(a.substr(b.index+b[0].length))); }b=a.split(".");if(1===b.length){ return['"'+a.replace(/\\/g,"\\\\").replace(/"/g,'\\"')+'"']; }a=[];for(c=0;c<b.length;++c){ a=a.concat(ea(b[c])); }return a}function Wa(a){return"["+ea(a).join("][")+"]"}function wb(){var a={"":0},b=[""];return{id:function(c){var d=a[c];if(d){ return d; }d=a[c]=b.length;b.push(c);return d},str:function(a){return b[a]}}}function xb(a,b,c){function d(){var b=window.innerWidth,d=window.innerHeight;a!==document.body&&
 (d=a.getBoundingClientRect(),b=d.right-d.left,d=d.bottom-d.top);f.width=c*b;f.height=c*d;A(f.style,{width:b+"px",height:d+"px"})}var f=document.createElement("canvas");A(f.style,{border:0,margin:0,padding:0,top:0,left:0});a.appendChild(f);a===document.body&&(f.style.position="absolute",A(a.style,{margin:0,padding:0}));window.addEventListener("resize",d,!1);d();return{canvas:f,onDestroy:function(){window.removeEventListener("resize",d);a.removeChild(f)}}}function yb(a,b){function c(c){try{return a.getContext(c,
@@ -6499,7 +6777,7 @@ t),O=T.next,H=m.canvas,E=[],S=[],U=[],R=[a.onDestroy],ba=null;H&&(H.addEventList
 3),draw:p({}),buffer:function(a){return G.create(a,34962,!1,!1)},elements:function(a){return Q.create(a,!1)},texture:z.create2D,cube:z.createCube,renderbuffer:L.create,framebuffer:I.create,framebufferCube:I.createCube,attributes:e,frame:g,on:function(a,b){var c;switch(a){case "frame":return g(b);case "lost":c=S;break;case "restore":c=U;break;case "destroy":c=R}c.push(b);return{cancel:function(){for(var a=0;a<c.length;++a){ if(c[a]===b){c[a]=c[c.length-1];c.pop();break} }}}},limits:P,hasExtension:function(a){return 0<=
 P.extensions.indexOf(a.toLowerCase())},read:D,destroy:function(){E.length=0;d();H&&(H.removeEventListener("webglcontextlost",f),H.removeEventListener("webglcontextrestored",k));N.clear();I.clear();L.clear();z.clear();Q.clear();G.clear();x&&x.clear();R.forEach(function(a){a()})},_gl:m,_refresh:l,poll:function(){v();x&&x.update()},now:u,stats:w});a.onDone(null,e);return e}});
 
-},{}],66:[function(require,module,exports){
+},{}],64:[function(require,module,exports){
 /*!
  * repeat-string <https://github.com/jonschlinkert/repeat-string>
  *
@@ -6571,7 +6849,7 @@ function repeat(str, num) {
   return res;
 }
 
-},{}],67:[function(require,module,exports){
+},{}],65:[function(require,module,exports){
 (function (global){
 module.exports =
   global.performance &&
@@ -6582,7 +6860,7 @@ module.exports =
   }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],68:[function(require,module,exports){
+},{}],66:[function(require,module,exports){
 'use strict';
 var repeatString = require('repeat-string');
 var objectAssign = require('object-assign');
@@ -6712,7 +6990,7 @@ function isAtRule(prop) {
 	return prop.indexOf('@') === 0;
 }
 
-},{"arrify":41,"object-assign":58,"repeat-string":66}],69:[function(require,module,exports){
+},{"arrify":40,"object-assign":56,"repeat-string":64}],67:[function(require,module,exports){
 'use strict'
 
 var parseUnit = require('parse-unit')
@@ -6773,7 +7051,7 @@ function toPX(str, element) {
   }
   return 1
 }
-},{"parse-unit":61}],70:[function(require,module,exports){
+},{"parse-unit":59}],68:[function(require,module,exports){
 var getDistance = require('gl-vec2/distance')
 var EventEmitter = require('events').EventEmitter
 var dprop = require('dprop')
@@ -6928,7 +7206,7 @@ function Finger () {
   this.touch = null
 }
 
-},{"dprop":46,"events":3,"gl-vec2/distance":51,"mouse-event-offset":55}],71:[function(require,module,exports){
+},{"dprop":45,"events":3,"gl-vec2/distance":50,"mouse-event-offset":53}],69:[function(require,module,exports){
 var offset = require('mouse-event-offset');
 var EventEmitter = require('events').EventEmitter;
 
@@ -6977,7 +7255,7 @@ module.exports.emitter = function (opt) {
   return attach(opt);
 };
 
-},{"events":3,"mouse-event-offset":55}],72:[function(require,module,exports){
+},{"events":3,"mouse-event-offset":53}],70:[function(require,module,exports){
 'use strict'
 
 var regl = require('regl')({ extensions: 'oes_element_index_uint' })
@@ -6989,6 +7267,7 @@ var alpha = require('color-alpha')
 var palettes = require('nice-color-palettes')
 var palette = palettes[Math.floor(Math.random() * palettes.length)]
 var fps = require('fps-indicator')({position: 'bottom-right', color: 'black'})
+var arrayRange = require('array-range')
 
 
 // create splom instance
@@ -7000,8 +7279,8 @@ var passes = []
 
 // create settings panel & bind
 var settings = createSettings({
-	traces: { value: 2, min: 1, max: 10, type: 'range' },
-	variables: { value: 20, min: 1, max: 100, type: 'range' },
+	traces: { value: 1, min: 1, max: 10, type: 'range' },
+	variables: { value: 4, min: 1, max: 100, type: 'range' },
 	points: { value: 1e3, min: 1, max: 1e4, type: 'range' },
 	// snap: { value: false }
 }, {
@@ -7036,7 +7315,36 @@ function update () {
 			size: 3,
 			range: [],
 			domain: [],
-			viewport: [0,0, regl._gl.drawingBufferWidth, regl._gl.drawingBufferHeight]
+			// viewport: [100,100, 200,200],
+			padding: 2,
+			diagonal: true,
+			hide: 'bottom',
+			marker: (function () {
+				var w = 200, h = 200
+				var dist = new Array(w*h)
+				for (var i = 0; i < w; i++) {
+					for (var j = 0; j < h; j++) {
+						if (i > j) {
+							if (i < h - j) {
+								dist[j*w + i] = j/(h/2)
+							}
+							else {
+								dist[j*w + i] = 1 - (i-w/2)/(w/2)
+							}
+						}
+						else {
+							if (i < h - j) {
+								dist[j*w + i] = i/(w/2)
+							}
+							else {
+								dist[j*w + i] = 1 - (j-h/2)/(h/2)
+							}
+						}
+					}
+				}
+
+				return dist
+			})()
 		}))
 
 		if (!pass.data) { pass.data = [] }
@@ -7047,9 +7355,9 @@ function update () {
 				pass.data[col] = []
 				pass.data[col].mean = Math.random()
 				pass.data[col].sdev = Math.random()
-				pass.range[col] = passes[i$1-1] && passes[i$1-1].range[col] || [-5,-5,5,5]
-				pass.domain[col] = passes[i$1-1] && passes[i$1-1].domain[col] || [-5,-5,5,5]
+				pass.range[col] = passes[i$1-1] && passes[i$1-1].range[col] || [-3,-3,3,3]
 			}
+			pass.domain[col] = [col/variables,col/variables,(col+1)/variables,(col+1)/variables]
 			var colData = pass.data[col]
 			var mean = colData.mean;
 			var sdev = colData.sdev;
@@ -7066,6 +7374,7 @@ function update () {
 	console.timeEnd('update')
 
 	console.time('draw')
+	// splom.draw([1,2,3,4,5])
 	splom.draw()
 	console.timeEnd('draw')
 }
@@ -7120,7 +7429,7 @@ panzoom(splom.canvas, function (e) {
 	splom.draw()
 	console.timeEnd('draw')
 })
-},{"../settings-panel":77,"./":38,"color-alpha":42,"fps-indicator":49,"gauss-random":50,"nice-color-palettes":57,"pan-zoom":59,"regl":65}],73:[function(require,module,exports){
+},{"../settings-panel":75,"./":37,"array-range":39,"color-alpha":41,"fps-indicator":48,"gauss-random":49,"nice-color-palettes":55,"pan-zoom":57,"regl":63}],71:[function(require,module,exports){
 'use strict'
 
 var h = require('virtual-dom/h')
@@ -7149,7 +7458,7 @@ module.exports = function (ref) {
 		return field.value
 	}
 }
-},{"virtual-dom/h":143}],74:[function(require,module,exports){
+},{"virtual-dom/h":141}],72:[function(require,module,exports){
 'use strict'
 
 // exports
@@ -7186,7 +7495,7 @@ module.exports = {
 	// font:
 	// ratio:
 }
-},{"./button":73,"./text":75,"./textarea":76}],75:[function(require,module,exports){
+},{"./button":71,"./text":73,"./textarea":74}],73:[function(require,module,exports){
 'use strict';
 
 var num = require('input-number')
@@ -7220,7 +7529,7 @@ module.exports = function (field) {
 		])
 	)
 }
-},{"defined":88,"input-number":100,"virtual-dom/h":143}],76:[function(require,module,exports){
+},{"defined":86,"input-number":98,"virtual-dom/h":141}],74:[function(require,module,exports){
 'use strict';
 
 var autosize = require('autosize')
@@ -7274,7 +7583,7 @@ module.exports = function (ref) {
 		return field.value
 	}
 }
-},{"autosize":79,"defined":88,"virtual-dom/h":143}],77:[function(require,module,exports){
+},{"autosize":77,"defined":86,"virtual-dom/h":141}],75:[function(require,module,exports){
 /** @module  settings-panel */
 'use strict'
 
@@ -7643,7 +7952,7 @@ Panel.detectType = function (field) {
 	// cast by default to text
 	return 'text'
 }
-},{"./component":74,"camelcase":81,"decamelize":87,"defined":88,"dom-css":89,"get-uid":92,"inherits":99,"insert-styles":101,"is-color":102,"is-plain-obj":113,"main-loop":114,"nanobus":120,"object-assign":123,"parse-fraction":125,"pick-by-alias":129,"scope-css":135,"update-diff":140,"virtual-dom/create-element":141,"virtual-dom/diff":142,"virtual-dom/h":143,"virtual-dom/patch":144}],78:[function(require,module,exports){
+},{"./component":72,"camelcase":79,"decamelize":85,"defined":86,"dom-css":87,"get-uid":90,"inherits":97,"insert-styles":99,"is-color":100,"is-plain-obj":111,"main-loop":112,"nanobus":118,"object-assign":121,"parse-fraction":123,"pick-by-alias":127,"scope-css":133,"update-diff":138,"virtual-dom/create-element":139,"virtual-dom/diff":140,"virtual-dom/h":141,"virtual-dom/patch":142}],76:[function(require,module,exports){
 /* The following list is defined in React's core */
 var IS_UNITLESS = {
   animationIterationCount: true,
@@ -7685,7 +7994,7 @@ module.exports = function(name, value) {
     return value;
   }
 };
-},{}],79:[function(require,module,exports){
+},{}],77:[function(require,module,exports){
 /*!
 	Autosize 4.0.0
 	license: MIT
@@ -7978,7 +8287,7 @@ module.exports = function(name, value) {
 
 	module.exports = autosize;
 });
-},{}],80:[function(require,module,exports){
+},{}],78:[function(require,module,exports){
 /*!
  * Cross-Browser Split 1.1.1
  * Copyright 2007-2012 Steven Levithan <stevenlevithan.com>
@@ -8088,7 +8397,7 @@ module.exports = (function split(undef) {
   return self;
 })();
 
-},{}],81:[function(require,module,exports){
+},{}],79:[function(require,module,exports){
 'use strict';
 
 function preserveCamelCase(str) {
@@ -8154,7 +8463,7 @@ module.exports = function (str) {
 		.replace(/[_.\- ]+(\w|$)/g, function (m, p1) { return p1.toUpperCase(); });
 };
 
-},{}],82:[function(require,module,exports){
+},{}],80:[function(require,module,exports){
 module.exports = function(obj) {
     if (typeof obj === 'string') { return camelCase(obj); }
     return walk(obj);
@@ -8215,7 +8524,7 @@ function reduce (xs, f, acc) {
     return acc;
 }
 
-},{}],83:[function(require,module,exports){
+},{}],81:[function(require,module,exports){
 /**
  * @module  caret-position/get
  *
@@ -8268,7 +8577,7 @@ module.exports = function (input) {
 	}
 	return result;
 };
-},{}],84:[function(require,module,exports){
+},{}],82:[function(require,module,exports){
 /**
  * @module  caret-position
  */
@@ -8282,7 +8591,7 @@ function caret(a,b,c){
 
 caret.get = require('./get');
 caret.set = require('./set');
-},{"./get":83,"./set":85}],85:[function(require,module,exports){
+},{"./get":81,"./set":83}],83:[function(require,module,exports){
 /**
  * @module  caret-position/set
  *
@@ -8310,7 +8619,7 @@ module.exports = function(input, start, end) {
 	}
 	if (isNumber) { input.type = 'number' }
 };
-},{}],86:[function(require,module,exports){
+},{}],84:[function(require,module,exports){
 module.exports={
   "aqua": "#00ffff",
   "aliceblue": "#f0f8ff",
@@ -8462,7 +8771,7 @@ module.exports={
   "rebeccapurple": "#663399"
 }
 
-},{}],87:[function(require,module,exports){
+},{}],85:[function(require,module,exports){
 'use strict';
 module.exports = function (str, sep) {
 	if (typeof str !== 'string') {
@@ -8477,7 +8786,7 @@ module.exports = function (str, sep) {
 		.toLowerCase();
 };
 
-},{}],88:[function(require,module,exports){
+},{}],86:[function(require,module,exports){
 module.exports = function () {
     var arguments$1 = arguments;
 
@@ -8486,7 +8795,7 @@ module.exports = function () {
     }
 };
 
-},{}],89:[function(require,module,exports){
+},{}],87:[function(require,module,exports){
 var prefix = require('prefix-style')
 var toCamelCase = require('to-camel-case')
 var cache = { 'float': 'cssFloat' }
@@ -8549,7 +8858,7 @@ module.exports.get = function (element, properties) {
   }
 }
 
-},{"add-px-to-style":78,"prefix-style":130,"to-camel-case":137}],90:[function(require,module,exports){
+},{"add-px-to-style":76,"prefix-style":128,"to-camel-case":135}],88:[function(require,module,exports){
 var camelize = require("camelize")
 var template = require("string-template")
 var extend = require("xtend/mutable")
@@ -8598,7 +8907,7 @@ function TypedError(args) {
     }
 }
 
-},{"camelize":82,"string-template":136,"xtend/mutable":168}],91:[function(require,module,exports){
+},{"camelize":80,"string-template":134,"xtend/mutable":166}],89:[function(require,module,exports){
 'use strict';
 
 var OneVersionConstraint = require('individual/one-version');
@@ -8620,14 +8929,14 @@ function EvStore(elem) {
     return hash;
 }
 
-},{"individual/one-version":98}],92:[function(require,module,exports){
+},{"individual/one-version":96}],90:[function(require,module,exports){
 /** generate unique id for selector */
 var counter = Date.now() % 1e9;
 
 module.exports = function getUid(){
 	return (Math.random() * 1e9 >>> 0) + (counter++);
 };
-},{}],93:[function(require,module,exports){
+},{}],91:[function(require,module,exports){
 (function (global){
 var topLevel = typeof global !== 'undefined' ? global :
     typeof window !== 'undefined' ? window : {}
@@ -8648,7 +8957,7 @@ if (typeof document !== 'undefined') {
 module.exports = doccy;
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"min-document":2}],94:[function(require,module,exports){
+},{"min-document":2}],92:[function(require,module,exports){
 /*!
  * hex-color-regex <https://github.com/regexps/hex-color-regex>
  *
@@ -8666,7 +8975,7 @@ module.exports = function hexColorRegex(opts) {
     : /#([a-f0-9]{3}|[a-f0-9]{4}(?:[a-f0-9]{2}){0,2})\b/gi
 }
 
-},{}],95:[function(require,module,exports){
+},{}],93:[function(require,module,exports){
 'use strict';
 
 module.exports = function hslRegex(options) {
@@ -8677,7 +8986,7 @@ module.exports = function hslRegex(options) {
     /hsl\(\s*(\d+)\s*,\s*(\d*(?:\.\d+)?%)\s*,\s*(\d*(?:\.\d+)?%)\)/ig;
 }
 
-},{}],96:[function(require,module,exports){
+},{}],94:[function(require,module,exports){
 'use strict';
 
 module.exports = function hslaRegex(options) {
@@ -8688,7 +8997,7 @@ module.exports = function hslaRegex(options) {
     /hsla\((\d+),\s*([\d.]+)%,\s*([\d.]+)%,\s*(\d*(?:\.\d+)?)\)/ig;
 }
 
-},{}],97:[function(require,module,exports){
+},{}],95:[function(require,module,exports){
 (function (global){
 'use strict';
 
@@ -8711,7 +9020,7 @@ function Individual(key, value) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],98:[function(require,module,exports){
+},{}],96:[function(require,module,exports){
 'use strict';
 
 var Individual = require('./index.js');
@@ -8735,7 +9044,7 @@ function OneVersion(moduleName, version, defaultValue) {
     return Individual(key, defaultValue);
 }
 
-},{"./index.js":97}],99:[function(require,module,exports){
+},{"./index.js":95}],97:[function(require,module,exports){
 if (typeof Object.create === 'function') {
   // implementation from standard node.js 'util' module
   module.exports = function inherits(ctor, superCtor) {
@@ -8760,7 +9069,7 @@ if (typeof Object.create === 'function') {
   }
 }
 
-},{}],100:[function(require,module,exports){
+},{}],98:[function(require,module,exports){
 /**
  * @module  input-number
  */
@@ -8872,7 +9181,7 @@ function inputNumber (input, opts) {
 
 	return input;
 }
-},{"caret-position2":84,"mumath/clamp":115,"mumath/round":117}],101:[function(require,module,exports){
+},{"caret-position2":82,"mumath/clamp":113,"mumath/round":115}],99:[function(require,module,exports){
 (function (global){
 'use strict'
 
@@ -8908,7 +9217,7 @@ function createStyle (id) {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}],102:[function(require,module,exports){
+},{}],100:[function(require,module,exports){
 var isRgb = require('./lib/isRgb')
 var isRgba = require('./lib/isRgba')
 var isHsl = require('./lib/isHsl')
@@ -8934,14 +9243,14 @@ module.exports.isInherit = isInherit
 module.exports.isCurrentColor = isCurrentColor
 module.exports.isTransparent = isTransparent
 
-},{"./lib/isCurrentColor":103,"./lib/isHex":104,"./lib/isHsl":105,"./lib/isHsla":106,"./lib/isInherit":107,"./lib/isKeyword":108,"./lib/isRgb":109,"./lib/isRgba":110,"./lib/isTransparent":111}],103:[function(require,module,exports){
+},{"./lib/isCurrentColor":101,"./lib/isHex":102,"./lib/isHsl":103,"./lib/isHsla":104,"./lib/isInherit":105,"./lib/isKeyword":106,"./lib/isRgb":107,"./lib/isRgba":108,"./lib/isTransparent":109}],101:[function(require,module,exports){
 function isCurrentColor (str) {
   return str === 'currentColor'
 }
 
 module.exports = isCurrentColor
 
-},{}],104:[function(require,module,exports){
+},{}],102:[function(require,module,exports){
 var hexRegex = require('hex-color-regex')
 
 function isHex (str) {
@@ -8950,7 +9259,7 @@ function isHex (str) {
 
 module.exports = isHex
 
-},{"hex-color-regex":94}],105:[function(require,module,exports){
+},{"hex-color-regex":92}],103:[function(require,module,exports){
 var hslRegex = require('hsl-regex')
 
 function isHsl (str) {
@@ -8959,7 +9268,7 @@ function isHsl (str) {
 
 module.exports = isHsl
 
-},{"hsl-regex":95}],106:[function(require,module,exports){
+},{"hsl-regex":93}],104:[function(require,module,exports){
 var hslaRegex = require('hsla-regex')
 
 function isHsla (str) {
@@ -8968,14 +9277,14 @@ function isHsla (str) {
 
 module.exports = isHsla
 
-},{"hsla-regex":96}],107:[function(require,module,exports){
+},{"hsla-regex":94}],105:[function(require,module,exports){
 function isInherit (str) {
   return str === 'inherit'
 }
 
 module.exports = isInherit
 
-},{}],108:[function(require,module,exports){
+},{}],106:[function(require,module,exports){
 var keywords = require('css-color-names')
 
 function isKeyword (str) {
@@ -8984,14 +9293,14 @@ function isKeyword (str) {
 
 module.exports = isKeyword
 
-},{"css-color-names":86}],109:[function(require,module,exports){
+},{"css-color-names":84}],107:[function(require,module,exports){
 var rgbRegex = require('rgb-regex')
 
 module.exports = function (str) {
   return rgbRegex({exact: true}).test(str)
 }
 
-},{"rgb-regex":133}],110:[function(require,module,exports){
+},{"rgb-regex":131}],108:[function(require,module,exports){
 var rgbaRegex = require('rgba-regex')
 
 function isRgba (str) {
@@ -9000,21 +9309,21 @@ function isRgba (str) {
 
 module.exports = isRgba
 
-},{"rgba-regex":134}],111:[function(require,module,exports){
+},{"rgba-regex":132}],109:[function(require,module,exports){
 function isTransparent (str) {
   return str === 'transparent'
 }
 
 module.exports = isTransparent
 
-},{}],112:[function(require,module,exports){
+},{}],110:[function(require,module,exports){
 "use strict";
 
 module.exports = function isObject(x) {
 	return typeof x === "object" && x !== null;
 };
 
-},{}],113:[function(require,module,exports){
+},{}],111:[function(require,module,exports){
 'use strict';
 var toString = Object.prototype.toString;
 
@@ -9023,7 +9332,7 @@ module.exports = function (x) {
 	return toString.call(x) === '[object Object]' && (prototype = Object.getPrototypeOf(x), prototype === null || prototype === Object.getPrototypeOf({}));
 };
 
-},{}],114:[function(require,module,exports){
+},{}],112:[function(require,module,exports){
 var raf = require("raf")
 var TypedError = require("error/typed")
 
@@ -9105,7 +9414,7 @@ function main(initialState, view, opts) {
     }
 }
 
-},{"error/typed":90,"raf":131}],115:[function(require,module,exports){
+},{"error/typed":88,"raf":129}],113:[function(require,module,exports){
 /**
  * Clamp value.
  * Detects proper clamp min/max.
@@ -9120,7 +9429,7 @@ function main(initialState, view, opts) {
 module.exports = require('./wrap')(function(a, min, max){
 	return max > min ? Math.max(Math.min(a,max),min) : Math.max(Math.min(a,min),max);
 });
-},{"./wrap":118}],116:[function(require,module,exports){
+},{"./wrap":116}],114:[function(require,module,exports){
 /**
  * @module  mumath/precision
  *
@@ -9140,7 +9449,7 @@ module.exports = require('./wrap')(function(n){
 
 	return !d ? 0 : s.length - d;
 });
-},{"./wrap":118}],117:[function(require,module,exports){
+},{"./wrap":116}],115:[function(require,module,exports){
 /**
  * Precision round
  *
@@ -9163,7 +9472,7 @@ module.exports = require('./wrap')(function(value, step) {
 	value = Math.round(value / step) * step;
 	return parseFloat(value.toFixed(precision(step)));
 });
-},{"./precision":116,"./wrap":118}],118:[function(require,module,exports){
+},{"./precision":114,"./wrap":116}],116:[function(require,module,exports){
 /**
  * Get fn wrapped with array/object attrs recognition
  *
@@ -9205,7 +9514,7 @@ module.exports = function(fn){
 		}
 	};
 };
-},{}],119:[function(require,module,exports){
+},{}],117:[function(require,module,exports){
 assert.notEqual = notEqual
 assert.notOk = notOk
 assert.equal = equal
@@ -9229,7 +9538,7 @@ function assert (t, m) {
   if (!t) { throw new Error(m || 'AssertionError') }
 }
 
-},{}],120:[function(require,module,exports){
+},{}],118:[function(require,module,exports){
 var splice = require('remove-array-items')
 var nanotiming = require('nanotiming')
 var assert = require('assert')
@@ -9395,7 +9704,7 @@ Nanobus.prototype._emit = function (arr, eventName, data, uuid) {
   }
 }
 
-},{"assert":1,"nanotiming":121,"remove-array-items":132}],121:[function(require,module,exports){
+},{"assert":1,"nanotiming":119,"remove-array-items":130}],119:[function(require,module,exports){
 var scheduler = require('nanoscheduler')()
 var assert = require('assert')
 
@@ -9445,7 +9754,7 @@ function noop (cb) {
   }
 }
 
-},{"assert":1,"nanoscheduler":122}],122:[function(require,module,exports){
+},{"assert":1,"nanoscheduler":120}],120:[function(require,module,exports){
 var assert = require('assert')
 
 var hasWindow = typeof window !== 'undefined'
@@ -9503,7 +9812,7 @@ NanoScheduler.prototype.setTimeout = function (cb) {
 
 module.exports = createScheduler
 
-},{"assert":119}],123:[function(require,module,exports){
+},{"assert":117}],121:[function(require,module,exports){
 /*
 object-assign
 (c) Sindre Sorhus
@@ -9597,7 +9906,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 	return to;
 };
 
-},{}],124:[function(require,module,exports){
+},{}],122:[function(require,module,exports){
 'use strict'
 
 var extend = require('object-assign')
@@ -10090,7 +10399,7 @@ extend(t.pattern, {
 
 
 module.exports = t
-},{"object-assign":126}],125:[function(require,module,exports){
+},{"object-assign":124}],123:[function(require,module,exports){
 'use strict'
 
 var en = require('./en')
@@ -10392,7 +10701,7 @@ function detectType(str, t) {
 
   throw Error('Unknown part `' + str + '`')
 }
-},{"./en":124,"./unicode":127}],126:[function(require,module,exports){
+},{"./en":122,"./unicode":125}],124:[function(require,module,exports){
 /*
 object-assign
 (c) Sindre Sorhus
@@ -10486,7 +10795,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 	return to;
 };
 
-},{}],127:[function(require,module,exports){
+},{}],125:[function(require,module,exports){
 'use strict'
 
 module.exports = {
@@ -10509,7 +10818,7 @@ module.exports = {
 	'⅑': [1, 9],
 	'⅒': [1, 10]
 }
-},{}],128:[function(require,module,exports){
+},{}],126:[function(require,module,exports){
 (function (process){
 // Generated by CoffeeScript 1.6.3
 (function() {
@@ -10549,7 +10858,7 @@ module.exports = {
 */
 
 }).call(this,require('_process'))
-},{"_process":4}],129:[function(require,module,exports){
+},{"_process":4}],127:[function(require,module,exports){
 'use strict'
 
 
@@ -10597,7 +10906,7 @@ function toList(arg) {
 	}
 	return arg
 }
-},{}],130:[function(require,module,exports){
+},{}],128:[function(require,module,exports){
 var div = null
 var prefixes = [ 'Webkit', 'Moz', 'O', 'ms' ]
 
@@ -10629,7 +10938,7 @@ module.exports = function prefixStyle (prop) {
   return false
 }
 
-},{}],131:[function(require,module,exports){
+},{}],129:[function(require,module,exports){
 var now = require('performance-now')
   , global = typeof window === 'undefined' ? {} : window
   , vendors = ['moz', 'webkit']
@@ -10711,7 +11020,7 @@ module.exports.cancel = function() {
   caf.apply(global, arguments)
 }
 
-},{"performance-now":128}],132:[function(require,module,exports){
+},{"performance-now":126}],130:[function(require,module,exports){
 'use strict'
 
 /**
@@ -10741,7 +11050,7 @@ module.exports = function removeItems(arr, startIdx, removeCount)
   arr.length = len
 }
 
-},{}],133:[function(require,module,exports){
+},{}],131:[function(require,module,exports){
 'use strict';
 
 module.exports = function rgbRegex(options) {
@@ -10752,7 +11061,7 @@ module.exports = function rgbRegex(options) {
     /rgb\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3})\)/ig;
 }
 
-},{}],134:[function(require,module,exports){
+},{}],132:[function(require,module,exports){
 'use strict';
 
 module.exports = function rgbaRegex(options) {
@@ -10763,7 +11072,7 @@ module.exports = function rgbaRegex(options) {
     /rgba\((\d{1,3}),\s*(\d{1,3}),\s*(\d{1,3}),\s*(\d*(?:\.\d+)?)\)/ig;
 }
 
-},{}],135:[function(require,module,exports){
+},{}],133:[function(require,module,exports){
 module.exports = scope;
 scope.replace = replace;
 
@@ -10795,7 +11104,7 @@ function replace (css, replacer) {
 
 	return css.replace(/([^\r\n,{}]+)(,(?=[^}]*{)|\s*{)/g, replacer);
 }
-},{}],136:[function(require,module,exports){
+},{}],134:[function(require,module,exports){
 var nargs = /\{([0-9a-zA-Z]+)\}/g
 var slice = Array.prototype.slice
 
@@ -10831,7 +11140,7 @@ function template(string) {
     })
 }
 
-},{}],137:[function(require,module,exports){
+},{}],135:[function(require,module,exports){
 
 var space = require('to-space-case')
 
@@ -10854,7 +11163,7 @@ function toCamelCase(string) {
   })
 }
 
-},{"to-space-case":139}],138:[function(require,module,exports){
+},{"to-space-case":137}],136:[function(require,module,exports){
 
 /**
  * Export.
@@ -10923,7 +11232,7 @@ function uncamelize(string) {
   })
 }
 
-},{}],139:[function(require,module,exports){
+},{}],137:[function(require,module,exports){
 
 var clean = require('to-no-case')
 
@@ -10946,7 +11255,7 @@ function toSpaceCase(string) {
   }).trim()
 }
 
-},{"to-no-case":138}],140:[function(require,module,exports){
+},{"to-no-case":136}],138:[function(require,module,exports){
 /**
  * @module update-diff
  */
@@ -10978,27 +11287,27 @@ module.exports = function updateDiff (obj, diff, mappers) {
 
 	return obj
 }
-},{}],141:[function(require,module,exports){
+},{}],139:[function(require,module,exports){
 var createElement = require("./vdom/create-element.js")
 
 module.exports = createElement
 
-},{"./vdom/create-element.js":146}],142:[function(require,module,exports){
+},{"./vdom/create-element.js":144}],140:[function(require,module,exports){
 var diff = require("./vtree/diff.js")
 
 module.exports = diff
 
-},{"./vtree/diff.js":166}],143:[function(require,module,exports){
+},{"./vtree/diff.js":164}],141:[function(require,module,exports){
 var h = require("./virtual-hyperscript/index.js")
 
 module.exports = h
 
-},{"./virtual-hyperscript/index.js":153}],144:[function(require,module,exports){
+},{"./virtual-hyperscript/index.js":151}],142:[function(require,module,exports){
 var patch = require("./vdom/patch.js")
 
 module.exports = patch
 
-},{"./vdom/patch.js":149}],145:[function(require,module,exports){
+},{"./vdom/patch.js":147}],143:[function(require,module,exports){
 var isObject = require("is-object")
 var isHook = require("../vnode/is-vhook.js")
 
@@ -11097,7 +11406,7 @@ function getPrototype(value) {
     }
 }
 
-},{"../vnode/is-vhook.js":157,"is-object":112}],146:[function(require,module,exports){
+},{"../vnode/is-vhook.js":155,"is-object":110}],144:[function(require,module,exports){
 var document = require("global/document")
 
 var applyProperties = require("./apply-properties")
@@ -11145,7 +11454,7 @@ function createElement(vnode, opts) {
     return node
 }
 
-},{"../vnode/handle-thunk.js":155,"../vnode/is-vnode.js":158,"../vnode/is-vtext.js":159,"../vnode/is-widget.js":160,"./apply-properties":145,"global/document":93}],147:[function(require,module,exports){
+},{"../vnode/handle-thunk.js":153,"../vnode/is-vnode.js":156,"../vnode/is-vtext.js":157,"../vnode/is-widget.js":158,"./apply-properties":143,"global/document":91}],145:[function(require,module,exports){
 // Maps a virtual DOM tree onto a real DOM tree in an efficient manner.
 // We don't want to read all of the DOM nodes in the tree so we use
 // the in-order tree indexing to eliminate recursion down certain branches.
@@ -11232,7 +11541,7 @@ function ascending(a, b) {
     return a > b ? 1 : -1
 }
 
-},{}],148:[function(require,module,exports){
+},{}],146:[function(require,module,exports){
 var applyProperties = require("./apply-properties")
 
 var isWidget = require("../vnode/is-widget.js")
@@ -11385,7 +11694,7 @@ function replaceRoot(oldRoot, newRoot) {
     return newRoot;
 }
 
-},{"../vnode/is-widget.js":160,"../vnode/vpatch.js":163,"./apply-properties":145,"./update-widget":150}],149:[function(require,module,exports){
+},{"../vnode/is-widget.js":158,"../vnode/vpatch.js":161,"./apply-properties":143,"./update-widget":148}],147:[function(require,module,exports){
 var document = require("global/document")
 var isArray = require("x-is-array")
 
@@ -11467,7 +11776,7 @@ function patchIndices(patches) {
     return indices
 }
 
-},{"./create-element":146,"./dom-index":147,"./patch-op":148,"global/document":93,"x-is-array":167}],150:[function(require,module,exports){
+},{"./create-element":144,"./dom-index":145,"./patch-op":146,"global/document":91,"x-is-array":165}],148:[function(require,module,exports){
 var isWidget = require("../vnode/is-widget.js")
 
 module.exports = updateWidget
@@ -11484,7 +11793,7 @@ function updateWidget(a, b) {
     return false
 }
 
-},{"../vnode/is-widget.js":160}],151:[function(require,module,exports){
+},{"../vnode/is-widget.js":158}],149:[function(require,module,exports){
 'use strict';
 
 var EvStore = require('ev-store');
@@ -11513,7 +11822,7 @@ EvHook.prototype.unhook = function(node, propertyName) {
     es[propName] = undefined;
 };
 
-},{"ev-store":91}],152:[function(require,module,exports){
+},{"ev-store":89}],150:[function(require,module,exports){
 'use strict';
 
 module.exports = SoftSetHook;
@@ -11532,7 +11841,7 @@ SoftSetHook.prototype.hook = function (node, propertyName) {
     }
 };
 
-},{}],153:[function(require,module,exports){
+},{}],151:[function(require,module,exports){
 'use strict';
 
 var isArray = require('x-is-array');
@@ -11671,7 +11980,7 @@ function errorString(obj) {
     }
 }
 
-},{"../vnode/is-thunk":156,"../vnode/is-vhook":157,"../vnode/is-vnode":158,"../vnode/is-vtext":159,"../vnode/is-widget":160,"../vnode/vnode.js":162,"../vnode/vtext.js":164,"./hooks/ev-hook.js":151,"./hooks/soft-set-hook.js":152,"./parse-tag.js":154,"x-is-array":167}],154:[function(require,module,exports){
+},{"../vnode/is-thunk":154,"../vnode/is-vhook":155,"../vnode/is-vnode":156,"../vnode/is-vtext":157,"../vnode/is-widget":158,"../vnode/vnode.js":160,"../vnode/vtext.js":162,"./hooks/ev-hook.js":149,"./hooks/soft-set-hook.js":150,"./parse-tag.js":152,"x-is-array":165}],152:[function(require,module,exports){
 'use strict';
 
 var split = require('browser-split');
@@ -11727,7 +12036,7 @@ function parseTag(tag, props) {
     return props.namespace ? tagName : tagName.toUpperCase();
 }
 
-},{"browser-split":80}],155:[function(require,module,exports){
+},{"browser-split":78}],153:[function(require,module,exports){
 var isVNode = require("./is-vnode")
 var isVText = require("./is-vtext")
 var isWidget = require("./is-widget")
@@ -11769,13 +12078,13 @@ function renderThunk(thunk, previous) {
     return renderedThunk
 }
 
-},{"./is-thunk":156,"./is-vnode":158,"./is-vtext":159,"./is-widget":160}],156:[function(require,module,exports){
+},{"./is-thunk":154,"./is-vnode":156,"./is-vtext":157,"./is-widget":158}],154:[function(require,module,exports){
 module.exports = isThunk
 
 function isThunk(t) {
     return t && t.type === "Thunk"
 }
-},{}],157:[function(require,module,exports){
+},{}],155:[function(require,module,exports){
 module.exports = isHook
 
 function isHook(hook) {
@@ -11784,7 +12093,7 @@ function isHook(hook) {
        typeof hook.unhook === "function" && !hook.hasOwnProperty("unhook"))
 }
 
-},{}],158:[function(require,module,exports){
+},{}],156:[function(require,module,exports){
 var version = require("./version")
 
 module.exports = isVirtualNode
@@ -11793,7 +12102,7 @@ function isVirtualNode(x) {
     return x && x.type === "VirtualNode" && x.version === version
 }
 
-},{"./version":161}],159:[function(require,module,exports){
+},{"./version":159}],157:[function(require,module,exports){
 var version = require("./version")
 
 module.exports = isVirtualText
@@ -11802,17 +12111,17 @@ function isVirtualText(x) {
     return x && x.type === "VirtualText" && x.version === version
 }
 
-},{"./version":161}],160:[function(require,module,exports){
+},{"./version":159}],158:[function(require,module,exports){
 module.exports = isWidget
 
 function isWidget(w) {
     return w && w.type === "Widget"
 }
 
-},{}],161:[function(require,module,exports){
+},{}],159:[function(require,module,exports){
 module.exports = "2"
 
-},{}],162:[function(require,module,exports){
+},{}],160:[function(require,module,exports){
 var version = require("./version")
 var isVNode = require("./is-vnode")
 var isWidget = require("./is-widget")
@@ -11886,7 +12195,7 @@ function VirtualNode(tagName, properties, children, key, namespace) {
 VirtualNode.prototype.version = version
 VirtualNode.prototype.type = "VirtualNode"
 
-},{"./is-thunk":156,"./is-vhook":157,"./is-vnode":158,"./is-widget":160,"./version":161}],163:[function(require,module,exports){
+},{"./is-thunk":154,"./is-vhook":155,"./is-vnode":156,"./is-widget":158,"./version":159}],161:[function(require,module,exports){
 var version = require("./version")
 
 VirtualPatch.NONE = 0
@@ -11910,7 +12219,7 @@ function VirtualPatch(type, vNode, patch) {
 VirtualPatch.prototype.version = version
 VirtualPatch.prototype.type = "VirtualPatch"
 
-},{"./version":161}],164:[function(require,module,exports){
+},{"./version":159}],162:[function(require,module,exports){
 var version = require("./version")
 
 module.exports = VirtualText
@@ -11922,7 +12231,7 @@ function VirtualText(text) {
 VirtualText.prototype.version = version
 VirtualText.prototype.type = "VirtualText"
 
-},{"./version":161}],165:[function(require,module,exports){
+},{"./version":159}],163:[function(require,module,exports){
 var isObject = require("is-object")
 var isHook = require("../vnode/is-vhook")
 
@@ -11982,7 +12291,7 @@ function getPrototype(value) {
   }
 }
 
-},{"../vnode/is-vhook":157,"is-object":112}],166:[function(require,module,exports){
+},{"../vnode/is-vhook":155,"is-object":110}],164:[function(require,module,exports){
 var isArray = require("x-is-array")
 
 var VPatch = require("../vnode/vpatch")
@@ -12411,7 +12720,7 @@ function appendPatch(apply, patch) {
     }
 }
 
-},{"../vnode/handle-thunk":155,"../vnode/is-thunk":156,"../vnode/is-vnode":158,"../vnode/is-vtext":159,"../vnode/is-widget":160,"../vnode/vpatch":163,"./diff-props":165,"x-is-array":167}],167:[function(require,module,exports){
+},{"../vnode/handle-thunk":153,"../vnode/is-thunk":154,"../vnode/is-vnode":156,"../vnode/is-vtext":157,"../vnode/is-widget":158,"../vnode/vpatch":161,"./diff-props":163,"x-is-array":165}],165:[function(require,module,exports){
 var nativeIsArray = Array.isArray
 var toString = Object.prototype.toString
 
@@ -12421,7 +12730,7 @@ function isArray(obj) {
     return toString.call(obj) === "[object Array]"
 }
 
-},{}],168:[function(require,module,exports){
+},{}],166:[function(require,module,exports){
 module.exports = extend
 
 var hasOwnProperty = Object.prototype.hasOwnProperty;
@@ -12442,6 +12751,6 @@ function extend(target) {
     return target
 }
 
-},{}]},{},[72]);
+},{}]},{},[70]);
 </script>
 </html>
