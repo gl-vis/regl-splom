@@ -1,6 +1,6 @@
 {
   "name": "regl-splom",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Scatterplot matrix for 2d plots",
   "main": "./index.js",
   "scripts": {
