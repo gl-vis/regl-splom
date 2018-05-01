@@ -2,7 +2,6 @@
 
 
 const createScatter = require('regl-scatter2d/scatter')
-const flatten = require('flatten-vertex-data')
 const pick = require('pick-by-alias')
 const getBounds = require('array-bounds')
 const raf = require('raf')
@@ -174,7 +173,7 @@ SPLOM.prototype.updateItem = function (i, options) {
 
 	// put flattened data into buffer
 	if (o.data) {
-		trace.buffer(flatten(o.data))
+		trace.buffer(o.data)
 		trace.columns = o.data.length
 		trace.count = o.data[0].length
 
