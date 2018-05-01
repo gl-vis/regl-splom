@@ -129,7 +129,7 @@ SPLOM.prototype.updateItem = function (i, options) {
 		buffer: regl.buffer({
 			usage: 'dynamic',
 			type: 'float',
-			data: null
+			data: new Uint8Array()
 		}),
 		color: 'black',
 		marker: null,
