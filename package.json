@@ -32,6 +32,7 @@
     "bubleify": "^1.1.0",
     "color-alpha": "^1.0.2",
     "defined": "^1.0.0",
+    "flatten-vertex-data": "^1.0.2",
     "left-pad": "^1.2.0",
     "parse-rect": "^1.2.0",
     "pick-by-alias": "^1.2.0",

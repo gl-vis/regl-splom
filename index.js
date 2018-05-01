@@ -7,6 +7,7 @@ const getBounds = require('array-bounds')
 const raf = require('raf')
 const arrRange = require('array-range')
 const rect = require('parse-rect')
+const flatten = require('flatten-vertex-data')
 
 
 module.exports = SPLOM
@@ -173,7 +174,7 @@ SPLOM.prototype.updateItem = function (i, options) {
 
 	// put flattened data into buffer
 	if (o.data) {
-		trace.buffer(o.data)
+		trace.buffer(flatten(o.data))
 		trace.columns = o.data.length
 		trace.count = o.data[0].length
 
