@@ -1,5 +1,6 @@
 'use strict'
 
+const t = require('tape')
 const regl = require('regl')({ extensions: 'oes_element_index_uint' })
 const createSettings = require('../settings-panel')
 const createMatrix = require('./')
@@ -10,6 +11,10 @@ const palettes = require('nice-color-palettes')
 const palette = palettes[Math.floor(Math.random() * palettes.length)]
 const fps = require('fps-indicator')({position: 'bottom-right', color: 'black'})
 const arrayRange = require('array-range')
+
+
+// TODO
+t('typed array data input')
 
 
 // create splom instance
