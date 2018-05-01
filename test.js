@@ -14,7 +14,8 @@ const arrayRange = require('array-range')
 
 
 // TODO
-t('typed array data input')
+t('float32 array data input')
+t('int32 array data input')
 
 
 // create splom instance
