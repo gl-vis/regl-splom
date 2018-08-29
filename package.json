@@ -38,7 +38,7 @@
     "pick-by-alias": "^1.2.0",
     "point-cluster": "^1.0.2",
     "raf": "^3.4.0",
-    "regl-scatter2d": "^3.0.0"
+    "regl-scatter2d": "^3.0.6"
   },
   "devDependencies": {
     "fps-indicator": "^1.2.1",
