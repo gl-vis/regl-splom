@@ -4,6 +4,7 @@
   "description": "Scatterplot matrix for 2d plots",
   "main": "./index.js",
   "scripts": {
+    "postshrinkwrap": "chttps .",
     "test": "budo --force-default-index test",
     "build": "browserify test.js -g bubleify | indexhtmlify | metadataify | github-cornerify | mobilify > index.html"
   },
@@ -49,6 +50,7 @@
     "regl-scatter2d": "^3.0.6"
   },
   "devDependencies": {
+    "chttps": "^1.0.6",
     "fps-indicator": "^1.2.1",
     "gauss-random": "^1.0.1",
     "glslify": "^6.1.1",
