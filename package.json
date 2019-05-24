@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dy/regl-splom.git"
+    "url": "git+https://github.com/gl-vis/regl-splom.git"
   },
   "keywords": [
     "regl",
@@ -32,9 +32,9 @@
   "author": "Dmitry Yv <df.creative@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/dy/regl-splom/issues"
+    "url": "https://github.com/gl-vis/regl-splom/issues"
   },
-  "homepage": "https://github.com/dy/regl-splom#readme",
+  "homepage": "https://github.com/gl-vis/regl-splom#readme",
   "dependencies": {
     "array-bounds": "^1.0.1",
     "array-range": "^1.0.1",
