@@ -38,7 +38,7 @@
   "dependencies": {
     "array-bounds": "^1.0.1",
     "array-range": "^1.0.1",
-    "bubleify": "^1.2.0",
+    "bubleify": "^2.0.0",
     "color-alpha": "^1.0.4",
     "defined": "^1.0.0",
     "flatten-vertex-data": "^1.0.2",
