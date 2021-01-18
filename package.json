@@ -43,7 +43,7 @@
     "parse-rect": "^1.2.0",
     "pick-by-alias": "^1.2.0",
     "raf": "^3.4.1",
-    "regl-scatter2d": "git://github.com/gl-vis/regl-scatter2d.git#14876b1f5af6654405055f7dede02164c052163d"
+    "regl-scatter2d": "^3.2.2"
   },
   "devDependencies": {
     "@plotly/point-cluster": "^3.1.9",
