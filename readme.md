@@ -1,6 +1,6 @@
 # regl-splom
 
-Matrix of scatter plots. A wrapper over [regl-scatter2d](https://github.com/dy/regl-scatter2d) for optimized intersected data rendering.
+Matrix of scatter plots. A wrapper over [regl-scatter2d](https://github.com/gl-vis/regl-scatter2d) for optimized intersected data rendering.
 
 * [x] minimal GPU memory footprint: N vs N*N in direct [regl-scatter2d](https://github.com/dy/regl-scatter2d) passes case.
 * [ ] optimized performance due to binary trees for 1d point clustering, opposed to default 2d quad clustering.
